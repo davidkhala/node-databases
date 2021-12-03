@@ -1,7 +1,7 @@
-const {Collection} = require('mongodb');
-const assert = require('assert');
+import {Collection} from 'mongodb';
+import assert from 'assert';
 
-class CollectionSimple extends Collection {
+export default class CollectionSimple extends Collection {
 	constructor(asCollection) {
 		const {collectionName} = asCollection;
 		const {db, options} = asCollection.s;
@@ -22,5 +22,3 @@ class CollectionSimple extends Collection {
 		return new CollectionSimple(collection);
 	}
 }
-
-module.exports = CollectionSimple;

@@ -1,6 +1,7 @@
-const Autonomous = require('../autonomous');
-const assert = require('assert');
-const {as} = require('../collection');
+import Autonomous from '../autonomous.js';
+import assert from 'assert';
+import CollectionSimple from '../collection.js';
+const {as} = CollectionSimple;
 describe('autonomous', function () {
 	this.timeout(0);
 	const {password} = process.env;

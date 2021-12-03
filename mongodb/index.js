@@ -1,7 +1,7 @@
-const {MongoClient} = require('mongodb');
-const assert = require('assert');
+import {MongoClient} from 'mongodb';
+import assert from 'assert';
 
-class MongoConnect {
+export default class MongoConnect {
 	/**
 	 *
 	 * @param domain
@@ -89,6 +89,4 @@ class MongoConnect {
 	}
 
 }
-
-module.exports = MongoConnect;
 

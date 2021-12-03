@@ -1,9 +1,7 @@
-const MongoConnect = require('./index');
-const {MongoClient} = require('mongodb');
+import MongoConnect from './index.js';
+import {MongoClient} from 'mongodb';
 
-// Enable Mutual TLS (mTLS) Authentication: TLS connections allow you to connect to your Autonomous Database without a wallet
-
-class AutonomousJSON extends MongoConnect {
+export default class AutonomousJSON extends MongoConnect {
 	constructor({username = 'ADMIN', password, domain}) {
 		super(domain, username, password, username);
 		const uri = `mongodb://${username}:${password}@${domain}:27017/${username}?authMechanism=PLAIN&authSource=$external&ssl=true&loadBalanced=true`;
@@ -20,5 +18,3 @@ class AutonomousJSON extends MongoConnect {
 	}
 
 }
-
-module.exports = AutonomousJSON;

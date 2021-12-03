@@ -1,5 +1,5 @@
-const MongoConnect = require('../index');
-const assert = require('assert');
+import MongoConnect from '../index.js';
+import assert from 'assert';
 describe('sample data', function () {
 	this.timeout(0);
 	const user = 'admin';
