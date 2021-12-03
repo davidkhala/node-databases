@@ -1,0 +1,20 @@
+{
+  "name": "@davidkhala/redis",
+  "version": "0.0.0",
+  "dependencies": {
+    "redis": "latest",
+    "@types/redis": "latest",
+    "@davidkhala/kvdb": "latest"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register test/*"
+  },
+  "devDependencies": {
+    "@types/mocha": "latest",
+    "mocha": "latest",
+    "ts-node": "latest",
+    "typescript": "latest",
+    "tslint": "latest"
+  },
+  "type": "module"
+}
