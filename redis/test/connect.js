@@ -1,20 +1,14 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-import Client from '../index';
+import Client from '../index.js';
+
 describe('free', () => {
     const endpoint = 'redis-18528.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:18528';
-    const client = new Client({ endpoint });
-    it('connect', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield client.connect();
-    }));
-    after(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield client.disconnect();
-    }));
+    const client = new Client(endpoint, undefined, undefined);
+    it('connect', async () => {
+
+        await client.connect();
+    });
+    after(async () => {
+        await client.disconnect()
+    })
+
 });

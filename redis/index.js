@@ -8,15 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { createClient } from 'redis';
-import KvDB from '@davidkhala/kvdb';
-export default class Client extends KvDB {
-    constructor(opts) {
-        const { domain, port, user, password } = opts;
-        let { endpoint } = opts;
-        super(domain, '', port);
-        if (domain) {
-            endpoint = `${domain}:${port}`;
-        }
+export default class Client {
+    constructor(endpoint, user, password) {
         let url = `redis://${endpoint}`;
         if (password) {
             url = `redis://${user}:${password}@${endpoint}`;
