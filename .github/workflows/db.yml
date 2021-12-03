@@ -1,0 +1,41 @@
+name: database
+on: push
+jobs:
+  mongoDB:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mongodb
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+        env:
+          password: ${{ secrets.MONGODB_PASSWORD }}
+  leveldb:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: leveldb
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+  redis:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: redis
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test

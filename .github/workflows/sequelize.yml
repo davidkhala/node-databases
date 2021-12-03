@@ -1,0 +1,29 @@
+name: npm khala-sequelize
+on: workflow_dispatch
+defaults:
+  run:
+    working-directory: sequelize
+jobs:
+  sequelize:
+    services:
+      mysql:
+        image: mysql
+#       docker run -e MYSQL_DATABASE=database -e MYSQL_ROOT_PASSWORD=password -p 3306:3306 mysql
+        env:
+          MYSQL_DATABASE: database
+          MYSQL_ROOT_PASSWORD: password
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      matrix:
+        node-version: [ 10.x, 12.x, 14.x ]
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+      - run: npm test
