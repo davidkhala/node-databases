@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "dependencies": {
     "@types/redis": "latest",
-    "redis": "latest"
+    "redis": "latest",
+    "@davidkhala/kvdb": "latest"
   },
   "scripts": {
     "pretest": "tsc",

@@ -1,27 +1,29 @@
 export default abstract class KvDB {
-	domain: string;
-	name: string;
-	port: string | number;
-	connection: any;
+    domain: string;
+    // table, collection name
+    name: string | undefined;
+    port: string | number;
+    connection: any;
 
-	protected constructor(domain: string, name: string, port: number | string) {
-		Object.assign(this, {domain, name, port});
+    protected constructor(domain: string, port: number | string, name: string | undefined) {
+        this.domain = domain
+        this.port = port
+        this.name = name
+    }
 
-	}
+    abstract get(key: string): Promise<string>;
 
-	abstract async get(key: string);
-
-	/**
+    /**
      *
      * @param key
      * @param value
      * @return string return the set value
      */
-	abstract async set(key: string, value: string);
+    abstract set(key: string, value: string): Promise<void>;
 
-	abstract async clear();
+    abstract clear(): Promise<void>;
 
-	abstract async connect();
+    abstract connect(): Promise<void>;
 
-	abstract async disconnect();
+    abstract disconnect(): Promise<void>;
 }

@@ -4,15 +4,15 @@ export default abstract class KvDB {
     port: string | number;
     connection: any;
     protected constructor(domain: string, name: string, port: number | string);
-    abstract get(key: string): any;
+    abstract get(key: string): Promise<string>;
     /**
      *
      * @param key
      * @param value
      * @return string return the set value
      */
-    abstract set(key: string, value: string): any;
-    abstract clear(): any;
-    abstract connect(): any;
-    abstract disconnect(): any;
+    abstract set(key: string, value: string): Promise<void>;
+    abstract clear(): Promise<void>;
+    abstract connect(): Promise<void>;
+    abstract disconnect(): Promise<void>;
 }

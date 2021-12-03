@@ -4,6 +4,6 @@
     "types": [
       "mocha"
     ],
-    "declaration": true
+    "baseUrl": "./node_modules"
   }
 }

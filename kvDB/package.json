@@ -1,14 +1,16 @@
 {
   "name": "@davidkhala/kvdb",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "",
   "author": "davidliu  <david-khala@hotmail.com>",
   "repository": "davidkhala/node-utils",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
-    "prepublish": "tsc"
+    "prepublish": "tsc",
+    "lint": "tsc"
   },
-  "main": "./index.js",
-  "types": "./index.d.ts"
+  "devDependencies": {
+    "typescript": "latest"
+  }
 }
