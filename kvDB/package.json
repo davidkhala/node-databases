@@ -1,0 +1,14 @@
+{
+  "name": "@davidkhala/kvdb",
+  "version": "0.0.3",
+  "description": "",
+  "author": "davidliu  <david-khala@hotmail.com>",
+  "repository": "davidkhala/node-utils",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "prepublish": "tsc"
+  },
+  "main": "./index.js",
+  "types": "./index.d.ts"
+}

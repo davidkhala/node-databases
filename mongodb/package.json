@@ -1,0 +1,13 @@
+{
+  "name": "@davidkhala/mongodb",
+  "version": "0.0.0",
+  "dependencies": {
+    "mongodb": "latest"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  }
+}

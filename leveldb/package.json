@@ -1,0 +1,21 @@
+{
+  "name": "khala-level",
+  "version": "0.0.3",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "author": "davidliu  <david-khala@hotmail.com>",
+  "repository": "davidkhala/node-utils",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@davidkhala/kvdb": "latest",
+    "level": "latest"
+  },
+  "type": "module",
+  "devDependencies": {
+    "mocha": "latest",
+    "khala-logger": "latest"
+  }
+}
