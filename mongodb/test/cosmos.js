@@ -2,7 +2,7 @@ import Cosmos from '../cosmos.js'
 
 describe('cosmos', function () {
 	this.timeout(0)
-	const {password} = process.env
+	const {cosmos_password: password} = process.env
 
 	let connect
 	it('connectString', async () => {
