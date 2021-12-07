@@ -1,4 +1,4 @@
-import MongoConnect from '../index.js';
+import MongoConnect from '../mongo.js';
 import assert from 'assert';
 describe('sample data', function () {
 	this.timeout(0);

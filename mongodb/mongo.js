@@ -7,12 +7,17 @@ export default class MongoConnect {
 	 * @param domain
 	 * @param username
 	 * @param password
-	 * @param [dbName] if not specified, specify in {@link connect}
+	 * @param [dbName] if not specified, specify in #connect
+	 * @param {string} connectionString
 	 */
-	constructor({domain, username, password, dbName = ''}) {
-		const uri = `mongodb+srv://${username}:${password}@${domain}/${dbName}?retryWrites=true&w=majority`;
-		this.dbName = dbName;
-		this.client = new MongoClient(uri, {useNewUrlParser: true, useUnifiedTopology: true});
+	constructor({domain, username, password, dbName = ''}, connectionString) {
+		if (!connectionString) {
+			connectionString = `mongodb+srv://${username}:${password}@${domain}/${dbName}?retryWrites=true&w=majority`;
+		}else {
+			this.dbName = dbName;
+		}
+
+		this.client = new MongoClient(connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
 	}
 
 	async connect(dbName) {

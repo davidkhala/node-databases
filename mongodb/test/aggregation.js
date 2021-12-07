@@ -1,4 +1,4 @@
-import MongoConnect from '../index.js';
+import MongoConnect from '../mongo.js';
 import assert from 'assert';
 import Autonomous from '../autonomous.js';
 import {docs} from './dataDump.js';
