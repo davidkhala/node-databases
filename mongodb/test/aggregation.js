@@ -19,10 +19,10 @@ const accommodates$gt = async (collection, number = 2) => {
 
 describe('aggregation', () => {
 
-	const user = 'admin';
+	const username = 'admin';
 	const {password} = process.env;
 	const domain = 'free.5afsx.mongodb.net';
-	const connect = new MongoConnect({domain, user, password});
+	const connect = new MongoConnect({domain, username, password});
 
 	describe('sample_airbnb', function () {
 		this.timeout(0);

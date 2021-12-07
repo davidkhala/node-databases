@@ -2,10 +2,10 @@ import MongoConnect from '../index.js';
 import assert from 'assert';
 describe('sample data', function () {
 	this.timeout(0);
-	const user = 'admin';
+	const username = 'admin';
 	const {password} = process.env;
 	const domain = 'free.5afsx.mongodb.net';
-	const connect = new MongoConnect({domain, user, password});
+	const connect = new MongoConnect({domain, username, password});
 	it('sample_airbnb', async () => {
 		const dbName = 'sample_airbnb';
 		await connect.connect(dbName);

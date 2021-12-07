@@ -1,4 +1,4 @@
-import Client from '../index';
+import Client from '../index.js';
 
 describe('free', () => {
 
