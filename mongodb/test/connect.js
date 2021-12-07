@@ -5,7 +5,7 @@ describe('sample data', function () {
 	const user = 'admin';
 	const {password} = process.env;
 	const domain = 'free.5afsx.mongodb.net';
-	const connect = new MongoConnect(domain, user, password);
+	const connect = new MongoConnect({domain, user, password});
 	it('sample_airbnb', async () => {
 		const dbName = 'sample_airbnb';
 		await connect.connect(dbName);

@@ -3,7 +3,7 @@ import {MongoClient} from 'mongodb';
 
 export default class AutonomousJSON extends MongoConnect {
 	constructor({username = 'ADMIN', password, domain}) {
-		super(domain, username, password, username);
+		super({domain, username, password, dbName: username});
 		const uri = `mongodb://${username}:${password}@${domain}:27017/${username}?authMechanism=PLAIN&authSource=$external&ssl=true&loadBalanced=true`;
 		// uri token ssl=true is required
 		this.client = new MongoClient(uri, {
