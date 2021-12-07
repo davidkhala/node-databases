@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/redis",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "@types/redis": "latest",
     "redis": "latest",
