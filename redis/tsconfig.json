@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "target": "ES2017",
-    "types": [
-      "mocha"
-    ],
-    "baseUrl": "./node_modules"
+    "target": "ES6",
+    "moduleResolution": "Node",
+    "module": "ES6"
   }
 }

@@ -2,9 +2,9 @@
   "name": "@davidkhala/redis",
   "version": "0.0.2",
   "dependencies": {
-    "@types/redis": "latest",
     "redis": "latest",
-    "@davidkhala/kvdb": "latest"
+    "@davidkhala/kvdb": "latest",
+    "@types/node": "latest"
   },
   "scripts": {
     "pretest": "tsc",
@@ -12,8 +12,6 @@
   },
   "devDependencies": {
     "mocha": "latest",
-    "@types/mocha": "latest",
-    "ts-node": "latest",
     "typescript": "latest"
   },
   "type": "module"
