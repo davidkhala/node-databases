@@ -41,8 +41,9 @@ describe('aggregation', () => {
 		});
 
 		it('1. accommodates $gt', async () => {
-			const result = await accommodates$gt(collection);
-			console.debug(result);
+			const number = 2
+			const result = await accommodates$gt(collection, number);
+			assert.ok(result.every(({accommodates}) => accommodates > number))
 		});
 
 	});
@@ -72,8 +73,10 @@ describe('autonomous', function () {
 	});
 	it('1. accommodates $gt', async () => {
 		const collection = await connect.getCollection(collectionName);
-		const result = await accommodates$gt(collection, 4 );
-		console.debug(result);
+		const number = 4
+		const result = await accommodates$gt(collection, number);
+
+		assert.ok(result.every(({accommodates})=>accommodates>number))
 	});
 
 

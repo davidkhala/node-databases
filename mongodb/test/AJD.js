@@ -17,20 +17,23 @@ describe('autonomous', function () {
 
 		const namesOnly = await connect.listCollections(true);
 		assert.ok(Array.isArray(namesOnly));
-		console.debug(namesOnly);
+
 	});
 
 	it('create Collections', async () => {
 		const collectionName = 'foo';
-		const collectionHandler = await connect.createCollection(collectionName);
+
+		const collectionHandler = await connect.createCollection(collectionName, true);
 
 		const wrapper = as(collectionHandler);
 		const result = await wrapper.insertOne({hello: 'world'});
+
 		console.debug(result);
-		const list = await wrapper.list();
-		console.debug(list);
-		// 619c3c38fede73d959c75a18
+
+
+
 	});
+
 
 	it('getCollection', async () => {
 		const collectionName = 'abc';
@@ -41,12 +44,12 @@ describe('autonomous', function () {
 	it('drop Collections', async () => {
 		const collectionName = 'foo';
 		const result = await connect.dropCollection(collectionName);
-		console.debug(result);
+		assert.ok(result);
 
 	});
 	it('drop database', async () => {
 		const result = await connect.dropDatabase();
-		console.debug(result);
+		assert.ok(result)
 	});
 	after(async () => {
 		await connect.disconnect();

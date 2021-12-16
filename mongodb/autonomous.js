@@ -3,7 +3,7 @@ import MongoConnect from './mongo.js';
 export default class AutonomousJSON extends MongoConnect {
 	constructor({username = 'ADMIN', password, domain}) {
 
-		const uri = `mongodb://${username}:${password}@${domain}:27017/${username}?authMechanism=PLAIN&authSource=$external&ssl=true&loadBalanced=true`;
+		const uri = `mongodb://${username}:${password}@${domain}:27017/${username}?authMechanism=PLAIN&authSource=$external&ssl=true&loadBalanced=true&retryWrites=false`;
 
 		super({}, uri);
 	}
