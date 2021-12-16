@@ -7,29 +7,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { createClient } from 'redis';
+import { createClient, } from 'redis';
 import KvDB from '@davidkhala/kvdb/index.js';
 export default class Client extends KvDB {
     constructor({ domain, port, endpoint = `${domain}:${port}` }, user, password) {
-        let url = `redis://${endpoint}`;
-        let name;
+        let token = '';
         if (password) {
-            name = `${user}:${password}`;
-            url = `redis://${name}@${endpoint}`;
+            token = `${user}:${password}@`;
         }
+        const url = `redis://${token}${endpoint}`;
         super(domain, "", port);
         this.client = createClient({
             url
         });
     }
     get(key) {
-        throw new Error('Method not implemented.');
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield this.client.get(key);
+        });
     }
     set(key, value) {
-        throw new Error('Method not implemented.');
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.client.set(key, value);
+        });
     }
     clear() {
-        throw new Error('Method not implemented.');
+        return __awaiter(this, void 0, void 0, function* () {
+            yield this.client.flushDb();
+            return;
+        });
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {

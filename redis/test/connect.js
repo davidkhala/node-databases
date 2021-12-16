@@ -1,15 +1,43 @@
 import Client from '../index.js';
+import assert from "assert";
 
-describe('free', () => {
+describe('free', function () {
+	this.timeout(0)
+	const endpoint = 'redis-18528.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:18528';
 
-    const endpoint = 'redis-18528.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:18528';
-    const client = new Client({domain: undefined, port: undefined, endpoint}, undefined, undefined);
-    it('connect', async () => {
+	const domain = undefined
+	const port = undefined
 
-        await client.connect();
-    });
-    after(async () => {
-        await client.disconnect()
-    })
+	it('connect', async () => {
+		const client = new Client({domain, port, endpoint}, undefined, undefined);
+		await client.connect();
+		await client.disconnect();
+	});
+	it('put and verify', async () => {
+		const {redis_password: password} = process.env
+		const client = new Client({domain, port, endpoint}, 'admin', password);
+		await client.connect();
+		const key = 'key'
+		const value = 'value'
+		await client.set(key, value);
+		const result = await client.get(key)
+		assert.strictEqual(result, value)
+		await client.disconnect();
+	})
+	it('put and nuke', async () => {
+		const {redis_password: password} = process.env
+		const client = new Client({domain, port, endpoint}, 'admin', password);
+		await client.connect();
+		const key = 'key'
+		const value = 'value'
+		await client.set(key, value);
+		assert.strictEqual(await client.get(key), value)
+		await client.clear();
+		const shouldbeEmpty = await client.get(key)
+		assert.ok(!shouldbeEmpty)
+
+		await client.disconnect();
+	})
+
 
 });

@@ -40,3 +40,5 @@ jobs:
           check-latest: true
       - run: npm install
       - run: npm test
+        env:
+          redis_password: ${{ secrets.REDIS_PASSWORD }}

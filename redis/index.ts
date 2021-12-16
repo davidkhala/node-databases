@@ -1,32 +1,33 @@
-import {createClient} from 'redis';
+import {createClient, } from 'redis';
 import KvDB from '@davidkhala/kvdb/index.js'
 
 export default class Client extends KvDB {
-    private client: any;
+    private client;
 
     constructor({domain, port, endpoint = `${domain}:${port}`}, user, password) {
-        let url = `redis://${endpoint}`
-        let name
+        let token = ''
         if (password) {
-            name = `${user}:${password}`
-            url = `redis://${name}@${endpoint}`
+            token = `${user}:${password}@`
         }
+
+        const url = `redis://${token}${endpoint}`
         super(domain, "", port);
         this.client = createClient({
             url
         })
     }
 
-    get(key: string): Promise<string> {
-        throw new Error('Method not implemented.');
+    async get(key: string): Promise<string> {
+        return await this.client.get(key)
     }
 
-    set(key: string, value: string): Promise<void> {
-        throw new Error('Method not implemented.');
+    async set(key: string, value: string): Promise<void> {
+        await this.client.set(key, value)
     }
 
-    clear(): Promise<void> {
-        throw new Error('Method not implemented.');
+    async clear(): Promise<void> {
+        await this.client.flushDb()
+        return
     }
 
 
