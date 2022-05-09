@@ -3,7 +3,16 @@ import pg from 'pg';
 const {Client} = pg;
 
 export default class PostGRE {
-    constructor({domain, port = 5432, connectionString, query_timeout = 2000}, user, password, client) {
+    /**
+     *
+     * @param domain
+     * @param [port]
+     * @param [connectionString]
+     * @param [query_timeout]
+     * @param user
+     * @param password
+     */
+    constructor({domain, port = 5432, connectionString, query_timeout = 2000}, user, password) {
         const opt = {
             connectionString,
             query_timeout,
@@ -14,16 +23,18 @@ export default class PostGRE {
                 host: domain,
             })
         }
-        this.client = new Client(opt)
-
+        this.opt = opt
     }
 
     async connect() {
+        this.client = new Client(this.opt)
         await this.client.connect()
     }
 
     async disconnect() {
         await this.client.end()
+        //Error: Client has already been connected. You cannot reuse a client.
+        delete this.client
     }
 
     async query(config, values) {
