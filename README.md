@@ -8,3 +8,4 @@ nodejs utils for database-like middleware
 - [popular message queues](https://github.com/davidkhala/node-mq)
 - [Azure](https://github.com/davidkhala/azure-utils)
 - [aws](https://github.com/davidkhala/aws-collections)
+- [couchdb-cluster](https://github.com/davidkhala/couchdb-cluster)
