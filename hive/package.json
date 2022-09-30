@@ -1,0 +1,14 @@
+{
+  "name": "@davidkhala/hive",
+  "version": "1.0.0",
+  "dependencies": {
+    "hive-driver": "latest"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "type": "module"
+}
