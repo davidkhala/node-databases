@@ -4,14 +4,14 @@ describe('', function () {
     this.timeout(0)
 
     it('connect', async () => {
-        const host = '168.138.181.227'
-        const port = 2181
+        const host = '168.138.181.142'
+        const port = 10000
         const hive = new Hive({host, port})
 
         const username = 'hive'
         const password = 'hive'
-        const client2 = await hive.connect({username, password})
-        // console.debug(client2)
-        console.debug(hive.client)
+        await hive.connect({username, password})
+
+        hive.disconnect()
     })
 })
