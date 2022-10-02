@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/hive",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "dependencies": {
     "hive-driver": "latest"
   },
@@ -10,5 +10,8 @@
   "devDependencies": {
     "mocha": "latest"
   },
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
 }
