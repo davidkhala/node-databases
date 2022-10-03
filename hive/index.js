@@ -21,7 +21,7 @@ export class Hive {
             })
         )
         const promiseSession = await client.openSession({
-            client_protocol: TCLIService_types.TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V9,
+            client_protocol: TCLIService_types.TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V11,
         });
 
 
