@@ -1,4 +1,4 @@
-import {Hive} from '../index.js'
+import {Hive, HiveDDL} from '../index.js'
 
 describe('OCI BDS Hive Thrift Server', function () {
     this.timeout(0)
@@ -8,24 +8,43 @@ describe('OCI BDS Hive Thrift Server', function () {
     const username = 'hive'
     const password = 'hive'
     const hive = new Hive({host, port, username, password})
+    beforeEach(async () => {
+        await hive.connect()
+    })
     it('connect ', async () => {
-        await hive.connect({username, password})
+
         const version = await hive.version()
         console.debug(version)
 
-        await hive.disconnect()
     })
     it('reconnect', async () => {
-        await hive.connect()
         await hive.disconnect()
         await hive.connect()
-        await hive.disconnect()
     })
     it('run query', async () => {
-        await hive.connect()
         const statement = 'SELECT * FROM `ctm`.`web_log` LIMIT 10'
         const result = await hive.execSQL(statement)
         console.info(result)
+
+    })
+    const table = 'web_log'
+    const schema = 'ctm'
+    const ddl = new HiveDDL(hive, table, schema)
+    it('show columns', async () => {
+        const result = await ddl.listColumns()
+        console.info(result)
+    })
+    it('drop column', async () => {
+        const statement = 'ALTER TABLE `ctm`.`web_log_trim` REPLACE COLUMNS( logtime string, loglevel string, systemmodule string,sessionid string, logtype string);'
+        const result = await hive.execSQL(statement)
+    })
+    it('drop table', async () => {
+        await ddl.dropTable()
+    })
+
+    afterEach(async () => {
         await hive.disconnect()
     })
 })
+
+

@@ -57,5 +57,34 @@ export class Hive {
         return value.stringValue
     }
 
+
 }
 
+export class HiveDDL {
+    /**
+     *
+     * @param {Hive} hive
+     * @param table
+     * @param schema
+     */
+    constructor(hive, table, schema) {
+
+        Object.assign(this, {
+            hive,
+            table: `${schema ? schema + '.' : ''}${table}`
+        })
+
+    }
+
+    async dropTable() {
+        const {hive, table} = this
+        const statement = `drop table ${table}`
+        await hive.execSQL(statement)
+    }
+
+    async listColumns(){
+        const {hive, table} = this
+        const statement = `show columns in ${table}`
+        await hive.execSQL(statement)
+    }
+}
