@@ -35,7 +35,7 @@ describe('OCI BDS Hive Thrift Server', function () {
         console.info(result)
     })
     it('drop column', async () => {
-        const statement = 'ALTER TABLE `ctm`.`web_log_trim` REPLACE COLUMNS( logtime string, loglevel string, systemmodule string,sessionid string, logtype string);'
+        const statement = 'ALTER TABLE `ctm`.`web_log` REPLACE COLUMNS( logtime string, loglevel string, systemmodule string,sessionid string, logtype string);'
         const result = await hive.execSQL(statement)
     })
     it('drop table', async () => {
