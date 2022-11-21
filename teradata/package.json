@@ -1,0 +1,11 @@
+{
+  "name": "@davidkhala/teradata",
+  "version": "1.0.0",
+  "dependencies": {
+    "teradata-nodejs-driver": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "type": "module"
+}
