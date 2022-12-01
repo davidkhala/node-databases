@@ -8,6 +8,7 @@ describe('OCI BDS Hive Thrift Server', function () {
     const username = 'hive'
     const password = 'hive'
     const hive = new Hive({host, port, username, password})
+    console.debug(hive.uri())
     beforeEach(async () => {
         await hive.connect()
     })

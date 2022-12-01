@@ -1,10 +1,11 @@
 import {TeradataConnection} from 'teradata-nodejs-driver';
+import {SQLAlchemy} from '@davidkhala/sql-alchemy'
 
-export default class Teradata {
+export default class Teradata extends SQLAlchemy {
 
-    constructor({host, username = 'dbc', password = 'dbc'}) {
+    constructor({host, port = 1025, username = 'dbc', password = 'dbc'}) {
+        super({host, port, username, password})
         this.client = new TeradataConnection();
-        Object.assign(this, {host, username, password})
     }
 
     connect() {

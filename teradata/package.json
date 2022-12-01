@@ -2,7 +2,8 @@
   "name": "@davidkhala/teradata",
   "version": "1.0.0",
   "dependencies": {
-    "teradata-nodejs-driver": "latest"
+    "teradata-nodejs-driver": "latest",
+    "@davidkhala/sql-alchemy": "latest"
   },
   "devDependencies": {
     "mocha": "latest"

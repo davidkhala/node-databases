@@ -1,8 +1,9 @@
 import pg from 'pg';
+import {SQLAlchemy} from '@davidkhala/sql-alchemy'
 
 const {Client} = pg;
 
-export default class PostGRE {
+export default class PostGRE extends SQLAlchemy {
     /**
      *
      * @param domain
@@ -13,21 +14,12 @@ export default class PostGRE {
      * @param password
      */
     constructor({domain, port = 5432, connectionString, query_timeout = 2000}, user, password) {
-        const opt = {
-            connectionString,
-            query_timeout,
-        }
-        if (!connectionString) {
-            Object.assign(opt, {
-                user, password, port,
-                host: domain,
-            })
-        }
-        this.opt = opt
+        super({host: domain, username: user, password, port})
+        Object.assign(this, {connectionString, query_timeout})
     }
 
     async connect() {
-        this.client = new Client(this.opt)
+        this.client = new Client(this)
         await this.client.connect()
     }
 

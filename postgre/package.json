@@ -4,7 +4,8 @@
   "description": "postgresql client",
   "main": "index.js",
   "dependencies": {
-    "pg": "latest"
+    "pg": "latest",
+    "@davidkhala/sql-alchemy": "latest"
   },
   "devDependencies": {
     "mocha": "latest"

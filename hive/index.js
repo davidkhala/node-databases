@@ -1,11 +1,11 @@
 import hive from 'hive-driver';
-
+import {SQLAlchemy} from '@davidkhala/sql-alchemy'
 const {TCLIService, TCLIService_types} = hive.thrift;
 
 
-export class Hive {
+export class Hive extends SQLAlchemy{
     constructor({host, port, username, password}, logger = console) {
-        Object.assign(this, {host, port, username, password, logger})
+        super({host, port, username, password}, logger)
         this.client = new hive.HiveClient(
             TCLIService,
             TCLIService_types
@@ -13,6 +13,7 @@ export class Hive {
         this.utils = new hive.HiveUtils(
             TCLIService_types
         );
+        this._driver = 'hive'
     }
 
     async connect() {

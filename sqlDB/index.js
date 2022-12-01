@@ -3,10 +3,10 @@ export class SQLAlchemy {
         Object.assign(this, {host, port, username, password, logger})
     }
 
-    uri() {
+    uri(isLDAP) {
         let uri = this._dialect ? `${this._dialect}+` : '';
 
-        uri += `${this._driver}://${this.username}:${this.password}@${this.host}:${this.port}`
+        uri += `${this._driver}://${this.username}${isLDAP?':'+this.password:''}@${this.host}:${this.port}`
         if (this.database) {
             uri += `/${this.database}`
         }
