@@ -1,14 +1,17 @@
 import {Hive, HiveDDL} from '../index.js'
 
+const host = '168.138.166.53'
+const port = 10000
+const username = 'hive'
+const password = 'hive'
+const hive = new Hive({host, port, username, password})
 describe('OCI BDS Hive Thrift Server', function () {
     this.timeout(0)
 
-    const host = '168.138.166.53'
-    const port = 10000
-    const username = 'hive'
-    const password = 'hive'
-    const hive = new Hive({host, port, username, password})
-    console.debug(hive.uri())
+    it('get uri', () => {
+        console.debug(hive.uri())
+    })
+
     beforeEach(async () => {
         await hive.connect()
     })
@@ -48,4 +51,17 @@ describe('OCI BDS Hive Thrift Server', function () {
     })
 })
 
-
+describe('superset', function () {
+    this.timeout(0)
+    before(async () => {
+        await hive.connect()
+    })
+    it('ping', async () => {
+        await hive.execSQL('USE `default`')
+        console.debug(await hive.execSQL('SELECT 1'))
+        console.debug(await hive.execSQL('SHOW SCHEMAS'))
+    })
+    after(async () => {
+        await hive.disconnect()
+    })
+})
