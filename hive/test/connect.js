@@ -1,4 +1,5 @@
 import {Hive, HiveDDL} from '../index.js'
+import assert from 'assert'
 
 const host = '168.138.166.53'
 const port = 10000
@@ -9,7 +10,7 @@ describe('OCI BDS Hive Thrift Server', function () {
     this.timeout(0)
 
     it('get uri', () => {
-        console.debug(hive.uri())
+        assert.strictEqual(hive.uri(), 'hive://hive:hive@168.138.166.53:10000')
     })
 
     beforeEach(async () => {
@@ -51,17 +52,16 @@ describe('OCI BDS Hive Thrift Server', function () {
     })
 })
 
-describe('superset', function () {
+describe('multi target', function () {
     this.timeout(0)
-    before(async () => {
+
+
+
+    it('to vbox in windows server', async () => {
+        const host = '129.150.33.172'
+        const hive = new Hive({host, port, username, password})
+
         await hive.connect()
-    })
-    it('ping', async () => {
-        await hive.execSQL('USE `default`')
-        console.debug(await hive.execSQL('SELECT 1'))
-        console.debug(await hive.execSQL('SHOW SCHEMAS'))
-    })
-    after(async () => {
         await hive.disconnect()
     })
 })
