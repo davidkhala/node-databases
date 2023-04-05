@@ -1,8 +1,0 @@
-{
-  "name": "@davidkhala/sql-alchemy",
-  "version": "0.0.0",
-  "type": "module",
-  "publishConfig": {
-    "access": "public"
-  }
-}
