@@ -3,9 +3,10 @@ import {SQLAlchemy} from '@davidkhala/sql-alchemy'
 
 export default class Teradata extends SQLAlchemy {
 
-    constructor({host, port = 1025, username = 'dbc', password = 'dbc'}) {
+    constructor({host, port = 1025, username = 'dbc', password = 'dbc', client, cursor}) {
         super({host, port, username, password})
-        this.client = new TeradataConnection();
+        this.client = client || new TeradataConnection();
+        this.cursor = cursor
     }
 
     connect() {
@@ -43,12 +44,9 @@ export class SystemInfo extends Teradata {
     }
 
     version() {
-        this.execute('{fn teradata_nativesql}Database version{fn teradata_database_version}');
+        this.execute('{fn teradata_nativesql}{fn teradata_database_version}');
         const rows = this.cursor.fetchone();
         return rows[0]
     }
 
-    static buildFrom(teradata) {
-        return new SystemInfo(teradata)
-    }
 }
