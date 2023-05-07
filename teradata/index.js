@@ -19,14 +19,18 @@ export default class Teradata extends SQLAlchemy {
         this.cursor.execute(sql);
     }
 
-    query(sql) {
+    query(sql, withHeader) {
         this.execute(sql)
-        return this.cursor.fetchall()
+        const rows = this.cursor.fetchall()
+        if (withHeader) {
+            rows.unshift(this.cursor.description.map(desc => desc[0]))
+            return rows
+        }
     }
 
 
     disconnect() {
-        this.cursor.close();
+        // this.cursor.close(); // FIXME: Error: 0 is not a valid rows handle
         this.client.close();
     }
 }
