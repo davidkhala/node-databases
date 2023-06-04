@@ -50,7 +50,7 @@ AS PERMANENT = 60e6, -- 60MB
         teradata.execute(create)
     })
     it('create table', () => {
-        const create = `CREATE SET TABLE ${database}.Employees (
+        const employees = `CREATE SET TABLE ${database}.Employees (
    GlobalID INTEGER,
    FirstName VARCHAR(30),
    LastName VARCHAR(30),
@@ -59,8 +59,9 @@ AS PERMANENT = 60e6, -- 60MB
    DepartmentCode BYTEINT
 )
 UNIQUE PRIMARY INDEX ( GlobalID );`
-        teradata.execute(create)
+        teradata.execute(employees)
     })
+
     it('insert sample rows', () => {
         const rows = `INSERT INTO ${database}.Employees (
    GlobalID,
@@ -80,6 +81,12 @@ VALUES (
 );`
         const result = teradata.query(rows)
         console.log(result)
+    })
+    it('create view', () => {
+        const sql = `
+        CREATE VIEW Employee_View AS   
+            SELECT Emp_Id, First_Name, Last_Name, Department_No, BirthDate,
+            FROM Employees;`
     })
     it('truncate table', () => {
         databaseConnect.truncate(database, 'Employees')
