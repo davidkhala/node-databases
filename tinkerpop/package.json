@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "gremlin": "^3.7.0"
+  },
+  "type": "module",
+  "devDependencies": {
+    "mocha": "latest"
+  }
+}
