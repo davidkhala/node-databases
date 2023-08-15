@@ -1,7 +1,8 @@
 import Gremlin from "gremlin";
 import assert from 'assert'
+import {AbstractGremlin} from "./index.js";
 
-export class Cosmos {
+export class Cosmos extends AbstractGremlin {
     /**
      *
      * @param database
@@ -17,7 +18,7 @@ export class Cosmos {
             password,
         )
         const endpoint = `wss://${username}.gremlin.cosmos.azure.com:443/`
-        this.client = new Gremlin.driver.Client(
+        const client = new Gremlin.driver.Client(
             endpoint,
             {
                 authenticator,
@@ -26,23 +27,10 @@ export class Cosmos {
                 mimeType: "application/vnd.gremlin-v2.0+json"
             }
         );
-        this.logger = logger
+        super(client, logger)
+
     }
 
-    async connect() {
-        await this.client.open()
-    }
-
-    async disconnect() {
-        await this.client.close()
-    }
-
-
-    async query(traversal, values = {}) {
-        const message = `g.${traversal}`
-        this.logger(message)
-        return await this.client.submit(message, values)
-    }
 }
 
 
