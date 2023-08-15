@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "gremlin": "^3.7.0"
+    "gremlin": "latest"
   },
   "type": "module",
   "devDependencies": {

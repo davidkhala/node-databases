@@ -11,12 +11,17 @@ describe('cosmos', () => {
         password: process.env.password
     }
     const cosmos = new Cosmos(config)
-    it('connect', async () => {
+    beforeEach(async ()=>{
         await cosmos.connect()
+    })
+    afterEach(async ()=>{
         await cosmos.disconnect()
     })
+    it('connect', async () => {
+    })
     it('azure-cosmos-db-graph-nodejs-getting-started', async () => {
-        await cosmos.connect()
+
+
         await cosmos.query(drop)
         const source = "thomas"
         const target = 'mary'
@@ -35,8 +40,7 @@ describe('cosmos', () => {
         await cosmos.query(edgeTemplate.add(source, target))
         const [count] = await cosmos.query(Vertex.count)
         assert.strictEqual(count, 2)
-
-        await cosmos.disconnect()
+        const result = await cosmos.query(nodeTemplate.list())
+        console.info(result)
     })
-    it('sample app: Gremlin Console')
 })

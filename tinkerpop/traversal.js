@@ -11,6 +11,10 @@ export class Vertex {
         Object.assign(this, {type, partitionKey})
     }
 
+    list() {
+        return `V().hasLabel('${this.type}')`
+    }
+
     add(id, properties, partitionValue = id) {
         const propertiesQuery = Object.entries(properties).reduce((str, [key, value]) => {
             return str + `.property('${key}', '${value}')`
