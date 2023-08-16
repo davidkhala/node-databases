@@ -13,7 +13,7 @@ describe('gremlin-server', () => {
         await gremlinServer.disconnect()
         assert.ok(!gremlinServer.client.isOpen)
     })
-    it('', async () => {
+    it('(connect)', async () => {
     })
     it('sample', async () => {
         const {g} = gremlinServer
@@ -23,7 +23,7 @@ describe('gremlin-server', () => {
         const [v2] = await query(g.addV("person").property("name", "Bob").property("age", 35))
         console.debug('get by id', await gremlinServer.getV(v1.id))
 
-        console.debug(await query(g.V().hasLabel("person").valueMap()))
+        console.debug(await query(g.V().hasLabel("person").values()))
 
         await query(g.V(v1).addE("knows").to(v2))
         console.debug(await query(g.E().count()))

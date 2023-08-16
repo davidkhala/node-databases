@@ -17,7 +17,7 @@ describe('cosmos', () => {
     afterEach(async ()=>{
         await cosmos.disconnect()
     })
-    it('connect', async () => {
+    it('(connect)', async () => {
     })
     it('azure-cosmos-db-graph-nodejs-getting-started', async () => {
 

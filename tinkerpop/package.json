@@ -1,9 +1,14 @@
 {
+  "name": "@davidkhala/tinkerpop",
+  "version": "0.0.0",
   "dependencies": {
     "gremlin": "latest"
   },
-  "type": "module",
   "devDependencies": {
     "mocha": "latest"
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module"
 }
