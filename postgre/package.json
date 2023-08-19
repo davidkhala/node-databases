@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "pg": "latest",
-    "@davidkhala/sql-alchemy": "latest"
+    "@davidkhala/db": "latest"
   },
   "devDependencies": {
     "mocha": "latest"

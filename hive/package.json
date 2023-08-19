@@ -2,8 +2,7 @@
   "name": "@davidkhala/hive",
   "version": "0.0.0",
   "dependencies": {
-    "hive-driver": "latest",
-    "@davidkhala/sql-alchemy": "latest"
+    "hive-driver": "latest"
   },
   "scripts": {
     "test": "mocha test"

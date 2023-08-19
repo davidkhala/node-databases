@@ -2,7 +2,8 @@
   "name": "@davidkhala/mongodb",
   "version": "0.0.2",
   "dependencies": {
-    "mongodb": "latest"
+    "mongodb": "latest",
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test"

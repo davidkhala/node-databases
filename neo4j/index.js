@@ -6,9 +6,11 @@ export class Neo4j extends DB {
         if (!domain && name) {
             domain = `${name}.databases.neo4j.io`
         }
-        super(domain, port, name, {username, password})
+        super({domain, port, username, password, driver: 's'})
 
-        this.connection = driver(
+        this.connection = this.connectionString ? driver(
+            this.connectionString
+        ) : driver(
             `neo4j+s://${domain}`,
             auth.basic(username, password)
         )

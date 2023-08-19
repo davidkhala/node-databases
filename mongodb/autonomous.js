@@ -9,9 +9,9 @@ export default class AutonomousJSON extends MongoConnect {
 	}
 
 	async connect() {
-		const {client} = this;
-		await client.connect();
-		this.db = client.db();
+		const {connection} = this;
+		await connection.connect();
+		this.db = connection.db();
 	}
 
 }
