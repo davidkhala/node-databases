@@ -1,4 +1,6 @@
-export default abstract class KvDB {
+import DB from '@davidkhala/db/index.js'
+
+export default abstract class KvDB extends DB {
     domain: string;
     // table, collection name
     name: string | undefined;
@@ -6,9 +8,7 @@ export default abstract class KvDB {
     connection: any;
 
     protected constructor(domain: string, port: number | string, name: string | undefined) {
-        this.domain = domain
-        this.port = port
-        this.name = name
+        super(domain, port, name)
     }
 
     abstract get(key: string): Promise<string>;

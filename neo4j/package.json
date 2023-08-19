@@ -1,0 +1,15 @@
+{
+  "name": "@davidkhala/neo4j",
+  "version": "0.0.0",
+  "dependencies": {
+    "neo4j-driver": "latest",
+    "@davidkhala/db": "^0.0.1"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
+}

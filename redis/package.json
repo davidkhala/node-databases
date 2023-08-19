@@ -6,13 +6,10 @@
     "@davidkhala/kvdb": "latest"
   },
   "scripts": {
-    "pretest": "tsc",
     "test": "mocha test/*"
   },
   "devDependencies": {
-    "mocha": "latest",
-    "typescript": "latest",
-    "@types/node": "latest"
+    "mocha": "latest"
   },
   "type": "module"
 }
