@@ -1,12 +1,3 @@
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 import { createClient, } from 'redis';
 import KvDB from '@davidkhala/kvdb/index.js';
 export default class Client extends KvDB {
@@ -17,34 +8,24 @@ export default class Client extends KvDB {
         }
         const url = `redis://${token}${endpoint}`;
         super(domain, "", port);
-        this.client = createClient({
+        this.connection = createClient({
             url
         });
     }
-    get(key) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return yield this.client.get(key);
-        });
+    async get(key) {
+        return await this.connection.get(key);
     }
-    set(key, value) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.set(key, value);
-        });
+    async set(key, value) {
+        await this.connection.set(key, value);
     }
-    clear() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.flushDb();
-            return;
-        });
+    async clear() {
+        await this.connection.flushDb();
+        return;
     }
-    connect() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.connect();
-        });
+    async connect() {
+        await this.connection.connect();
     }
-    disconnect() {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this.client.disconnect();
-        });
+    async disconnect() {
+        await this.connection.disconnect();
     }
 }

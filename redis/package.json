@@ -3,8 +3,7 @@
   "version": "0.0.2",
   "dependencies": {
     "redis": "latest",
-    "@davidkhala/kvdb": "latest",
-    "@types/node": "latest"
+    "@davidkhala/kvdb": "latest"
   },
   "scripts": {
     "pretest": "tsc",
@@ -12,7 +11,8 @@
   },
   "devDependencies": {
     "mocha": "latest",
-    "typescript": "latest"
+    "typescript": "latest",
+    "@types/node": "latest"
   },
   "type": "module"
 }

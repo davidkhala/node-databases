@@ -1,8 +1,7 @@
-import {createClient, } from 'redis';
+import {createClient,} from 'redis';
 import KvDB from '@davidkhala/kvdb/index.js'
 
 export default class Client extends KvDB {
-    private client;
 
     constructor({domain, port, endpoint = `${domain}:${port}`}, user, password) {
         let token = ''
@@ -12,30 +11,30 @@ export default class Client extends KvDB {
 
         const url = `redis://${token}${endpoint}`
         super(domain, "", port);
-        this.client = createClient({
+        this.connection = createClient({
             url
         })
     }
 
     async get(key: string): Promise<string> {
-        return await this.client.get(key)
+        return await this.connection.get(key)
     }
 
     async set(key: string, value: string): Promise<void> {
-        await this.client.set(key, value)
+        await this.connection.set(key, value)
     }
 
     async clear(): Promise<void> {
-        await this.client.flushDb()
+        await this.connection.flushDb()
         return
     }
 
 
     async connect() {
-        await this.client.connect();
+        await this.connection.connect();
     }
 
     async disconnect() {
-        await this.client.disconnect()
+        await this.connection.disconnect()
     }
 }
