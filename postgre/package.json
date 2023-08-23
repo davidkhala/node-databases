@@ -8,7 +8,8 @@
     "@davidkhala/db": "latest"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@davidkhala/dockerode": "1.0.8-alpha.3"
   },
   "scripts": {
     "test": "mocha test"
