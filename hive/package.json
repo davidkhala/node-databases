@@ -2,7 +2,8 @@
   "name": "@davidkhala/hive",
   "version": "0.0.0",
   "dependencies": {
-    "hive-driver": "latest"
+    "hive-driver": "latest",
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test"

@@ -10,12 +10,13 @@
   "repository": "davidkhala/node-utils",
   "license": "Apache-2.0",
   "dependencies": {
-    "@davidkhala/kvdb": "latest",
+    "@davidkhala/db": "latest",
     "level": "latest"
   },
   "type": "module",
   "devDependencies": {
     "mocha": "latest",
-    "khala-logger": "latest"
+    "@davidkhala/logger": "latest",
+    "@davidkhala/light": "latest"
   }
 }

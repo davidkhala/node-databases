@@ -1,19 +1,19 @@
 import hive from 'hive-driver';
-import {SQLAlchemy} from '@davidkhala/sql-alchemy'
+import DB from '@davidkhala/db/index.js'
+
 const {TCLIService, TCLIService_types} = hive.thrift;
 
 
-export class Hive extends SQLAlchemy{
+export class Hive extends DB {
     constructor({host, port, username, password}, logger = console) {
-        super({host, port, username, password}, logger)
-        this.client = new hive.HiveClient(
+        super({domain: host, port, username, password, driver: 'hive'}, undefined, logger)
+        this.connection = new hive.HiveClient(
             TCLIService,
             TCLIService_types
         );
         this.utils = new hive.HiveUtils(
             TCLIService_types
         );
-        this._driver = 'hive'
     }
 
     async connect() {
@@ -22,19 +22,19 @@ export class Hive extends SQLAlchemy{
         const auth = username && password ? new hive.auth.PlainTcpAuthentication({
             username, password
         }) : new hive.auth.NoSaslAuthentication()
-        const client = await this.client.connect({host, port}, connection, auth)
+        const client = await this.connection.connect({host, port}, connection, auth)
         const session = await client.openSession({
             client_protocol: TCLIService_types.TProtocolVersion.HIVE_CLI_SERVICE_PROTOCOL_V11,
         });
 
-        this.client = client
+        this.connection = client
         this.session = session
         return session
     }
 
     async disconnect() {
         await this.session.close();
-        await this.client.close()
+        await this.connection.close()
 
     }
 
@@ -83,7 +83,7 @@ export class HiveDDL {
         await hive.execSQL(statement)
     }
 
-    async listColumns(){
+    async listColumns() {
         const {hive, table} = this
         const statement = `show columns in ${table}`
         await hive.execSQL(statement)

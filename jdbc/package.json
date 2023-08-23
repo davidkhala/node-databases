@@ -1,7 +1,0 @@
-{
-  "name": "@davidkhala/jdbc",
-  "version": "1.0.0",
-  "dependencies": {
-    "jdbc": "latest"
-  }
-}

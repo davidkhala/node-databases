@@ -9,7 +9,6 @@ import {ContainerOptsBuilder, ContainerManager} from "@davidkhala/dockerode/dock
  */
 export async function docker(manager, {HostPort, password}) {
     const Image = 'postgres'
-    await manager.imagePull(Image)
     const opts = new ContainerOptsBuilder(Image, ['postgres'])
 
     opts.setPortBind(`${HostPort}:5432`)
