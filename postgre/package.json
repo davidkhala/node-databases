@@ -2,14 +2,13 @@
   "name": "@davidkhala/postgresql",
   "version": "0.0.0",
   "description": "postgresql client",
-  "main": "index.js",
   "dependencies": {
     "pg": "latest",
     "@davidkhala/db": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
-    "@davidkhala/dockerode": "1.0.8-alpha.3"
+    "@davidkhala/dockerode": "1.0.8-beta.0"
   },
   "scripts": {
     "test": "mocha test"
@@ -18,5 +17,8 @@
     "type": "git",
     "url": "github.com/davidkhala/node-utils"
   },
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
 }

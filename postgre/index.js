@@ -14,7 +14,7 @@ export default class PostGRE extends DB {
      * @param username
      * @param password
      */
-    constructor({domain, port = 5432, query_timeout = 2000, username, password},connectionString) {
+    constructor({domain, port = 5432, query_timeout = 2000, username = 'postgres', password}, connectionString) {
         super({domain, username, password, port}, connectionString)
         Object.assign(this, {query_timeout})
     }
