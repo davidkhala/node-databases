@@ -3,8 +3,8 @@ import PostGRE from "../index.js";
 import {docker} from './recipe.js'
 
 describe('docker postgre', function () {
-    const manager = new ContainerManager()
     this.timeout(0)
+    const manager = new ContainerManager()
     const password = 'mysecretpassword'
     it('container start', async () => {
         await docker(manager, {HostPort: 6432, password})

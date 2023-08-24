@@ -4,7 +4,7 @@ import assert from 'assert';
 describe('atlas', function () {
     this.timeout(0);
     const username = 'admin';
-    const password = 'XvGItdb83ABWyBc4'// process.env.ATLAS_PASSWORD;
+    const password = process.env.ATLAS_PASSWORD;
     const domain = 'free.csxewkh.mongodb.net';
     const connect = new Atlas({domain, username, password});
     it('connect', async () => {

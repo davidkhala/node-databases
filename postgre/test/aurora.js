@@ -2,7 +2,7 @@ import PostGRE from '../dml.js'
 import assert from 'assert'
 describe('aws aurora serverless v2', function () {
     this.timeout(0)
-    it('connect: write endpoint', async () => {
+    it.skip('connect: write endpoint', async () => {
         // write only endpoint
         const rwEndpoint = 'aurora-postgres-dev.cluster-cokklhjnetng.ap-east-1.rds.amazonaws.com'
 
@@ -13,7 +13,7 @@ describe('aws aurora serverless v2', function () {
         await pg.disconnect()
 
     })
-    it('connect: read endpoint', async () => {
+    it.skip('connect: read endpoint', async () => {
         // read only endpoint
         const roEndpoint = 'aurora-postgres-dev.cluster-ro-cokklhjnetng.ap-east-1.rds.amazonaws.com'
         const username = 'postgres'

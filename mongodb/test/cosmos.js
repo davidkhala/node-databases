@@ -2,12 +2,12 @@ import Cosmos from '../cosmos.js'
 
 describe('cosmos', function () {
     this.timeout(0)
-    const {cosmos_password: password} = process.env
+    const password = process.env.COSMOS_MONGODB_PASSWORD
 
-    const dbName = 'mongo-davidkhala'
-    it('dbName & token', async () => {
+    const username = 'mongo-davidkhala'
+    it('connect', async () => {
 
-        const connect = new Cosmos({dbName, token: password})
+        const connect = new Cosmos({username, password})
         await connect.connect()
         await connect.disconnect()
     })

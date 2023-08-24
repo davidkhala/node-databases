@@ -3,7 +3,7 @@ import assert from "assert";
 export default class DB {
     /**
      *
-     * @param domain
+     * @param [domain] can be ignore for file based db (leveldb)
      * @param [port]
      * @param [name] another layer of partition, could be a collection, db name
      * @param [username]
@@ -18,7 +18,6 @@ export default class DB {
             this.connectionString = connectionString
         } else {
             username || assert.ok(!password, 'username should exist given password exist')
-            assert.ok(domain,'missing domain')
             Object.assign(this, {domain, port, name, username, password, dialect, driver})
         }
         Object.assign(this, {logger})

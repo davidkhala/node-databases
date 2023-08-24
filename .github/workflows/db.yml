@@ -16,8 +16,8 @@ jobs:
       - run: npm install
       - run: npm test
         env:
-          password: ${{ secrets.MONGODB_PASSWORD }}
-          cosmos_password: ${{ secrets.COSMOS_PASSWORD }}
+          ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+          COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
   leveldb:
     runs-on: ubuntu-latest
     defaults:
@@ -43,4 +43,34 @@ jobs:
       - run: npm install
       - run: npm test
         env:
-          redis_password: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+  tinkerpop:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tinkerpop
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          check-latest: true
+      - uses: ScribeMD/rootless-docker@main
+        name: Use Docker in rootless mode.
+      - run: npm install
+      - run: npm test
+        env:
+          COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
+  postgre:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: postgre
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          check-latest: true
+      - uses: ScribeMD/rootless-docker@main
+        name: Use Docker in rootless mode.
+      - run: npm install
+      - run: npm test
