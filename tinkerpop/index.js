@@ -7,22 +7,23 @@ const {traversal} = Gremlin.process.AnonymousTraversalSource;
 export class AbstractGremlin extends DB {
     constructor({domain, port, dialect, name}, options, logger) {
         super({domain, port, dialect, name}, undefined, logger)
-        this.connection = new Gremlin.driver.Client(this.connectionString, options);
+        console.debug(this.connectionString)
+        this.connection = new Gremlin.driver.DriverRemoteConnection(this.connectionString, options);
         this.g = traversal().withRemote(this.connection);
     }
 
     async connect() {
-        await this.connection.open()
+        await this.connection._client.open()
     }
 
     async disconnect() {
-        await this.connection.close()
+        await this.connection._client.close()
     }
 
     async query(traversal, values = {}) {
         const message = `g.${traversal}`
         this.logger(message)
-        return await this.connection.submit(message, values)
+        return await this.connection._client.submit(message, values)
     }
 
     /**

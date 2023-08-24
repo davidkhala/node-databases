@@ -3,9 +3,8 @@ import assert from "assert";
 
 const {query} = GremlinServer
 
-describe('gremlin-server', function () {
-    this.timeout(0)
-    const gremlinServer = new GremlinServer({})
+describe('gremlin-server', () => {
+    const gremlinServer = new GremlinServer()
 
     after(async () => {
         await gremlinServer.disconnect()
