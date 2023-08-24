@@ -1,12 +1,24 @@
+import assert from "assert";
+
 export default class DB {
     /**
      *
+     * @param domain
+     * @param [port]
      * @param [name] another layer of partition, could be a collection, db name
+     * @param [username]
+     * @param [password]
+     * @param [dialect] dialect is mostly the database product name, like `mysql`
+     * @param [driver]
+     * @param [connectionString]
+     * @param [logger]
      */
     constructor({domain, port, name, username, password, dialect, driver}, connectionString, logger) {
         if (connectionString) {
             this.connectionString = connectionString
         } else {
+            username || assert.ok(!password, 'username should exist given password exist')
+            assert.ok(domain,'missing domain')
             Object.assign(this, {domain, port, name, username, password, dialect, driver})
         }
         Object.assign(this, {logger})
@@ -23,7 +35,9 @@ export default class DB {
             return this._connectionString
         }
         const {dialect, driver, username: u, password: p, domain, port: P, name: n} = this
-        return `${dialect}${driver ? '+' + driver : ''}://${u}${p ? ':' + p : ''}@${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
+        const auth = `${u || ''}${p ? ':' + p : ''}${u ? '@' : ''}`
+
+        return `${dialect}${driver ? '+' + driver : ''}://${auth}${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
     }
 
     get dialect() {

@@ -1,8 +1,14 @@
 {
   "name": "@davidkhala/db",
-  "version": "0.0.3",
+  "version": "0.0.5-beta.1",
   "type": "module",
   "publishConfig": {
     "access": "public"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "devDependencies": {
+    "mocha": "latest"
   }
 }
