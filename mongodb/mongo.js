@@ -1,32 +1,31 @@
 import {MongoClient} from 'mongodb';
 import assert from 'assert';
-import DB from "@davidkhala/db";
+import DB from "@davidkhala/db/index.js";
 
-export default class MongoConnect extends DB {
+export default class MongoDB extends DB {
     /**
      *
      * @param domain
-     * @param username
-     * @param password
+     * @param [username]
+     * @param [password]
      * @param [dbName] if not specified, specify in #connect
-     * @param {string} connectionString
+     * @param {string} [connectionString]
      */
-    constructor({domain, username, password, dbName: name = ''}, connectionString) {
-        super({domain, username, password, name}, connectionString)
-        if (!connectionString) {
-            this.connectionString = `mongodb+srv://${username}:${password}@${domain}/${name}?retryWrites=true&w=majority`;
+    constructor({domain, username, password, name = '', port, dialect, driver}, connectionString) {
+        super({domain, username, password, name, port, dialect, driver}, connectionString)
+        if (connectionString) {
+            this.connectionString = connectionString
         }
-
-        this.connection = new MongoClient(connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
+        this.connection = new MongoClient(this.connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
     }
 
-    async connect(dbName) {
-        if (this.name) {
-            dbName = this.name;
+    async connect(name) {
+        if (!name) {
+            name = this.name;
         }
         const {connection} = this;
         await connection.connect();
-        this.db = connection.db(dbName);
+        this.db = connection.db(name);
     }
 
     async listDatabases(nameOnly) {

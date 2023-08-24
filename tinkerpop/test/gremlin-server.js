@@ -3,22 +3,26 @@ import assert from "assert";
 
 const {query} = GremlinServer
 
-describe('gremlin-server', () => {
+describe('gremlin-server', function () {
+    this.timeout(0)
     const gremlinServer = new GremlinServer({})
-    beforeEach(async () => {
-        await gremlinServer.connect()
-        assert.ok(gremlinServer.client.isOpen)
-    })
-    afterEach(async () => {
+
+    after(async () => {
         await gremlinServer.disconnect()
-        assert.ok(!gremlinServer.client.isOpen)
+        assert.ok(!gremlinServer.connection.isOpen)
     })
     it('(connect)', async () => {
+        await gremlinServer.connect()
+        assert.ok(gremlinServer.connection.isOpen)
+        await gremlinServer.disconnect()
+        assert.ok(!gremlinServer.connection.isOpen)
     })
     it('sample', async () => {
+        await gremlinServer.connect()
         const {g} = gremlinServer
         await gremlinServer.drop()
 
+        console.debug(await query(g.E().count()))
         const [v1] = await query(g.addV("person").property("name", "Alice").property("age", 30))
         const [v2] = await query(g.addV("person").property("name", "Bob").property("age", 35))
         console.debug('get by id', await gremlinServer.getV(v1.id))

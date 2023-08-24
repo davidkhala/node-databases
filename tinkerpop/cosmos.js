@@ -17,17 +17,14 @@ export class Cosmos extends AbstractGremlin {
             `/dbs/${database}/colls/${graph}`,
             password,
         )
-        const endpoint = `wss://${username}.gremlin.cosmos.azure.com:443/`
-        const client = new Gremlin.driver.Client(
-            endpoint,
-            {
-                authenticator,
-                traversalsource: "g",
-                rejectUnauthorized: true,
-                mimeType: "application/vnd.gremlin-v2.0+json"
-            }
-        );
-        super(client, logger)
+
+
+        super({domain: `${username}.gremlin.cosmos.azure.com`, port: 443, dialect: 'wss'}, {
+            authenticator,
+            traversalsource: "g",
+            rejectUnauthorized: true,
+            mimeType: "application/vnd.gremlin-v2.0+json"
+        }, logger)
 
     }
 

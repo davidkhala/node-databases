@@ -1,6 +1,6 @@
 import {ContainerManager, ContainerOptsBuilder} from '@davidkhala/dockerode/docker.js'
 import PostGRE from "../index.js";
-import {docker} from '../recipe.js'
+import {docker} from './recipe.js'
 
 describe('docker postgre', function () {
     const manager = new ContainerManager()

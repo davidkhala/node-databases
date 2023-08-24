@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "dependencies": {
     "redis": "latest",
-    "@davidkhala/kvdb": "latest"
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test/*"

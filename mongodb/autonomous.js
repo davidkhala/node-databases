@@ -1,6 +1,6 @@
-import MongoConnect from './mongo.js';
+import MongoDB from './mongo.js';
 
-export default class AutonomousJSON extends MongoConnect {
+export default class AutonomousJSON extends MongoDB {
 	constructor({username = 'ADMIN', password, domain}) {
 
 		const uri = `mongodb://${username}:${password}@${domain}:27017/${username}?authMechanism=PLAIN&authSource=$external&ssl=true&loadBalanced=true&retryWrites=false`;

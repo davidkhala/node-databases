@@ -1,18 +1,18 @@
 import {TeradataConnection} from 'teradata-nodejs-driver';
-import {SQLAlchemy} from '@davidkhala/sql-alchemy'
+import DB from '@davidkhala/db/index.js'
 
-export default class Teradata extends SQLAlchemy {
+export default class Teradata extends DB {
 
     constructor({host, port = 1025, username = 'dbc', password = 'dbc', client, cursor}) {
-        super({host, port, username, password})
-        this.client = client || new TeradataConnection();
+        super({domain: host, port, username, password})
+        this.connection = client || new TeradataConnection();
         this.cursor = cursor
     }
 
     connect() {
         const {username: user, host, password} = this
-        this.client.connect({host, user, password})
-        this.cursor = this.client.cursor();
+        this.connection.connect({host, user, password})
+        this.cursor = this.connection.cursor();
     }
 
     execute(sql) {
@@ -31,7 +31,7 @@ export default class Teradata extends SQLAlchemy {
 
     disconnect() {
         // this.cursor.close(); // FIXME: Error: 0 is not a valid rows handle
-        this.client.close();
+        this.connection.close();
     }
 }
 

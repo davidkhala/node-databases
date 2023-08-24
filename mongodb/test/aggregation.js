@@ -1,4 +1,4 @@
-import MongoConnect from '../mongo.js';
+import MongoDB from '../mongo.js';
 import assert from 'assert';
 import Autonomous from '../autonomous.js';
 import {docs} from './dataDump.js';
@@ -22,7 +22,7 @@ describe('aggregation', () => {
 	const username = 'admin';
 	const {password} = process.env;
 	const domain = 'free.5afsx.mongodb.net';
-	const connect = new MongoConnect({domain, username, password});
+	const connect = new MongoDB({domain, username, password});
 
 	describe('sample_airbnb', function () {
 		this.timeout(0);

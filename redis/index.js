@@ -1,16 +1,13 @@
-import {createClient,} from 'redis';
-import KvDB from '@davidkhala/kvdb/index.js'
+import {createClient} from 'redis';
+import DB from '@davidkhala/db/index.js'
 
-export default class Client extends KvDB {
+export default class Client extends DB {
 
-    constructor({domain, port, endpoint = `${domain}:${port}`}, user, password) {
-        let token = ''
-        if (password) {
-            token = `${user}:${password}@`
-        }
+    constructor({domain, port, username = '', password = ''}) {
+        super({domain, port, username, password});
 
-        const url = `redis://${token}${endpoint}`
-        super(domain, "", port);
+        this.dialect = 'redis'
+        const url = this.connectionString
         this.connection = createClient({
             url
         })

@@ -8,7 +8,7 @@ describe('cosmos', () => {
         database: 'graphdb',
         graph: 'Persons',
         username: 'tinkerpop',
-        password: process.env.password
+        password: process.env.COSMOS_GREMLIN_PASSWORD
     }
     const cosmos = new Cosmos(config)
     beforeEach(async ()=>{

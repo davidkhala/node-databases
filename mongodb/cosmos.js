@@ -1,6 +1,6 @@
-import MongoConnect from './mongo.js'
+import MongoDB from './mongo.js'
 
-export default class Cosmos extends MongoConnect {
+export default class Cosmos extends MongoDB {
 	/**
 	 *
 	 * @param dbName
