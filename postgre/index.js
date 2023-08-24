@@ -26,8 +26,7 @@ export default class PostGRE extends DB {
 
     async disconnect() {
         await this.client.end()
-        //Error: Client has already been connected. You cannot reuse a client.
-        delete this.client
+
     }
 
     async query(sqlTemplate, values) {
