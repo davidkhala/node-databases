@@ -22,6 +22,7 @@ describe('docker: password less', function () {
         const dbs = await mongoConnect.listDatabases()
         const expectedDBs = [
             {name: 'admin', sizeOnDisk: 8192, empty: false},
+            {empty: false, name: 'config', sizeOnDisk: 12288},
             {name: 'local', sizeOnDisk: 8192, empty: false}]
         assert.deepStrictEqual(dbs, expectedDBs)
         await mongoConnect.disconnect()
