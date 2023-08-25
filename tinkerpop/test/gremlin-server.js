@@ -1,17 +1,29 @@
 import {GremlinServer} from "../gremlin-server.js";
 import assert from "assert";
+import {docker} from './recipe.js'
+import {ContainerManager} from "@davidkhala/dockerode/docker.js";
+import {sleep} from '@davidkhala/light/index.js'
 
 const {query} = GremlinServer
 
-describe('gremlin-server', () => {
-    const gremlinServer = new GremlinServer()
+describe('gremlin-server', function () {
+    this.timeout(0)
+    const HostPort = 8182
+    const gremlinServer = new GremlinServer({port: HostPort})
 
+    let stop
+    before(async () => {
+        const manager = new ContainerManager()
+        stop = await docker(manager, {HostPort})
+    })
     after(async () => {
         await gremlinServer.disconnect()
         assert.ok(!gremlinServer.connection.isOpen)
+        await stop()
     })
     it('(connect)', async () => {
-        await gremlinServer.connect()
+        const retryCount = await gremlinServer.connect(true)
+        assert.ok(retryCount > 1000)
         assert.ok(gremlinServer.connection.isOpen)
         await gremlinServer.disconnect()
         assert.ok(!gremlinServer.connection.isOpen)
@@ -30,6 +42,6 @@ describe('gremlin-server', () => {
 
         await query(g.V(v1).addE("knows").to(v2))
         console.debug(await query(g.E().count()))
-
+        await gremlinServer.disconnect()
     })
 })

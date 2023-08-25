@@ -12,8 +12,23 @@ export class AbstractGremlin extends DB {
         this.g = traversal().withRemote(this.connection);
     }
 
-    async connect() {
-        await this.connection._client.open()
+    async connect(waitUntil) {
+
+        const _connect =async (retryCount)=>{
+            retryCount++
+            try {
+                await this.connection._client.open()
+                return retryCount
+            }catch (e){
+                return await _connect(retryCount)
+            }
+
+        }
+        if(waitUntil){
+            return _connect(0)
+        }else {
+            await this.connection._client.open()
+        }
     }
 
     async disconnect() {

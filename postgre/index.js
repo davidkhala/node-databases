@@ -1,5 +1,6 @@
 import pg from 'pg';
-import DB from "@davidkhala/db";
+import DB from "@davidkhala/db/index.js";
+import assert from "assert";
 
 
 const {Client} = pg;
@@ -11,22 +12,25 @@ export default class PostGRE extends DB {
      * @param [port]
      * @param [connectionString]
      * @param [query_timeout]
-     * @param username
-     * @param password
+     * @param [username]
+     * @param [password]
      */
-    constructor({domain, port = 5432, query_timeout = 2000, username = 'postgres', password}, connectionString) {
-        super({domain, username, password, port}, connectionString)
-        Object.assign(this, {query_timeout})
+    constructor({
+                    domain, port = 5432, username = 'postgres', password, name
+                }, connectionString) {
+        super({domain, username, password, port, name, dialect: 'postgresql'}, connectionString)
+
+        this.connection = new Client({
+            user: username, port, host: domain, password, database: name,
+        })
     }
 
     async connect() {
-        this.client = new Client(this)
-        await this.client.connect()
+        await this.connection.connect()
     }
 
     async disconnect() {
-        await this.client.end()
-
+        await this.connection.end()
     }
 
     async query(sqlTemplate, values) {

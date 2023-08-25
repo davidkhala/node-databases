@@ -9,7 +9,9 @@
     "test": "mocha test"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@davidkhala/dockerode": "latest",
+    "@davidkhala/light": "latest"
   },
   "publishConfig": {
     "access": "public"
