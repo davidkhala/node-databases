@@ -1,5 +1,5 @@
 import {Cosmos} from "../cosmos.js";
-import {drop, Edge, Vertex} from "../traversal.js";
+import {drop, Edge, Vertex} from "../query.js";
 import assert from 'assert'
 
 describe('cosmos', () => {
