@@ -35,6 +35,12 @@ export class AbstractGremlin extends DB {
         await this.connection._client.close()
     }
 
+    /**
+     *
+     * @param {string} traversal
+     * @param [values]
+     * @returns {Promise<*>}
+     */
     async query(traversal, values = {}) {
         const message = `g.${traversal}`
         this.logger(message)

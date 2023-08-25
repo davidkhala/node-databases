@@ -1,8 +1,7 @@
 import {GremlinServer} from "../gremlin-server.js";
 import assert from "assert";
-import {docker} from './recipe.js'
+import {start} from './recipe.js'
 import {ContainerManager} from "@davidkhala/dockerode/docker.js";
-import {sleep} from '@davidkhala/light/index.js'
 
 const {query} = GremlinServer
 
@@ -14,7 +13,7 @@ describe('gremlin-server', function () {
     let stop
     before(async () => {
         const manager = new ContainerManager()
-        stop = await docker(manager, {HostPort})
+        stop = await start(manager, {HostPort})
     })
     after(async () => {
         await gremlinServer.disconnect()

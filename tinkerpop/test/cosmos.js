@@ -1,5 +1,5 @@
-import {Cosmos} from "../cosmos.js";
-import {drop, Edge, Vertex} from "../query.js";
+import {Cosmos, CosmosVertex} from "../cosmos.js";
+import {drop, Edge} from "../query.js";
 import assert from 'assert'
 
 describe('cosmos', () => {
@@ -25,7 +25,7 @@ describe('cosmos', () => {
         await cosmos.query(drop)
         const source = "thomas"
         const target = 'mary'
-        const nodeTemplate = new Vertex('person')
+        const nodeTemplate = new CosmosVertex('person')
         const edgeTemplate = new Edge('knows')
         await cosmos.query(nodeTemplate.add(source, {
             firstName: "Thomas",
@@ -38,7 +38,7 @@ describe('cosmos', () => {
             userid: 2
         }))
         await cosmos.query(edgeTemplate.add(source, target))
-        const [count] = await cosmos.query(Vertex.count)
+        const [count] = await cosmos.query(CosmosVertex.count)
         assert.strictEqual(count, 2)
         const result = await cosmos.query(nodeTemplate.list())
         console.info(result)

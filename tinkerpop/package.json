@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/tinkerpop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "dependencies": {
     "gremlin": "latest",
     "@davidkhala/db": "^0.0.5-beta.1"

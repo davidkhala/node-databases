@@ -1,6 +1,7 @@
 import Gremlin from "gremlin";
 import assert from 'assert'
 import {AbstractGremlin} from "./index.js";
+import {Vertex} from './query.js'
 
 export class Cosmos extends AbstractGremlin {
     /**
@@ -31,5 +32,19 @@ export class Cosmos extends AbstractGremlin {
 }
 
 
+export class CosmosVertex extends Vertex {
+    /**
+     *
+     * @param type The Label of vertex
+     * @param [partitionKey]
+     */
+    constructor(type, partitionKey = 'partitionKey') {
+        super(type);
+        this.partitionKey = partitionKey
+    }
 
+    add(id, properties, partitionValue = id) {
+        return super.add(id, properties) + `.property('${this.partitionKey}', '${partitionValue}')`;
+    }
 
+}

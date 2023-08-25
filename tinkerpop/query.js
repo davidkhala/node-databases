@@ -5,20 +5,19 @@ export class Vertex {
     /**
      *
      * @param type The Label of vertex
-     * @param partitionKey
      */
-    constructor(type, partitionKey = 'partitionKey') {
-        Object.assign(this, {type, partitionKey})
+    constructor(type) {
+        Object.assign(this, {type})
     }
 
     list() {
         return `V().hasLabel('${this.type}')`
     }
 
-    add(id, properties, partitionValue = id) {
+    add(id, properties) {
         const propertiesQuery = Object.entries(properties).reduce((str, [key, value]) => {
             return str + `.property('${key}', '${value}')`
-        }, `.property('${this.partitionKey}', '${partitionValue}')`)
+        }, '')
         return `addV('${this.type}').property('id', '${id}')${propertiesQuery}`
     }
 
