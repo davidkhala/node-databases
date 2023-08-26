@@ -50,17 +50,18 @@ export class Vertex {
 export class Edge {
     constructor(type) {
         this.type = type
+        this.childTraversalSource = ''
     }
 
     create(from, to) {
-        if (typeof from !== 'string') {
-            assert.ok(from instanceof Vertex)
+        if (!['string', 'number'].includes(typeof from)) {
+            assert.ok(from instanceof Vertex, from)
             from = from.id
         }
-        if (typeof to !== 'string') {
-            assert.ok(to instanceof Vertex)
+        if (!['string', 'number'].includes(typeof to)) {
+            assert.ok(to instanceof Vertex, to)
             to = to.id
         }
-        return `V('${from}').addE('${this.type}').to(g.V('${to}'))`
+        return `V('${from}').addE('${this.type}').to(${this.childTraversalSource}V('${to}'))`
     }
 }

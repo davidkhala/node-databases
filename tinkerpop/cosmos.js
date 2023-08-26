@@ -1,7 +1,7 @@
 import Gremlin from "gremlin";
 import assert from 'assert'
 import {AbstractGremlin} from "./index.js";
-import {Vertex} from './query.js'
+import {Edge, Vertex} from './query.js'
 
 export class Cosmos extends AbstractGremlin {
     /**
@@ -71,5 +71,12 @@ export class CosmosVertex extends Vertex {
         } else {
             return `V('${id}')`
         }
+    }
+}
+
+export class CosmosEdge extends Edge {
+    constructor(type) {
+        super(type);
+        this.childTraversalSource = 'g.'
     }
 }

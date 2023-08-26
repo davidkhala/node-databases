@@ -8,10 +8,15 @@ export class GremlinServer extends AbstractGremlin {
     }
 
     /**
-     * @param {GraphTraversal} traversal
+     * @param {GraphTraversal|string} traversal
      */
     async createV(traversal) {
-        const results = await GremlinServer.query(traversal)
+        let results
+        if (typeof traversal === 'string') {
+            results = await this.query(traversal)
+        } else {
+            results = await GremlinServer.query(traversal)
+        }
         assert.ok(results.length < 2)
         return results[0].id
     }

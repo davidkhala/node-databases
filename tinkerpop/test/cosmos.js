@@ -1,5 +1,5 @@
-import {Cosmos, CosmosVertex} from "../cosmos.js";
-import {drop, Edge} from "../query.js";
+import {Cosmos, CosmosEdge, CosmosVertex} from "../cosmos.js";
+import {drop} from "../query.js";
 import assert from 'assert'
 
 describe('cosmos', function () {
@@ -25,7 +25,7 @@ describe('cosmos', function () {
         await cosmos.query(drop)
         const nodeSource = new CosmosVertex('person', "thomas")
         const nodeTarget = new CosmosVertex('person', 'mary')
-        const edgeTemplate = new Edge('knows')
+        const edgeTemplate = new CosmosEdge('knows')
         await cosmos.query(nodeSource.create({
             firstName: "Thomas",
             age: 44, userid: 1
