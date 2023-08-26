@@ -32,10 +32,7 @@ export class Vertex {
 
 
 	create(properties) {
-		const propertiesQuery = Object.entries(properties).reduce((str, [key, value]) => {
-			return str + `.property('${key}', '${value}')`;
-		}, '');
-		return `addV('${this.type}')${propertiesQuery}`;
+		return `addV('${this.type}')${propertyFrom(properties)}`;
 	}
 
 	static get(id) {
@@ -47,18 +44,26 @@ export class Vertex {
 	}
 }
 
+export function propertyFrom(properties) {
+	return Object.entries(properties).reduce((str, [key, value]) => {
+		if (!value) {
+			return str;
+		}
+		return str + `.property('${key}', '${value}')`;
+	}, '');
+}
 
 export function getIdString(vertex) {
-	let id;
+	let id = vertex;
 	if (typeof vertex === 'object') {
 		assert.ok(vertex instanceof Vertex, vertex);
 		id = vertex.id;
 	}
-	if (typeof vertex === 'string') {
+	if (typeof id === 'string') {
 		id = `'${id}'`;
 	} else {
-		assert.ok(typeof vertex === 'number');
-		id = vertex.toString();
+		assert.ok(typeof id === 'number', id);
+		id = id.toString();
 	}
 	return id;
 }
@@ -69,7 +74,11 @@ export class Edge {
 		this.childTraversalSource = '';
 	}
 
-	create(from, to) {
-		return `V(${getIdString(from)}).addE('${this.type}').to(${this.childTraversalSource}V(${getIdString(to)}))`;
+	create(from, to, properties = {}) {
+		return `V(${getIdString(from)}).addE('${this.type}')${propertyFrom(properties)}.to(${this.childTraversalSource}V(${getIdString(to)}))`;
+	}
+
+	list() {
+		return `E().hasLabel('${this.type}')`;
 	}
 }
