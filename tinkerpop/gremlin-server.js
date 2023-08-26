@@ -1,5 +1,4 @@
 import {AbstractGremlin} from "./index.js";
-import assert from "assert";
 
 export class GremlinServer extends AbstractGremlin {
     constructor({domain = 'localhost', port = 8182} = {}, logger = console.debug) {
@@ -11,14 +10,14 @@ export class GremlinServer extends AbstractGremlin {
      * @param {GraphTraversal|string} traversal
      */
     async createV(traversal) {
-        let results
+        let result
         if (typeof traversal === 'string') {
-            results = await this.query(traversal)
+            result = await this.queryOne(traversal)
         } else {
-            results = await GremlinServer.query(traversal)
+            result = await GremlinServer.queryOne(traversal)
         }
-        assert.ok(results.length < 2)
-        return results[0].id
+
+        return result.id
     }
 
 }

@@ -9,24 +9,28 @@ export class AbstractGremlin extends DB {
         super({domain, port, dialect, name}, undefined, logger)
         console.debug(this.connectionString)
         this.connection = new Gremlin.driver.DriverRemoteConnection(this.connectionString, options);
+        /**
+         *
+         * @type {GraphTraversalSource}
+         */
         this.g = traversal().withRemote(this.connection);
     }
 
     async connect(waitUntil) {
 
-        const _connect =async (retryCount)=>{
+        const _connect = async (retryCount) => {
             retryCount++
             try {
                 await this.connection._client.open()
                 return retryCount
-            }catch (e){
+            } catch (e) {
                 return await _connect(retryCount)
             }
 
         }
-        if(waitUntil){
+        if (waitUntil) {
             return _connect(0)
-        }else {
+        } else {
             await this.connection._client.open()
         }
     }
@@ -48,6 +52,13 @@ export class AbstractGremlin extends DB {
         return resultSet.toArray()
     }
 
+    async queryOne(traversal, values) {
+        const results = await this.query(traversal, values)
+        assert.ok(results.length < 2, results)
+        return results[0]
+
+    }
+
     /**
      *
      * @param {GraphTraversal} traversal
@@ -55,6 +66,12 @@ export class AbstractGremlin extends DB {
      */
     static async query(traversal) {
         return await traversal.toList()
+    }
+
+    static async queryOne(traversal) {
+        const results = await AbstractGremlin.query(traversal)
+        assert.ok(results.length < 2, results)
+        return results[0]
     }
 
     async drop() {

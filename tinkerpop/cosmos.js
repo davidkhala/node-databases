@@ -31,10 +31,8 @@ export class Cosmos extends AbstractGremlin {
 
     async getV(id) {
 
-        const results = await this.query(CosmosVertex.get(id))
-        assert.ok(results.length < 2)
+        const result = await this.queryOne(CosmosVertex.get(id))
 
-        const result = results[0]
         if (result) {
             assert.equal(result.id, id, `cosmos assigned id[${result.id}] should equals specified id[${id}]`)
         }
