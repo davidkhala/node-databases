@@ -36,15 +36,16 @@ export class CosmosVertex extends Vertex {
     /**
      *
      * @param type The Label of vertex
+     * @param id
      * @param [partitionKey]
      */
-    constructor(type, partitionKey = 'partitionKey') {
-        super(type);
+    constructor(type, id, partitionKey = 'partitionKey') {
+        super(type,id);
         this.partitionKey = partitionKey
     }
 
-    add(id, properties, partitionValue = id) {
-        return super.add(id, properties) + `.property('${this.partitionKey}', '${partitionValue}')`;
+    create(properties, partitionValue = this.id) {
+        return super.create(properties) + `.property('${this.partitionKey}', '${partitionValue}')`;
     }
 
 }

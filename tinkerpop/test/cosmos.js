@@ -2,8 +2,8 @@ import {Cosmos, CosmosVertex} from "../cosmos.js";
 import {drop, Edge} from "../query.js";
 import assert from 'assert'
 
-describe('cosmos', () => {
-
+describe('cosmos', function () {
+    this.timeout(0)
     const config = {
         database: 'graphdb',
         graph: 'Persons',
@@ -11,10 +11,10 @@ describe('cosmos', () => {
         password: process.env.COSMOS_GREMLIN_PASSWORD
     }
     const cosmos = new Cosmos(config)
-    beforeEach(async ()=>{
+    beforeEach(async () => {
         await cosmos.connect()
     })
-    afterEach(async ()=>{
+    afterEach(async () => {
         await cosmos.disconnect()
     })
     it('(connect)', async () => {
@@ -23,24 +23,23 @@ describe('cosmos', () => {
 
 
         await cosmos.query(drop)
-        const source = "thomas"
-        const target = 'mary'
-        const nodeTemplate = new CosmosVertex('person')
+        const nodeSource = new CosmosVertex('person', "thomas")
+        const nodeTarget = new CosmosVertex('person', 'mary')
         const edgeTemplate = new Edge('knows')
-        await cosmos.query(nodeTemplate.add(source, {
+        await cosmos.query(nodeSource.create({
             firstName: "Thomas",
             age: 44, userid: 1
         }))
-        await cosmos.query(nodeTemplate.add(target, {
+        await cosmos.query(nodeTarget.create({
             firstName: "Mary",
             lastName: "Andersen",
             age: 39,
             userid: 2
         }))
-        await cosmos.query(edgeTemplate.add(source, target))
+        await cosmos.query(edgeTemplate.add(nodeSource, nodeTarget))
         const [count] = await cosmos.query(CosmosVertex.count)
         assert.strictEqual(count, 2)
-        const result = await cosmos.query(nodeTemplate.list())
+        const result = await cosmos.query(nodeSource.list())
         console.info(result)
     })
 })
