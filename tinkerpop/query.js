@@ -7,22 +7,39 @@ export class Vertex {
     /**
      *
      * @param type The Label of vertex
-     * @param id
      */
-    constructor(type, id) {
+    constructor(type) {
         this.type = type
-        this.id = id
     }
 
     list() {
         return `V().hasLabel('${this.type}')`
     }
 
+    hasProperty({key, value}) {
+        let suffix
+        if (key) {
+            suffix = `hasKey('${key}')`
+        }
+        if (value) {
+            suffix = `hasValue('${value}')`
+        }
+        if (key && value) {
+            suffix = `has('${key}','${value}')`
+        }
+        return this.list() + `.` + suffix
+    }
+
+
     create(properties) {
         const propertiesQuery = Object.entries(properties).reduce((str, [key, value]) => {
             return str + `.property('${key}', '${value}')`
         }, '')
-        return `addV('${this.type}').property('id', '${this.id}')${propertiesQuery}`
+        return `addV('${this.type}')${propertiesQuery}`
+    }
+
+    static get(id) {
+        return `V(${id})`
     }
 
     static get count() {
@@ -35,7 +52,7 @@ export class Edge {
         this.type = type
     }
 
-    add(from, to) {
+    create(from, to) {
         if (typeof from !== 'string') {
             assert.ok(from instanceof Vertex)
             from = from.id

@@ -36,10 +36,12 @@ describe('cosmos', function () {
             age: 39,
             userid: 2
         }))
-        await cosmos.query(edgeTemplate.add(nodeSource, nodeTarget))
+        await cosmos.query(edgeTemplate.create(nodeSource, nodeTarget))
         const [count] = await cosmos.query(CosmosVertex.count)
         assert.strictEqual(count, 2)
         const result = await cosmos.query(nodeSource.list())
-        console.info(result)
+
+        assert.ok(result.map(({id})=>id).includes('thomas'))
+        console.debug(await cosmos.getV('thomas'))
     })
 })

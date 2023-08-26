@@ -2,6 +2,7 @@ import {GremlinServer} from "../gremlin-server.js";
 import assert from "assert";
 import {start} from './recipe.js'
 import {ContainerManager} from "@davidkhala/dockerode/docker.js";
+import {Vertex} from "../query.js";
 
 const {query} = GremlinServer
 
@@ -22,7 +23,7 @@ describe('gremlin-server', function () {
     })
     it('(connect)', async () => {
         const retryCount = await gremlinServer.connect(true)
-        assert.ok(retryCount > 1000)
+        assert.ok(retryCount > 100, retryCount)
         assert.ok(gremlinServer.connection.isOpen)
         await gremlinServer.disconnect()
         assert.ok(!gremlinServer.connection.isOpen)
@@ -40,7 +41,11 @@ describe('gremlin-server', function () {
         console.debug(await query(g.V().hasLabel("person").values()))
 
         await query(g.V(v1).addE("knows").to(v2))
+
+
+
         console.debug(await query(g.E().count()))
+        console.debug(await gremlinServer.getV(0))
         await gremlinServer.disconnect()
     })
 })

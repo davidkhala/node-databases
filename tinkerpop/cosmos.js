@@ -29,6 +29,18 @@ export class Cosmos extends AbstractGremlin {
 
     }
 
+    async getV(id) {
+
+        const results = await this.query(CosmosVertex.get(id))
+        assert.ok(results.length < 2)
+
+        const result = results[0]
+        if (result) {
+            assert.equal(result.id, id, `cosmos assigned id[${result.id}] should equals specified id[${id}]`)
+        }
+        return result
+    }
+
 }
 
 
@@ -40,12 +52,24 @@ export class CosmosVertex extends Vertex {
      * @param [partitionKey]
      */
     constructor(type, id, partitionKey = 'partitionKey') {
-        super(type,id);
+        super(type);
+        this.id = id
         this.partitionKey = partitionKey
     }
 
     create(properties, partitionValue = this.id) {
-        return super.create(properties) + `.property('${this.partitionKey}', '${partitionValue}')`;
+        return super.create(properties) + `.property('${this.partitionKey}', '${partitionValue}').property('id', '${this.id}')`;
     }
 
+    get() {
+        return CosmosVertex.get(this.id)
+    }
+
+    static get(id) {
+        if (typeof id === 'number') {
+            return super.get(id)
+        } else {
+            return `V('${id}')`
+        }
+    }
 }
