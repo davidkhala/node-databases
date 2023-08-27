@@ -66,13 +66,6 @@ export class CosmosVertex extends Vertex {
 		return CosmosVertex.get(this.id);
 	}
 
-	static get(id) {
-		if (typeof id === 'number') {
-			return super.get(id);
-		} else {
-			return `V('${id}')`;
-		}
-	}
 }
 
 export class CosmosEdge extends Edge {

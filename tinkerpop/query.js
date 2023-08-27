@@ -36,7 +36,7 @@ export class Vertex {
 	}
 
 	static get(id) {
-		return `V(${id})`;
+		return `V(${getIdString(id)})`;
 	}
 
 	static get count() {

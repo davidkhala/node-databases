@@ -6,26 +6,6 @@ export class GremlinServer extends AbstractGremlin {
 
 	}
 
-	/**
-     * @param {GraphTraversal|string} traversal
-     */
-	async getId(traversal) {
-		const result = await this.queryOne(traversal);
-		if (result) {
-			return result.id;
-		}
-	}
-
-	async createV(traversal, existCheckQuery) {
-		if (existCheckQuery) {
-			const id = await this.getId(existCheckQuery);
-			if (id) {
-				return id;
-			}
-		}
-		const {id} = await this.queryOne(traversal);
-		return id;
-	}
 
 	/**
      * @param {GraphTraversal|string} traversal

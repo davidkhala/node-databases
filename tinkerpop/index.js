@@ -2,7 +2,7 @@ import Gremlin from 'gremlin';
 import assert from 'assert';
 import DB from '@davidkhala/db/index.js';
 
-const {traversal} = Gremlin.process.AnonymousTraversalSource;
+const {AnonymousTraversalSource} = Gremlin.process;
 
 export class AbstractGremlin extends DB {
 	constructor({domain, port, dialect, name}, options, logger) {
@@ -12,7 +12,7 @@ export class AbstractGremlin extends DB {
          *
          * @type {GraphTraversalSource}
          */
-		this.g = traversal().withRemote(this.connection);
+		this.g = AnonymousTraversalSource.traversal().withRemote(this.connection);
 	}
 
 	async connect(waitUntil) {
@@ -51,11 +51,35 @@ export class AbstractGremlin extends DB {
 		return resultSet.toArray();
 	}
 
+	/**
+	 *
+	 * @param {string} traversal
+	 * @param [values]
+	 */
 	async queryOne(traversal, values) {
 		const results = await this.query(traversal, values);
 		assert.ok(results.length < 2, results);
 		return results[0];
 
+	}
+	/**
+	 * @param {string} traversal
+	 */
+	async getId(traversal) {
+		const result = await this.queryOne(traversal);
+		if (result) {
+			return result.id;
+		}
+	}
+	async createV(traversal, existCheckTraversal) {
+		if (existCheckTraversal) {
+			const id = await this.getId(existCheckTraversal);
+			if (id) {
+				return id;
+			}
+		}
+		const {id} = await this.queryOne(traversal);
+		return id;
 	}
 
 	/**
