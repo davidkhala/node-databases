@@ -1,9 +1,9 @@
 {
   "name": "@davidkhala/tinkerpop",
-  "version": "0.0.5-beta.1",
+  "version": "0.0.5-beta.2",
   "dependencies": {
     "gremlin": "latest",
-    "@davidkhala/db": "^0.0.5-beta.2"
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test"
