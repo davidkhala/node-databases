@@ -1,36 +1,36 @@
 import {createClient} from 'redis';
-import DB from '@davidkhala/db/index.js'
+import DB from '@davidkhala/db/index.js';
 
 export default class Client extends DB {
 
-    constructor({domain, port, username = '', password = ''}) {
-        super({domain, port, username, password});
+	constructor({domain, port, username = '', password = ''}) {
+		super({domain, port, username, password});
 
-        this.dialect = 'redis'
-        const url = this.connectionString
-        this.connection = createClient({
-            url
-        })
-    }
+		this.dialect = 'redis';
+		const url = this.connectionString;
+		this.connection = createClient({
+			url
+		});
+	}
 
-    async get(key) {
-        return await this.connection.get(key)
-    }
+	async get(key) {
+		return await this.connection.get(key);
+	}
 
-    async set(key, value) {
-        await this.connection.set(key, value)
-    }
+	async set(key, value) {
+		await this.connection.set(key, value);
+	}
 
-    async clear() {
-        await this.connection.flushDb()
-    }
+	async clear() {
+		await this.connection.flushDb();
+	}
 
 
-    async connect() {
-        await this.connection.connect();
-    }
+	async connect() {
+		await this.connection.connect();
+	}
 
-    async disconnect() {
-        await this.connection.disconnect()
-    }
+	async disconnect() {
+		await this.connection.disconnect();
+	}
 }

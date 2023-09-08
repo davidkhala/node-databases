@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "dependencies": {
     "neo4j-driver": "latest",
-    "@davidkhala/db": "^0.0.3"
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test"
   },
   "devDependencies": {
     "mocha": "latest",
-    "@davidkhala/dockerode": "latest"
+    "@davidkhala/dockerode": "latest",
+    "@davidkhala/light": "latest"
   },
   "type": "module",
   "publishConfig": {
