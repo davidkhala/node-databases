@@ -70,6 +70,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           check-latest: true
+      - uses: ScribeMD/rootless-docker@main
+        name: Use Docker in rootless mode.
       - run: npm install
       - run: npm test
         env:
