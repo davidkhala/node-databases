@@ -2,7 +2,6 @@ import {AuraDB} from '../aura.js';
 import {docker} from './recipe.js';
 import {ContainerManager} from '@davidkhala/dockerode/docker.js';
 import {LocalhostNeo4j} from '../localhost.js';
-import {sleep} from '@davidkhala/light';
 
 describe('AuraDB', function () {
 	this.timeout(0);
@@ -20,7 +19,6 @@ describe('localhost', function () {
 	before(async () => {
 		const manager = new ContainerManager();
 		const handle = await docker(manager);
-		await sleep(2000); // FIXME try reconnect
 		handles.push(handle);
 
 	});

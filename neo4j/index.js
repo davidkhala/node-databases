@@ -19,7 +19,7 @@ export class Neo4j extends DB {
 		assert.ok(await this.connection.verifyAuthentication(), 'verifyAuthentication failed');
 	}
 
-	async connect() {
+	async _connect() {
 		await this.connection.verifyConnectivity();
 	}
 
