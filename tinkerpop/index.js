@@ -41,7 +41,7 @@ export class AbstractGremlin extends DB {
 	/**
      *
      * @param {string} traversal
-     * @param [values]
+     * @param {Object} [values]
      * @returns {Promise<Array>}
      */
 	async query(traversal, values = {}) {

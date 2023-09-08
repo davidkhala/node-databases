@@ -60,6 +60,20 @@ jobs:
       - run: npm test
         env:
           COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
+  neo4j:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: neo4j
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v3
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+        env:
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
   postgre:
     runs-on: ubuntu-latest
     defaults:

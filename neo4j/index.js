@@ -1,27 +1,35 @@
-import {driver, auth} from 'neo4j-driver'
-import DB from '@davidkhala/db'
+import DB from '@davidkhala/db';
+import assert from 'assert';
+import {auth, driver as Neo4jDriver} from 'neo4j-driver';
+
+export const DefaultDatabase = ['neo4j', 'system'];
 
 export class Neo4j extends DB {
-    constructor({domain, port = 7687, name, username = 'neo4j', password}) {
-        if (!domain && name) {
-            domain = `${name}.databases.neo4j.io`
-        }
-        super({domain, port, username, password, driver: 's'})
+	constructor({domain, port = 7687, username = 'neo4j', name = username, password, driver, dialect}, connectionString) {
 
-        this.connection = this.connectionString ? driver(
-            this.connectionString
-        ) : driver(
-            `neo4j+s://${domain}`,
-            auth.basic(username, password)
-        )
-    }
+		super({domain, port, name, username, password, driver, dialect}, connectionString);
+		this.connection = Neo4jDriver(this.connectionString, auth.basic(this.username, password));
+	}
 
-    async connect() {
-        await this.connection.verifyAuthentication()
-    }
+	/**
+	 * similar to {@link connect} or {@link info}
+	 * @returns {Promise<void>}
+	 */
+	async auth() {
+		assert.ok(await this.connection.verifyAuthentication(), 'verifyAuthentication failed');
+	}
 
-    async disconnect() {
-        await this.connection.close()
-    }
+	async connect() {
+		await this.connection.verifyConnectivity();
+	}
+
+	async info() {
+		const {address, agent, protocolVersion} = await this.connection.getServerInfo();
+		return {address, agent, protocolVersion};
+	}
+
+	async disconnect() {
+		await this.connection.close();
+	}
 
 }

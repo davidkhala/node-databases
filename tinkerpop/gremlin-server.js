@@ -8,12 +8,13 @@ export class GremlinServer extends AbstractGremlin {
 
 
 	/**
-     * @param {GraphTraversal|string} traversal
-     */
-	async queryOne(traversal) {
+	 * @param {GraphTraversal|string} traversal
+	 * @param [values] applicable when traversal is string
+	 */
+	async queryOne(traversal, values) {
 		let result;
 		if (typeof traversal === 'string') {
-			result = await super.queryOne(traversal);
+			result = await super.queryOne(traversal, values);
 		} else {
 			result = await GremlinServer.queryOne(traversal);
 		}

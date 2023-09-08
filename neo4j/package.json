@@ -6,7 +6,8 @@
     "@davidkhala/db": "^0.0.3"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@davidkhala/dockerode": "latest"
   },
   "type": "module",
   "publishConfig": {
