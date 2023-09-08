@@ -5,6 +5,9 @@
     "neo4j-driver": "latest",
     "@davidkhala/db": "^0.0.3"
   },
+  "scripts": {
+    "test": "mocha test"
+  },
   "devDependencies": {
     "mocha": "latest",
     "@davidkhala/dockerode": "latest"
