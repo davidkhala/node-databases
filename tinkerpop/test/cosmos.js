@@ -40,7 +40,7 @@ describe('cosmos', function () {
 			age: 39,
 			userid: 2
 		}));
-		assert.equal((await cosmos.queryOne(edgeKnows.create(nodeSource, nodeTarget))).id, edgeId);
+		assert.equal((await cosmos.createIfNotExist(edgeKnows, [nodeSource, nodeTarget])), edgeId);
 
 		assert.ok((await cosmos.query(nodeSource.list())).map(({id}) => id).includes('thomas'));
 	});

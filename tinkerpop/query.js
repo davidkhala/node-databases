@@ -7,28 +7,30 @@ export class Element {
 	/**
 	 *
 	 * @param type The Label of Element
+	 * @param elementType V or E
 	 */
-	constructor(type) {
+	constructor(type, elementType) {
 		this.type = type;
+		this.elementType = elementType;
 	}
 
 	list() {
-
+		return `${this.elementType}().hasLabel('${this.type}')`;
 	}
 
 	create(properties) {
-
 	}
 
-	where() {
-
+	where(id) {
+		return `${this.elementType}(${getIdString(id)})`;
 	}
+
 }
 
 export class Vertex extends Element {
 
-	list() {
-		return `V().hasLabel('${this.type}')`;
+	constructor(type) {
+		super(type, 'V');
 	}
 
 	hasProperty({key, value}) {
@@ -85,7 +87,7 @@ export function getIdString(vertex) {
 
 export class Edge extends Element {
 	constructor(type) {
-		super(type);
+		super(type, 'E');
 		this.childTraversalSource = '';
 	}
 
@@ -93,7 +95,4 @@ export class Edge extends Element {
 		return `V(${getIdString(from)}).addE('${this.type}')${propertyFrom(properties)}.to(${this.childTraversalSource}V(${getIdString(to)}))`;
 	}
 
-	list() {
-		return `E().hasLabel('${this.type}')`;
-	}
 }

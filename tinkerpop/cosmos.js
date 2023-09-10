@@ -62,8 +62,8 @@ export class CosmosVertex extends Vertex {
 		}, properties));
 	}
 
-	get() {
-		return CosmosVertex.get(this.id);
+	where() {
+		return super.where(this.id);
 	}
 
 }
