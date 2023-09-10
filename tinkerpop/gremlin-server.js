@@ -1,9 +1,15 @@
 import {AbstractGremlin} from './index.js';
-
+import assert from 'assert';
+import Gremlin from 'gremlin';
+const {AnonymousTraversalSource} = Gremlin.process;
 export class GremlinServer extends AbstractGremlin {
 	constructor({domain = 'localhost', port = 8182} = {}, logger = console.debug) {
 		super({domain, port, name: 'gremlin', dialect: 'ws'}, undefined, logger);
-
+		/**
+		 *
+		 * @type {GraphTraversalSource}
+		 */
+		this.g = AnonymousTraversalSource.traversal().withRemote(this.connection);
 	}
 
 
@@ -19,6 +25,15 @@ export class GremlinServer extends AbstractGremlin {
 			result = await GremlinServer.queryOne(traversal);
 		}
 		return result;
+	}
+	async drop() {
+		await AbstractGremlin.query(this.g.V().drop());
+	}
+
+	async getV(id) {
+		const result = await AbstractGremlin.query(this.g.V(id));
+		assert.ok(result.length < 2);
+		return result[0];
 	}
 
 }

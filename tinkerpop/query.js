@@ -3,14 +3,29 @@ import assert from 'assert';
 export const drop = 'V().drop()';
 
 
-export class Vertex {
+export class Element {
 	/**
 	 *
-	 * @param type The Label of vertex
+	 * @param type The Label of Element
 	 */
 	constructor(type) {
 		this.type = type;
 	}
+
+	list() {
+
+	}
+
+	create(properties) {
+
+	}
+
+	where() {
+
+	}
+}
+
+export class Vertex extends Element {
 
 	list() {
 		return `V().hasLabel('${this.type}')`;
@@ -68,9 +83,9 @@ export function getIdString(vertex) {
 	return id;
 }
 
-export class Edge {
+export class Edge extends Element {
 	constructor(type) {
-		this.type = type;
+		super(type);
 		this.childTraversalSource = '';
 	}
 

@@ -1,18 +1,13 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
 import DB from '@davidkhala/db/index.js';
+import {Element} from './query.js';
 
-const {AnonymousTraversalSource} = Gremlin.process;
 
 export class AbstractGremlin extends DB {
 	constructor({domain, port, dialect, name}, options, logger) {
 		super({domain, port, dialect, name}, undefined, logger);
 		this.connection = new Gremlin.driver.DriverRemoteConnection(this.connectionString, options);
-		/**
-         *
-         * @type {GraphTraversalSource}
-         */
-		this.g = AnonymousTraversalSource.traversal().withRemote(this.connection);
 	}
 
 	async connect(waitUntil) {
@@ -39,11 +34,11 @@ export class AbstractGremlin extends DB {
 	}
 
 	/**
-     *
-     * @param {string} traversal
-     * @param {Object} [values]
-     * @returns {Promise<Array>}
-     */
+	 *
+	 * @param {string} traversal
+	 * @param {Object} [values]
+	 * @returns {Promise<Array>}
+	 */
 	async query(traversal, values = {}) {
 		const message = `g.${traversal}`;
 		this.logger(message);
@@ -62,6 +57,7 @@ export class AbstractGremlin extends DB {
 		return results[0];
 
 	}
+
 	/**
 	 * @param {string} traversal
 	 */
@@ -71,22 +67,30 @@ export class AbstractGremlin extends DB {
 			return result.id;
 		}
 	}
-	async createV(traversal, existCheckTraversal) {
-		if (existCheckTraversal) {
-			const id = await this.getId(existCheckTraversal);
+
+	/**
+	 *
+	 * @param {Element} e
+	 * @param {[]} [createParams]
+	 * @param {[]} [whereParams]
+	 * @returns {Promise<string|number>}
+	 */
+	async createIfNotExist(e, createParams = [], whereParams) {
+		if (whereParams) {
+			const id = await this.getId(e.where(...whereParams));
 			if (id) {
 				return id;
 			}
 		}
-		const {id} = await this.queryOne(traversal);
+		const {id} = await this.queryOne(e.create(...createParams));
 		return id;
 	}
 
 	/**
-     *
-     * @param {GraphTraversal} traversal
-     * @returns {Promise<Array>}
-     */
+	 *
+	 * @param {GraphTraversal} traversal
+	 * @returns {Promise<Array>}
+	 */
 	static async query(traversal) {
 		return await traversal.toList();
 	}
@@ -97,13 +101,4 @@ export class AbstractGremlin extends DB {
 		return results[0];
 	}
 
-	async drop() {
-		await AbstractGremlin.query(this.g.V().drop());
-	}
-
-	async getV(id) {
-		const result = await AbstractGremlin.query(this.g.V(id));
-		assert.ok(result.length < 2);
-		return result[0];
-	}
 }
