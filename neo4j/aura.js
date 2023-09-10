@@ -15,4 +15,5 @@ export class AuraDB extends Neo4j {
 		const {dialect, driver, domain, port: P, name: n} = this;
 		return `${dialect}${driver ? '+' + driver : ''}://${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
 	}
+
 }

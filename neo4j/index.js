@@ -1,6 +1,6 @@
 import DB from '@davidkhala/db';
 import assert from 'assert';
-import {auth, driver as Neo4jDriver} from 'neo4j-driver';
+import {auth, driver as Neo4jDriver, Session} from 'neo4j-driver';
 
 export const DefaultDatabase = ['neo4j', 'system'];
 
@@ -19,6 +19,21 @@ export class Neo4j extends DB {
 		assert.ok(await this.connection.verifyAuthentication(), 'verifyAuthentication failed');
 	}
 
+	async connect(maxRetry) {
+		const result = super.connect(maxRetry);
+		/**
+		 *
+		 * @type {Session}
+		 */
+		this.session = this.connection.session();
+		return result;
+	}
+
+	async query(template, values = {}, postProcess) {
+		const {records} = await this.session.run(template, values);
+		return records.map(({_fields}) => _fields).map(postProcess);
+	}
+
 	async _connect() {
 		await this.connection.verifyConnectivity();
 	}
@@ -30,6 +45,7 @@ export class Neo4j extends DB {
 
 	async disconnect() {
 		await this.connection.close();
+		delete this.session;
 	}
 
 }
