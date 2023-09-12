@@ -31,7 +31,13 @@ export class Neo4j extends DB {
 
 	async query(template, values = {}, postProcess) {
 		const {records} = await this.session.run(template, values);
-		return records.map(({_fields}) => _fields).map(postProcess);
+
+		const result = records.map(({_fields}) => _fields);
+		if (typeof postProcess === 'function') {
+			return result.map(postProcess);
+		}
+		return result;
+
 	}
 
 	async _connect() {

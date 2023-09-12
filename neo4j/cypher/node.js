@@ -1,24 +1,22 @@
 import assert from 'assert';
+import {Element} from './common.js';
 
-export class Node {
-	constructor(types = []) {
-		this.q = `(${types.map(type => `:${type}`).join('')})`;
+export class Node extends Element {
+	constructor(variable = 'o', types, properties) {
+		super('(', ')', variable, types, properties);
+
 	}
 
-	list() {
+	static list() {
 		// RETURN * is not allowed when there are no variables in scope
-		return [`MATCH _=${this.q} return *`, undefined, (fields) => {
+		return ['MATCH (_) return *', undefined, (fields) => {
 			assert.strictEqual(fields.length, 1);
-			const {start, end, length, segments} = fields[0];
-			assert.strictEqual(length, 0);
-			assert.strictEqual(segments.length, 0);
-			assert.deepStrictEqual(start, end);
-			return start;
+			return fields[0];
 		}];
 	}
 
 	create() {
-		return 'CREATE ' + this.q;
+		return [`CREATE ${this.q}`];
 	}
 
 }
