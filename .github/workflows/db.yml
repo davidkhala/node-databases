@@ -8,7 +8,7 @@ jobs:
         working-directory: mongodb
     steps:
       - name: setup dockerode
-        uses: davidkhala/setup-dockerode@v0
+        uses: davidkhala/setup-dockerode@main
       - run: npm test
         env:
           ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
