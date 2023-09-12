@@ -1,15 +1,23 @@
 import assert from 'assert';
 
+/**
+ * @typedef {Object} ConnectionOpts
+ * @property {string} [domain] can be ignore for file based db (e.g. leveldb)
+ * @property {number|string} [port]
+ * @property {string} [name] another layer of partition, could be a collection, db name
+ * @property {string} [username]
+ * @property {string} [password]
+ * @property {string} [dialect] dialect is mostly the database product name (e.g.`mysql`)
+ * @property {string} [driver]
+ */
+
+/**
+ *
+ */
 export default class DB {
 	/**
 	 *
-	 * @param {string} [domain] can be ignore for file based db (leveldb)
-	 * @param {number|string} [port]
-	 * @param {string} [name] another layer of partition, could be a collection, db name
-	 * @param {string} [username]
-	 * @param {string} [password]
-	 * @param {string} [dialect] dialect is mostly the database product name, like `mysql`
-	 * @param {string} [driver]
+	 * @param {ConnectionOpts} options
 	 * @param {string} [connectionString]
 	 * @param {function} [logger]
 	 */
@@ -77,7 +85,6 @@ export default class DB {
 			return _connect(0, maxRetry);
 
 		}
-
 	}
 
 
@@ -86,10 +93,8 @@ export default class DB {
 	}
 
 	async disconnect() {
-
 	}
 
 	async query(template, values = {}) {
-
 	}
 }
