@@ -1,0 +1,1 @@
+const showDatabases = 'SHOW DATABASE'

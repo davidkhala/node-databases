@@ -3,16 +3,19 @@
   "version": "1.0.0",
   "dependencies": {
     "sequelize": "latest",
-    "mysql2": "latest"
+    "mysql2": "latest",
+    "@davidkhala/db": "latest"
   },
   "devDependencies": {
-    "khala-logger": "latest",
-    "mocha": "latest"
+    "@davidkhala/logger": "latest",
+    "mocha": "latest",
+    "@davidkhala/dockerode": "latest"
   },
   "scripts": {
     "test": "mocha test"
   },
   "publishConfig": {
     "tag": "latest"
-  }
+  },
+  "type": "module"
 }

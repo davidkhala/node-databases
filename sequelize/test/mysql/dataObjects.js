@@ -1,8 +1,8 @@
 /**
  * Sample data objects
  */
-const {DataTypes} = require('../Mysql');
-exports.User = {
+import {DataTypes} from '../../mysql/index.js';
+const User = {
 	id: {
 		type: DataTypes.INTEGER,
 		autoIncrement: true,
@@ -31,3 +31,5 @@ exports.User = {
 	remark: DataTypes.TEXT
 
 };
+
+export default ({User});

@@ -2,8 +2,9 @@
  * unsupported sample data objects
  *
  */
-const {DataTypes} = require('../Mysql');
-exports.caseSensitive = {
+import {DataTypes} from '../../mysql/mysql.js';
+
+export const caseSensitive = {
 	id: {
 		type: DataTypes.INTEGER,
 		autoIncrement: true,

@@ -1,4 +1,4 @@
-# khala-sequelize
+# @davidkhala/sequelize
 nodejs ORM powered by npm sequelize
 [![NPM](https://nodei.co/npm/khala-sequelize.png)](https://nodei.co/npm/khala-sequelize/)
 ## Notes
