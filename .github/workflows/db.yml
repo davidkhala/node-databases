@@ -20,8 +20,8 @@ jobs:
       run:
         working-directory: leveldb
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
         with:
           check-latest: true
       - run: npm install
@@ -32,8 +32,8 @@ jobs:
       run:
         working-directory: redis
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
         with:
           check-latest: true
       - run: npm install
@@ -46,12 +46,8 @@ jobs:
       run:
         working-directory: tinkerpop
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          check-latest: true
-      - uses: ScribeMD/rootless-docker@main
-        name: Use Docker in rootless mode.
+      - name: setup dockerode
+        uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
         env:
@@ -62,12 +58,8 @@ jobs:
       run:
         working-directory: neo4j
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          check-latest: true
-      - uses: ScribeMD/rootless-docker@main
-        name: Use Docker in rootless mode.
+      - name: setup dockerode
+        uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
         env:
@@ -78,11 +70,7 @@ jobs:
       run:
         working-directory: postgre
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          check-latest: true
-      - uses: ScribeMD/rootless-docker@main
-        name: Use Docker in rootless mode.
+      - name: setup dockerode
+        uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
