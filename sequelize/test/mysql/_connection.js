@@ -11,7 +11,13 @@ const password = 'password';
 export const mysql = new MySQL({password, name: DefaultDatabase.mysql}, logger);
 
 export const containerStart = async () => {
-	return await docker(new ContainerManager(undefined, consoleLogger('mysql:docker')), {HostPort: 3306, password});
+	let stop = () => {
+	};
+	if (!process.env.CI) {
+		stop = await docker(new ContainerManager(undefined, consoleLogger('mysql:docker')), {HostPort: 3306, password});
+	}
+	return stop;
+
 };
 
 /**
