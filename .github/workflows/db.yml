@@ -7,13 +7,8 @@ jobs:
       run:
         working-directory: mongodb
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v3
-        with:
-          check-latest: true
-      - uses: ScribeMD/rootless-docker@main
-        name: Use Docker in rootless mode.
-      - run: npm install
+      - name: setup dockerode
+        uses: davidkhala/setup-dockerode@v0
       - run: npm test
         env:
           ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
