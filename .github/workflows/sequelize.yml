@@ -1,3 +1,4 @@
+name: sequelize
 on: push
 defaults:
   run:

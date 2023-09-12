@@ -12,7 +12,7 @@
     "@davidkhala/dockerode": "latest"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test/**"
   },
   "publishConfig": {
     "tag": "latest"
