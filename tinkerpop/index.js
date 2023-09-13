@@ -101,4 +101,11 @@ export class AbstractGremlin extends DB {
 		return results[0];
 	}
 
+	/**
+	 * @abstract
+	 */
+	async drop() {
+
+	}
+
 }

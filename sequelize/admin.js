@@ -28,12 +28,11 @@ export class DBAdmin {
 	}
 
 	/**
-	 *
+	 * @abstract
 	 * @returns {Promise<string[]>}
 	 */
 	async showDatabases() {
 		return [];
-		// to implement
 	}
 
 	async getDatabase(database) {

@@ -1,7 +1,7 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
 import {AbstractGremlin} from './index.js';
-import {Edge, Vertex} from './query.js';
+import {drop, Edge, Vertex} from './query.js';
 
 export class Cosmos extends AbstractGremlin {
 	/**
@@ -39,6 +39,9 @@ export class Cosmos extends AbstractGremlin {
 		return result;
 	}
 
+	async drop() {
+		await this.query(drop);
+	}
 }
 
 
