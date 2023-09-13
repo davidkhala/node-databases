@@ -1,7 +1,7 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
 import {AbstractGremlin} from './index.js';
-import {drop, Edge, Vertex} from './query.js';
+import {drop, Edge, IdVertex, Vertex} from './query.js';
 
 export class Cosmos extends AbstractGremlin {
 	/**
@@ -45,7 +45,7 @@ export class Cosmos extends AbstractGremlin {
 }
 
 
-export class CosmosVertex extends Vertex {
+export class CosmosVertex extends IdVertex {
 	/**
 	 *
 	 * @param type The Label of vertex
@@ -53,20 +53,19 @@ export class CosmosVertex extends Vertex {
 	 * @param [partitionKey]
 	 */
 	constructor(type, id, partitionKey = 'partitionKey') {
-		super(type);
-		this.id = id;
+		super(type, id);
 		this.partitionKey = partitionKey;
 	}
 
 	create(properties, partitionValue = this.id) {
 		return super.create(Object.assign({
 			[this.partitionKey]: partitionValue,
-			id: this.id
 		}, properties));
 	}
 
 	where() {
-		return super.where(this.id);
+		// super.super alternative
+		return Vertex.prototype.where.call(this, this.id);
 	}
 
 }

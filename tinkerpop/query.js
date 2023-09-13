@@ -27,6 +27,8 @@ export class Element {
 
 }
 
+
+
 export class Vertex extends Element {
 
 	constructor(type) {
@@ -58,6 +60,22 @@ export class Vertex extends Element {
 
 	static get count() {
 		return 'V().count()';
+	}
+}
+
+export class IdVertex extends Vertex {
+	constructor(type, id) {
+		super(type);
+		this.id = id;
+	}
+
+	create(properties) {
+		const {id} = this;
+		return super.create(Object.assign(properties, {id}));
+	}
+
+	where() {
+		return this.hasProperty({key: 'id', value: this.id});
 	}
 }
 
