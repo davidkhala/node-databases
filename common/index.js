@@ -55,14 +55,6 @@ export default class DB {
 		this._dialect = _;
 	}
 
-	/**
-	 * @abstract
-	 * @returns {Promise<void>}
-	 */
-	async clear() {
-
-	}
-
 	async connect(maxRetry) {
 		const _connect = async (retryCount, _maxRetry) => {
 			try {
@@ -112,4 +104,22 @@ export default class DB {
 	async query(template, values = {}, requestOptions = {}) {
 
 	}
+}
+export class DBA {
+	/**
+	 *
+	 * @param {DB} db DB instance
+	 */
+	constructor({connection}) {
+		this.connection = connection
+	}
+	/**
+	 * Truncate data
+	 * @abstract
+	 * @returns {Promise<void>}
+	 */
+	async clear() {
+
+	}
+
 }
