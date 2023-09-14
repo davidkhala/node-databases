@@ -27,8 +27,6 @@ export class Element {
 
 }
 
-
-
 export class Vertex extends Element {
 
 	constructor(type) {
@@ -113,4 +111,20 @@ export class Edge extends Element {
 		return `V(${getIdString(from)}).addE('${this.type}')${propertyFrom(properties)}.to(${this.childTraversalSource}V(${getIdString(to)}))`;
 	}
 
+}
+
+export class IdEdge extends Edge {
+	/**
+	 *
+	 * @param type
+	 * @param [id]
+	 */
+	constructor(type, id) {
+		super(type);
+		this.id = id;
+	}
+
+	create(from, to, properties = {}) {
+		return super.create(from, to, Object.assign({id: this.id}, properties));
+	}
 }
