@@ -1,7 +1,9 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
-import {AbstractGremlin} from './index.js';
+import {AbstractGremlin, AbstractGremlinAdmin} from './index.js';
 import {drop, IdEdge, IdVertex, Vertex} from './query.js';
+
+export const idRegExp = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
 export class Cosmos extends AbstractGremlin {
 	/**
@@ -39,8 +41,19 @@ export class Cosmos extends AbstractGremlin {
 		return result;
 	}
 
-	async drop() {
-		await this.query(drop);
+}
+
+export class CosmosAdmin extends AbstractGremlinAdmin {
+
+	/**
+	 * @param {Cosmos} db
+	 */
+	constructor(db) {
+		super(db);
+	}
+
+	async clear({evaluationTimeout = 10000}) {
+		await this.db.query(drop, undefined, {evaluationTimeout});
 	}
 }
 
@@ -49,7 +62,7 @@ export class CosmosVertex extends IdVertex {
 	/**
 	 *
 	 * @param type The Label of vertex
-	 * @param id
+	 * @param [id]
 	 * @param [partitionKey]
 	 */
 	constructor(type, id, partitionKey = 'partitionKey') {

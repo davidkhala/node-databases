@@ -1,4 +1,4 @@
-import {AbstractGremlin} from './index.js';
+import {AbstractGremlin, AbstractGremlinAdmin} from './index.js';
 import assert from 'assert';
 import Gremlin from 'gremlin';
 const {AnonymousTraversalSource} = Gremlin.process;
@@ -26,9 +26,6 @@ export class GremlinServer extends AbstractGremlin {
 		}
 		return result;
 	}
-	async drop() {
-		await AbstractGremlin.query(this.g.V().drop());
-	}
 
 	async getV(id) {
 		const result = await AbstractGremlin.query(this.g.V(id));
@@ -36,5 +33,11 @@ export class GremlinServer extends AbstractGremlin {
 		return result[0];
 	}
 
+}
+export class GremlinServerAdmin extends AbstractGremlinAdmin{
+
+	async clear() {
+		await AbstractGremlin.query(this.db.g.V().drop());
+	}
 }
 

@@ -1,6 +1,6 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
-import DB from '@davidkhala/db/index.js';
+import DB, {DBA} from '@davidkhala/db/index.js';
 import {Element} from './query.js';
 
 
@@ -10,23 +10,8 @@ export class AbstractGremlin extends DB {
 		this.connection = new Gremlin.driver.DriverRemoteConnection(this.connectionString, options);
 	}
 
-	async connect(waitUntil) {
-
-		const _connect = async (retryCount) => {
-			retryCount++;
-			try {
-				await this.connection._client.open();
-				return retryCount;
-			} catch (e) {
-				return await _connect(retryCount);
-			}
-
-		};
-		if (waitUntil) {
-			return _connect(0);
-		} else {
-			await this.connection._client.open();
-		}
+	async _connect() {
+		return await this.connection._client.open();
 	}
 
 	async disconnect() {
@@ -35,14 +20,15 @@ export class AbstractGremlin extends DB {
 
 	/**
 	 *
-	 * @param {string} traversal
-	 * @param {Object} [values]
+	 * @param traversal
+	 * @param [values]
+	 * @param [requestOptions]
 	 * @returns {Promise<Array>}
 	 */
-	async query(traversal, values = {}) {
+	async query(traversal, values, requestOptions) {
 		const message = `g.${traversal}`;
 		this.logger(message);
-		const resultSet = await this.connection._client.submit(message, values);
+		const resultSet = await this.connection._client.submit(message, values, requestOptions);
 		return resultSet.toArray();
 	}
 
@@ -101,11 +87,8 @@ export class AbstractGremlin extends DB {
 		return results[0];
 	}
 
-	/**
-	 * @abstract
-	 */
-	async drop() {
+}
 
-	}
+export class AbstractGremlinAdmin extends DBA {
 
 }

@@ -1,5 +1,5 @@
-import {Cosmos, CosmosEdge, CosmosVertex} from '../cosmos.js';
-import {drop} from '../query.js';
+import {Cosmos, CosmosAdmin, CosmosEdge, CosmosVertex, idRegExp} from '../cosmos.js';
+import {Vertex} from '../query.js';
 import assert from 'assert';
 
 describe('cosmos', function () {
@@ -11,6 +11,7 @@ describe('cosmos', function () {
 		password: process.env.COSMOS_GREMLIN_PASSWORD
 	};
 	const cosmos = new Cosmos(config);
+	const dba = new CosmosAdmin(cosmos);
 	beforeEach(async () => {
 		await cosmos.connect();
 	});
@@ -18,13 +19,16 @@ describe('cosmos', function () {
 		await cosmos.disconnect();
 	});
 	it('id-less vertex', async () => {
+		await dba.clear({});
 		const anonymous = new CosmosVertex('person');
 		await cosmos.query(anonymous.create({}, '0'));
+		const result = await cosmos.queryOne('V()');
+		assert.match(result.id, idRegExp, 'cosmos generated id format mismatch');
 	});
 	it('azure-cosmos-db-graph-nodejs-getting-started', async () => {
 
 
-		await cosmos.query(drop);
+		await dba.clear({});
 		const nodeSource = new CosmosVertex('person', 'thomas');
 		const nodeTarget = new CosmosVertex('person', 'mary');
 

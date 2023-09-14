@@ -105,14 +105,20 @@ export default class DB {
 
 	}
 }
+
+/**
+ * Database Admin
+ */
 export class DBA {
 	/**
 	 *
 	 * @param {DB} db DB instance
 	 */
-	constructor({connection}) {
-		this.connection = connection
+	constructor(db) {
+		this.db = db;
+		this.connection = db.connection;
 	}
+
 	/**
 	 * Truncate data
 	 * @abstract
