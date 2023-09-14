@@ -11,9 +11,6 @@ import assert from 'assert';
  * @property {string} [driver]
  */
 
-/**
- *
- */
 export default class DB {
 	/**
 	 *
@@ -58,6 +55,10 @@ export default class DB {
 		this._dialect = _;
 	}
 
+	/**
+	 * @abstract
+	 * @returns {Promise<void>}
+	 */
 	async clear() {
 
 	}
@@ -87,14 +88,28 @@ export default class DB {
 		}
 	}
 
-
+	/**
+	 * @abstract
+	 * @private
+	 */
 	async _connect() {
 		return false;
 	}
 
+	/**
+	 * @abstract
+	 * @returns {Promise<void>}
+	 */
 	async disconnect() {
 	}
 
-	async query(template, values = {}) {
+	/**
+	 * @abstract
+	 * @param {string} template
+	 * @param {Object} [values]
+	 * @param {Object} [requestOptions]
+	 */
+	async query(template, values = {}, requestOptions = {}) {
+
 	}
 }
