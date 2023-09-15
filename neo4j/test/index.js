@@ -4,22 +4,23 @@ import {ContainerManager} from '@davidkhala/dockerode/docker.js';
 import {LocalhostNeo4j} from '../localhost.js';
 import {Node} from '../cypher/node.js';
 import assert from 'assert';
-import {Truncate} from '../cypher/admin.js';
-import {Relationship} from '../cypher/relationship.js';
+import {SingleRelationship} from '../cypher/relationship.js';
+import {Neo4jAdmin} from '../index.js';
 
 describe('AuraDB', function () {
 	this.timeout(0);
 	const password = process.env.NEO4J_PASSWORD;
 	const neo4j = new AuraDB({instance: '9e9db278', password});
+	const dba = new Neo4jAdmin(neo4j);
 	before(async () => {
 		await neo4j.connect();
-		await neo4j.query(Truncate);
+		await dba.clear();
 	});
 	it('query', async () => {
 		const nodeTypes = ['Person'];
 		const from = new Node('d', nodeTypes, {name: 'David'});
 		const to = new Node('t', nodeTypes, {name: 'Chloe'});
-		const rel = new Relationship('m', ['love']);
+		const rel = new SingleRelationship('m', 'love');
 		await neo4j.query(...from.create());
 		await neo4j.query(...to.create());
 		await neo4j.query(...rel.create(from, to));
