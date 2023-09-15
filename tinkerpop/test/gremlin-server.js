@@ -1,6 +1,6 @@
 import {GremlinServer, GremlinServerAdmin} from '../gremlin-server.js';
 import assert from 'assert';
-import {start} from './recipe.js';
+import {serverStart} from './recipe.js';
 import {ContainerManager} from '@davidkhala/dockerode/docker.js';
 
 const {query} = GremlinServer;
@@ -10,11 +10,14 @@ describe('gremlin-server', function () {
 	const HostPort = 8182;
 	const gremlinServer = new GremlinServer({port: HostPort});
 	const dba = new GremlinServerAdmin(gremlinServer);
-
+	const {g} = gremlinServer;
 	let stop;
 	before(async () => {
 		const manager = new ContainerManager();
-		stop = await start(manager, {HostPort});
+		stop = await serverStart(manager, {HostPort});
+		await gremlinServer.connect(-1);
+
+		assert.ok(gremlinServer.connection.isOpen);
 	});
 	after(async () => {
 		await gremlinServer.disconnect();
@@ -22,15 +25,18 @@ describe('gremlin-server', function () {
 		await stop();
 	});
 	it('(connect)', async () => {
-		const retryCount = await gremlinServer.connect(-1);
-		assert.ok(retryCount > 100, retryCount);
-		assert.ok(gremlinServer.connection.isOpen);
+		await gremlinServer.connect();
 		await gremlinServer.disconnect();
 		assert.ok(!gremlinServer.connection.isOpen);
 	});
+	it('reconnect', async () => {
+		await gremlinServer.connect();
+		await gremlinServer.disconnect();
+		await gremlinServer.connect();
+		await gremlinServer.disconnect();
+	});
 	it('sample', async () => {
-		await gremlinServer.connect(-1);
-		const {g} = gremlinServer;
+
 		await dba.clear();
 
 		console.debug(await query(g.E().count()));
@@ -45,6 +51,6 @@ describe('gremlin-server', function () {
 
 		console.debug(await query(g.E().count()));
 		console.debug(await gremlinServer.getV(0));
-		await gremlinServer.disconnect();
 	});
+
 });

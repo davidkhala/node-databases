@@ -81,6 +81,16 @@ export class AbstractGremlin extends DB {
 		return await traversal.toList();
 	}
 
+	/**
+	 * use-cases
+	 * - add operation to current transaction in context
+	 * - run a single execution without need to knowing the result. e.g. write
+	 * @param {GraphTraversal} traversal
+	 */
+	static async run(traversal) {
+		await traversal.iterate();
+	}
+
 	static async queryOne(traversal) {
 		const results = await AbstractGremlin.query(traversal);
 		assert.ok(results.length < 2, results);

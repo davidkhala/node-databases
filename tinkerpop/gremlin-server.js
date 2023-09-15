@@ -1,7 +1,9 @@
 import {AbstractGremlin, AbstractGremlinAdmin} from './index.js';
 import assert from 'assert';
 import Gremlin from 'gremlin';
+
 const {AnonymousTraversalSource} = Gremlin.process;
+
 export class GremlinServer extends AbstractGremlin {
 	constructor({domain = 'localhost', port = 8182} = {}, logger = console.debug) {
 		super({domain, port, name: 'gremlin', dialect: 'ws'}, undefined, logger);
@@ -34,7 +36,8 @@ export class GremlinServer extends AbstractGremlin {
 	}
 
 }
-export class GremlinServerAdmin extends AbstractGremlinAdmin{
+
+export class GremlinServerAdmin extends AbstractGremlinAdmin {
 
 	async clear() {
 		await AbstractGremlin.query(this.db.g.V().drop());
