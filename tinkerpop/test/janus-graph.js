@@ -31,12 +31,12 @@ describe('janus-graph', function () {
 		await dba.clear();
 
 		gremlinServer.begin();
-		await g.addV('transaction').properties('a', 'b').iterate();
+		await g.addV('transaction').property('a', 'b').iterate();
 		await g.addV('transaction').properties('a', 'b').iterate();
 		await gremlinServer.commit();
 		assert.strictEqual(await queryOne(g.V().count()), 2);
-		await g.addV('no-tx').iterate();
+		await g.addV('no-tx').propertyMap('a', 'c').iterate();
 		assert.strictEqual(await queryOne(g.V().count()), 3);
-		console.debug(await query(g.V())); // FIXME properties: undefined
+		console.debug(await query(g.V())); // FIXME unknown bug: properties: undefined
 	});
 });

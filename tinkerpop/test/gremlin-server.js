@@ -3,7 +3,7 @@ import assert from 'assert';
 import {serverStart} from './recipe.js';
 import {ContainerManager} from '@davidkhala/dockerode/docker.js';
 
-const {query} = GremlinServer;
+const {query, queryOne} = GremlinServer;
 
 describe('gremlin-server', function () {
 	this.timeout(0);
@@ -39,18 +39,18 @@ describe('gremlin-server', function () {
 
 		await dba.clear();
 
-		console.debug(await query(g.E().count()));
+		assert.strictEqual(await queryOne(g.E().count()), 0);
 		const [v1] = await query(g.addV('person').property('name', 'Alice').property('age', 30));
 		const [v2] = await query(g.addV('person').property('name', 'Bob').property('age', 35));
 		console.debug('get by id', await gremlinServer.getV(v1.id));
+		console.debug(await query(g.V()));
 
 		console.debug(await query(g.V().hasLabel('person').values()));
 
 		await query(g.V(v1).addE('knows').to(v2));
 
 
-		console.debug(await query(g.E().count()));
-		console.debug(await gremlinServer.getV(0));
+		assert.strictEqual(await queryOne(g.E().count()), 1);
 	});
 
 });
