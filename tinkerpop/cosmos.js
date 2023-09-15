@@ -2,6 +2,7 @@ import Gremlin from 'gremlin';
 import assert from 'assert';
 import {AbstractGremlin, AbstractGremlinAdmin} from './index.js';
 import {drop, IdEdge, IdVertex, Vertex} from './query.js';
+import {sleep} from '@davidkhala/light/index.js';
 
 export const idRegExp = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
@@ -28,16 +29,14 @@ export class Cosmos extends AbstractGremlin {
 			rejectUnauthorized: true,
 			mimeType: 'application/vnd.gremlin-v2.0+json'
 		}, logger);
-
+		this.defer = 1;
+		this.delay = 1;
 	}
 
-	async getV(id) {
-
-		const result = await this.queryOne(CosmosVertex.get(id));
-
-		if (result) {
-			assert.equal(result.id, id, `cosmos assigned id[${result.id}] should equals specified id[${id}]`);
-		}
+	async query(traversal, values, requestOptions) {
+		await sleep(this.defer, null);
+		const result = await super.query(traversal, values, requestOptions);
+		await sleep(this.delay, null);
 		return result;
 	}
 
