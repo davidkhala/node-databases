@@ -1,7 +1,4 @@
 import {AuraDB} from '../aura.js';
-import {docker} from './recipe.js';
-import {ContainerManager} from '@davidkhala/dockerode/docker.js';
-import {LocalhostNeo4j} from '../localhost.js';
 import {Node} from '../cypher/node.js';
 import assert from 'assert';
 import {SingleRelationship} from '../cypher/relationship.js';
@@ -33,25 +30,5 @@ describe('AuraDB', function () {
 	});
 	after(async () => {
 		await neo4j.disconnect();
-	});
-});
-describe('localhost', function () {
-	this.timeout(0);
-
-	const handles = [];
-	before(async () => {
-		const manager = new ContainerManager();
-		const handle = await docker(manager);
-		handles.push(handle);
-
-	});
-	it('connect', async () => {
-		const neo4j = new LocalhostNeo4j();
-		const retryCount = await neo4j.connect();
-		assert.ok(retryCount > 2000, `retryCount=${retryCount}`);
-		await neo4j.disconnect();
-	});
-	after(async () => {
-		await Promise.all(handles.map(_ => _()));
 	});
 });

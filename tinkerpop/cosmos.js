@@ -51,7 +51,7 @@ export class CosmosAdmin extends AbstractGremlinAdmin {
 		super(db);
 	}
 
-	async clear({evaluationTimeout = 10000}) {
+	async clear({evaluationTimeout = 10000} = {}) {
 		await this.db.query(drop, undefined, {evaluationTimeout});
 	}
 }

@@ -104,6 +104,14 @@ export default class DB {
 	async query(template, values = {}, requestOptions = {}) {
 
 	}
+
+	/**
+	 * @abstract
+	 * @returns {DBA}
+	 */
+	get dba() {
+		return new DBA(this);
+	}
 }
 
 /**
