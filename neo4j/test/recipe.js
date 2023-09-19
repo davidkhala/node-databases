@@ -47,10 +47,12 @@ export function initPasswordCmd(newPassword) {
  * @param {Neo4j} neo4j
  */
 export async function querySet(neo4j) {
+	const dba = neo4j.dba;
 	const nodeTypes = ['Person'];
 	const from = new Node('d', nodeTypes, {name: 'David'});
 	const to = new Node('t', nodeTypes, {name: 'Chloe'});
 	const rel = new SingleRelationship('m', 'love');
+	await dba.clear();
 
 	await neo4j.query(...from.create());
 	await neo4j.query(...to.create());
@@ -67,18 +69,21 @@ export async function querySet(neo4j) {
  * @return {Promise<void>}
  */
 export async function transactionWrap(neo4j) {
+	const dba = neo4j.dba;
 	const tx = new Neo4jTx(neo4j);
 	const nodeTypes = ['Person'];
 	const from = new Node('d', nodeTypes, {name: 'David'});
 	const to = new Node('t', nodeTypes, {name: 'Chloe'});
 	const rel = new SingleRelationship('m', 'love');
+	await dba.clear();
+
 	await tx.begin();
 	await tx.run(...from.create());
 	await tx.run(...to.create());
 	await tx.run(...rel.create(from, to));
 	await tx.submit();
 	const nodeList = await neo4j.query(...Node.list());
-	assert.strictEqual(nodeList.length, 2)
+	assert.strictEqual(nodeList.length, 2);
 	return nodeList;
 
 }

@@ -120,12 +120,11 @@ export class Neo4jAdmin extends DBA {
 	}
 
 	async passwd(currentPassword, newPassword) {
-		const clonedOpts = Object.assign({}, this.db, {name: DefaultDatabase.system});
-
-		const cloned = new Neo4j(clonedOpts, undefined, this.db.logger);
+		const clonedOpts = Object.assign({}, this, {name: DefaultDatabase.system});
+		const cloned = new Neo4j(clonedOpts, undefined, this.logger);
 		await cloned.connect();
 
-		await cloned.query(`:use system;ALTER CURRENT USER SET PASSWORD FROM '${currentPassword}' TO '${newPassword}'`);
+		await cloned.query(`ALTER CURRENT USER SET PASSWORD FROM '${currentPassword}' TO '${newPassword}'`);
 		await cloned.disconnect();
 	}
 }

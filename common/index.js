@@ -125,7 +125,7 @@ export class DBA {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		Object.assign(this, db);
+		Object.assign(this, db, {db});
 	}
 
 	/**
@@ -145,7 +145,7 @@ export class Transaction {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		Object.assign(this, db);
+		Object.assign(this, db, {db});
 	}
 
 	/**
