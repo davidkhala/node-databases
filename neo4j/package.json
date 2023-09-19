@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/neo4j",
-  "version": "0.0.2-beta",
+  "version": "0.0.3",
   "dependencies": {
     "neo4j-driver": "latest",
     "@davidkhala/db": "latest"
