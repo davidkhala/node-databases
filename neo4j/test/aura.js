@@ -1,8 +1,6 @@
 import {AuraDB} from '../aura.js';
-import {Node} from '../cypher/node.js';
-import assert from 'assert';
-import {SingleRelationship} from '../cypher/relationship.js';
 import {Neo4jAdmin} from '../index.js';
+import {querySet} from './recipe.js';
 
 describe('AuraDB', function () {
 	this.timeout(0);
@@ -14,17 +12,7 @@ describe('AuraDB', function () {
 		await dba.clear();
 	});
 	it('query', async () => {
-		const nodeTypes = ['Person'];
-		const from = new Node('d', nodeTypes, {name: 'David'});
-		const to = new Node('t', nodeTypes, {name: 'Chloe'});
-		const rel = new SingleRelationship('m', 'love');
-		await neo4j.query(...from.create());
-		await neo4j.query(...to.create());
-		await neo4j.query(...rel.create(from, to));
-		const result = await neo4j.query(...Node.list());
-
-		assert.strictEqual(result.length, 2);
-		assert.ok(result.find(({properties}) => properties.name === 'David'));
+		await querySet(neo4j);
 	});
 	it('connect', () => {
 	});

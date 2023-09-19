@@ -1,7 +1,6 @@
 import Gremlin from 'gremlin';
 import assert from 'assert';
 import DB, {DBA} from '@davidkhala/db/index.js';
-import {Element} from './query.js';
 
 
 export class AbstractGremlin extends DB {
@@ -97,8 +96,18 @@ export class AbstractGremlin extends DB {
 		return results[0];
 	}
 
+	get dba() {
+		return new AbstractGremlinAdmin(this);
+	}
 }
 
 export class AbstractGremlinAdmin extends DBA {
 
+	/**
+	 * @abstract
+	 * @return {Promise<void>}
+	 */
+	async clear() {
+
+	}
 }

@@ -1,6 +1,7 @@
 import DB, {DBA} from '@davidkhala/db';
 import assert from 'assert';
-import {auth, driver as Neo4jDriver, Session} from 'neo4j-driver';
+import {auth, driver as Neo4jDriver, Session, Transaction} from 'neo4j-driver';
+import {Transaction as AbstractTransaction} from '@davidkhala/db/index.js';
 import {Truncate} from './cypher/admin.js';
 
 /**
@@ -47,16 +48,6 @@ export class Neo4j extends DB {
 
 	}
 
-	/**
-	 * TODO WIP
-	 * @param template
-	 * @param values
-	 * @returns {Promise<void>}
-	 */
-	async rawQuery(template, values) {
-		return await this.connection.executeQuery(template, values);
-	}
-
 	async _connect() {
 		await this.connection.verifyConnectivity();
 	}
@@ -67,8 +58,10 @@ export class Neo4j extends DB {
 	}
 
 	async disconnect() {
-		await this.connection.close();
+		await this.session.close();
 		delete this.session;
+		await this.connection.close();
+
 	}
 
 	/**
@@ -78,6 +71,39 @@ export class Neo4j extends DB {
 		return new Neo4jAdmin(this);
 	}
 
+}
+
+export class Neo4jTx extends AbstractTransaction {
+	/**
+	 * While a transaction is open the session cannot be used to run queries outside the transaction.
+	 * @return {Transaction}
+	 */
+	async begin() {
+
+		/**
+		 *
+		 * @type {Transaction}
+		 */
+		this.tx = await this.session.beginTransaction();
+		return this.tx;
+	}
+
+	async run(template, values = {}) {
+		await this.tx.run(template, values);
+
+	}
+
+	async commit() {
+		await this.tx.commit();
+	}
+
+	async close() {
+		await this.tx.close();
+	}
+
+	async rollback() {
+		await this.tx.rollback();
+	}
 }
 
 export class Neo4jAdmin extends DBA {

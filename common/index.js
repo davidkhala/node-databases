@@ -11,6 +11,9 @@ import assert from 'assert';
  * @property {string} [driver]
  */
 
+/**
+ *
+ */
 export default class DB {
 	/**
 	 *
@@ -25,8 +28,7 @@ export default class DB {
 			username || assert.ok(!password, 'username should exist given password exist');
 			Object.assign(this, {domain, port, name, username, password, dialect, driver});
 		}
-		Object.assign(this, {logger});
-
+		this.logger = logger;
 		this.connection = undefined;
 	}
 
@@ -123,8 +125,7 @@ export class DBA {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		this.db = db;
-		this.connection = db.connection;
+		Object.assign(this, db);
 	}
 
 	/**
@@ -136,4 +137,70 @@ export class DBA {
 
 	}
 
+}
+
+export class Transaction {
+	/**
+	 *
+	 * @param {DB} db DB instance
+	 */
+	constructor(db) {
+		Object.assign(this, db);
+	}
+
+	/**
+	 * @abstract
+	 * @return {Transaction}
+	 */
+	begin() {
+		return this;
+	}
+
+	/**
+	 * @abstract
+	 * @param {string} template
+	 * @param {Object} [values]
+	 * @param {Object} [requestOptions]
+	 */
+	async run(template, values = {}, requestOptions = {}) {
+
+	}
+
+	/**
+	 * @abstract
+	 * @return {Promise<void>}
+	 * @private
+	 */
+	async commit() {
+
+	}
+
+	/**
+	 * @abstract
+	 * @param {Error} e
+	 * @return {Promise<void>}
+	 * @private
+	 */
+	async rollback(e) {
+
+	}
+
+	/**
+	 * @abstract
+	 * @return {Promise<void>}
+	 * @private
+	 */
+	async close() {
+
+	}
+
+	async submit() {
+		try {
+			await this.commit();
+		} catch (e) {
+			await this.rollback(e);
+		} finally {
+			await this.close();
+		}
+	}
 }

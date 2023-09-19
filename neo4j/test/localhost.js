@@ -1,6 +1,6 @@
 import {LocalhostNeo4j} from '../localhost.js';
 import {ContainerManager} from '@davidkhala/dockerode/docker.js';
-import {docker, initPasswordCmd} from './recipe.js';
+import {docker, initPasswordCmd, querySet, transactionWrap} from './recipe.js';
 import {execSync} from '@davidkhala/light/devOps.js';
 import {Neo4jAdmin} from '../index.js';
 
@@ -22,6 +22,14 @@ describe('docker: preset password', function () {
 		await dba.passwd(password, 'password');
 		await dba.clear();
 	});
+	it('query', async () => {
+		await querySet(neo4j);
+	});
+	it('transaction', async () => {
+
+		await transactionWrap(neo4j);
+	});
+
 	after(async () => {
 		await neo4j.disconnect();
 		await stop();
