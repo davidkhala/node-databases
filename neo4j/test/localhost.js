@@ -9,7 +9,7 @@ describe('docker: preset password', function () {
 
 	let stop;
 
-	const password = 'davidkhala';
+	const password = 'password';
 	const neo4j = new LocalhostNeo4j({password});
 	const dba = neo4j.dba;
 	before(async () => {
@@ -22,12 +22,26 @@ describe('docker: preset password', function () {
 		await dba.passwd(password, 'password');
 		await dba.clear();
 	});
+	it('reconnect', async () => {
+		await neo4j.disconnect();
+		await neo4j.connect();
+		await neo4j.disconnect();
+		await neo4j.connect();
+	});
 	it('query', async () => {
 		await querySet(neo4j);
 	});
 	it('transaction', async () => {
 
-		await transactionWrap(neo4j);
+		const _dba = neo4j.dba;
+		await _dba.clear();
+		let i = 0;
+		while (i < 50) {
+			await transactionWrap(neo4j);
+			i++;
+		}
+
+
 	});
 
 	after(async () => {

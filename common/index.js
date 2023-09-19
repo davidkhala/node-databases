@@ -19,7 +19,7 @@ export default class DB {
 	 *
 	 * @param {ConnectionOpts} options
 	 * @param {string} [connectionString]
-	 * @param {function} [logger]
+	 * @param {Console|Object} [logger]
 	 */
 	constructor({domain, port, name, username, password, dialect, driver}, connectionString, logger) {
 		if (connectionString) {
@@ -57,12 +57,33 @@ export default class DB {
 		this._dialect = _;
 	}
 
+	/**
+	 * @abstract
+	 * @param {Error} e
+	 * @return {Promise<boolean>}
+	 * @private
+	 */
+	async _ignoreConnectError(e) {
+		return true;
+	}
+
+	/**
+	 * rebuild this.connection in implementation
+	 */
+	reset() {
+		delete this.connection;
+	}
+
 	async connect(maxRetry) {
 		const _connect = async (retryCount, _maxRetry) => {
 			try {
 				await this._connect();
 				return retryCount;
 			} catch (e) {
+				if (!await this._ignoreConnectError(e)) {
+					throw e;
+				}
+
 				if (retryCount === _maxRetry) {
 					throw Error(`retryCount=${retryCount} meet maxRetry=${_maxRetry}`);
 				}

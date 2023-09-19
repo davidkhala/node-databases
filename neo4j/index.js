@@ -1,6 +1,6 @@
 import DB, {DBA} from '@davidkhala/db';
 import assert from 'assert';
-import {auth, driver as Neo4jDriver, Session, Transaction} from 'neo4j-driver';
+import {auth, driver as Neo4jDriver, Session, Transaction, Neo4jError} from 'neo4j-driver';
 import {Transaction as AbstractTransaction} from '@davidkhala/db/index.js';
 import {Truncate} from './cypher/admin.js';
 
@@ -16,7 +16,11 @@ export class Neo4j extends DB {
 	constructor({domain, port = 7687, username = 'neo4j', name = username, password, driver, dialect}, connectionString, logger) {
 
 		super({domain, port, name, username, password, driver, dialect}, connectionString, logger);
-		this.connection = Neo4jDriver(this.connectionString, auth.basic(this.username, password));
+		this.reset();
+	}
+
+	reset() {
+		this.connection = Neo4jDriver(this.connectionString, auth.basic(this.username, this.password));
 	}
 
 	/**
@@ -61,6 +65,8 @@ export class Neo4j extends DB {
 		await this.session.close();
 		delete this.session;
 		await this.connection.close();
+		delete this.connection;
+		this.reset();
 
 	}
 
@@ -71,6 +77,14 @@ export class Neo4j extends DB {
 		return new Neo4jAdmin(this);
 	}
 
+	async _ignoreConnectError(e) {
+		if (!(e instanceof Neo4jError)) {
+			return false;
+		}
+		const {code, retriable, message} = e;
+		return retriable === true && code === 'ServiceUnavailable' && message.startsWith('Could not perform discovery. No routing servers available.');
+
+	}
 }
 
 export class Neo4jTx extends AbstractTransaction {
