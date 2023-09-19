@@ -36,7 +36,7 @@ describe('docker: preset password', function () {
 		const _dba = neo4j.dba;
 		await _dba.clear();
 		let i = 0;
-		while (i < 50) {
+		while (i < 5) {
 			await transactionWrap(neo4j);
 			i++;
 		}

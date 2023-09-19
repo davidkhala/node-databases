@@ -103,8 +103,7 @@ export class Neo4jTx extends AbstractTransaction {
 	}
 
 	async run(template, values = {}) {
-		await this.tx.run(template, values);
-
+		return await this.tx.run(template, values);
 	}
 
 	async commit() {

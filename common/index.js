@@ -218,8 +218,10 @@ export class Transaction {
 	async submit() {
 		try {
 			await this.commit();
+			return true;
 		} catch (e) {
 			await this.rollback(e);
+			return false;
 		} finally {
 			await this.close();
 		}
