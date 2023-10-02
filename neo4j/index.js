@@ -51,6 +51,16 @@ export class Neo4j extends DB {
 		return result;
 
 	}
+	async queryOne(template, values = {}){
+		const {records} = await this.session.run(template, values);
+
+		const fields = records.map(({_fields}) => _fields);
+
+		return fields.map((result) => {
+			assert.strictEqual(result.length, 1);
+			return result[0];
+		});
+	}
 
 	async _connect() {
 		await this.connection.verifyConnectivity();

@@ -57,10 +57,15 @@ export async function querySet(neo4j) {
 	await neo4j.query(...from.create());
 	await neo4j.query(...to.create());
 	await neo4j.query(...rel.create(from, to));
-	const result = await neo4j.query(...Node.list());
+	{
+		const result = await neo4j.query(...Node.list());
+		assert.strictEqual(result.length, 2);
+		assert.ok(result.find(({properties}) => properties.name === 'David'));
+	}
 
-	assert.strictEqual(result.length, 2);
-	assert.ok(result.find(({properties}) => properties.name === 'David'));
+	console.debug(await neo4j.query(...from.list()));
+
+
 }
 
 /**

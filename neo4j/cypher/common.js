@@ -10,8 +10,20 @@ export class Element {
 	 * @param {Object} [properties]
 	 */
 	constructor(lb, rb, variable, types = [], properties) {
-		const propertyStr = properties ? ' ' + ObjectReadable(properties) : '';
-		this.q = `${lb} ${variable}${types.map(type => `:${type}`).join('')}${propertyStr} ${rb}`;
-		Object.assign(this, {variable, types});
+		Object.assign(this, {variable, types, properties});
+		this.q = `${lb} ${variable}${this.typesString} ${this.propertiesString} ${rb}`;
+	}
+
+	get typesString() {
+		return this.types.map(type => `:${type}`).join('');
+	}
+
+	get propertiesString() {
+		const {properties} = this;
+		return properties ? ObjectReadable(properties) : '';
+	}
+
+	list() {
+		return [`match ${this.q} return ${this.variable}`];
 	}
 }
