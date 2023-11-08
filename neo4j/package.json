@@ -6,7 +6,8 @@
     "@davidkhala/db": "latest"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "test-aura": "mocha test-aura"
   },
   "devDependencies": {
     "mocha": "latest",
