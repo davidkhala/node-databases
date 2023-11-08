@@ -60,11 +60,11 @@ export default class DB {
 	/**
 	 * @abstract
 	 * @param {Error} e
-	 * @return {Promise<boolean>}
+	 * @return {Promise<boolean>|boolean} By default, connect error will be ignored. A promise as return is also acceptable
 	 * @private
 	 */
-	async _ignoreConnectError(e) {
-		return true;
+	_throwConnectError(e) {
+		return false;
 	}
 
 	/**
@@ -80,7 +80,7 @@ export default class DB {
 				await this._connect();
 				return retryCount;
 			} catch (e) {
-				if (!await this._ignoreConnectError(e)) {
+				if (await this._throwConnectError(e)) {
 					throw e;
 				}
 

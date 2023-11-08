@@ -87,12 +87,12 @@ export class Neo4j extends DB {
 		return new Neo4jAdmin(this);
 	}
 
-	async _ignoreConnectError(e) {
+	async _throwConnectError(e) {
 		if (!(e instanceof Neo4jError)) {
-			return false;
+			return true;
 		}
 		const {code, retriable, message} = e;
-		return retriable === true && code === 'ServiceUnavailable' && message.startsWith('Could not perform discovery. No routing servers available.');
+		return !(retriable === true && code === 'ServiceUnavailable' && message.startsWith('Could not perform discovery. No routing servers available.'));
 
 	}
 }

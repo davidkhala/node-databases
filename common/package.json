@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/db",
-  "version": "0.0.7-rc2",
+  "version": "0.0.7",
   "type": "module",
   "publishConfig": {
     "access": "public"
