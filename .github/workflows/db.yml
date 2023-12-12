@@ -26,20 +26,7 @@ jobs:
           check-latest: true
       - run: npm install
       - run: npm test
-  redis:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: redis
-    steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
-        with:
-          check-latest: true
-      - run: npm install
-      - run: npm test
-        env:
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+
   tinkerpop:
     runs-on: ubuntu-latest
     defaults:

@@ -1,0 +1,32 @@
+name: always-free DBaaS
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0 * * */2
+jobs:
+  aura-db:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: neo4j
+    steps:
+      - name: setup dockerode
+        uses: davidkhala/setup-dockerode@main
+      - run: npm install
+      - run: npm run test-aura
+        env:
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+  redis:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: redis
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+        env:
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
