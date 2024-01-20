@@ -11,52 +11,7 @@ import assert from 'assert';
  * @property {string} [driver]
  */
 
-/**
- *
- */
-export default class DB {
-	/**
-	 *
-	 * @param {ConnectionOpts} options
-	 * @param {string} [connectionString]
-	 * @param {Console|Object} [logger]
-	 */
-	constructor({domain, port, name, username, password, dialect, driver}, connectionString, logger) {
-		if (connectionString) {
-			this.connectionString = connectionString;
-		} else {
-			username || assert.ok(!password, 'username should exist given password exist');
-			Object.assign(this, {domain, port, name, username, password, dialect, driver});
-		}
-		this.logger = logger;
-		this.connection = undefined;
-	}
-
-	set connectionString(_) {
-		this._connectionString = _;
-	}
-
-	get connectionString() {
-		if (this._connectionString) {
-			return this._connectionString;
-		}
-		const {dialect, driver, username: u, password: p, domain, port: P, name: n} = this;
-		const auth = `${u || ''}${p ? ':' + p : ''}${u ? '@' : ''}`;
-
-		return `${dialect}${driver ? '+' + driver : ''}://${auth}${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
-	}
-
-	get dialect() {
-		if (this._dialect) {
-			return this._dialect;
-		}
-		return this.constructor.name.toLowerCase();
-	}
-
-	set dialect(_) {
-		this._dialect = _;
-	}
-
+export class Connectable {
 	/**
 	 * @abstract
 	 * @param {Error} e
@@ -65,13 +20,6 @@ export default class DB {
 	 */
 	_throwConnectError(e) {
 		return false;
-	}
-
-	/**
-	 * rebuild this.connection in implementation
-	 */
-	reset() {
-		delete this.connection;
 	}
 
 	async connect(maxRetry) {
@@ -116,6 +64,59 @@ export default class DB {
 	 * @returns {Promise<void>}
 	 */
 	async disconnect() {
+	}
+}
+
+export default class DB extends Connectable {
+	/**
+	 *
+	 * @param {ConnectionOpts} options
+	 * @param {string} [connectionString]
+	 * @param {Console|Object} [logger]
+	 */
+	constructor({domain, port, name, username, password, dialect, driver}, connectionString, logger) {
+		super();
+		if (connectionString) {
+			this.connectionString = connectionString;
+		} else {
+			username || assert.ok(!password, 'username should exist given password exist');
+			Object.assign(this, {domain, port, name, username, password, dialect, driver});
+		}
+		this.logger = logger;
+		this.connection = undefined;
+	}
+
+	set connectionString(_) {
+		this._connectionString = _;
+	}
+
+	get connectionString() {
+		if (this._connectionString) {
+			return this._connectionString;
+		}
+		const {dialect, driver, username: u, password: p, domain, port: P, name: n} = this;
+		const auth = `${u || ''}${p ? ':' + p : ''}${u ? '@' : ''}`;
+
+		return `${dialect}${driver ? '+' + driver : ''}://${auth}${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
+	}
+
+	get dialect() {
+		if (this._dialect) {
+			return this._dialect;
+		}
+		return this.constructor.name.toLowerCase();
+	}
+
+	set dialect(_) {
+		this._dialect = _;
+	}
+
+
+	/**
+	 * rebuild this.connection in implementation
+	 */
+	reset() {
+		delete this.connection;
 	}
 
 	/**
