@@ -1,56 +1,19 @@
-import {SystemInfo, default as Teradata} from '../index.js'
-import {Database, Table} from '../ddl.js'
-import * as assert from "assert";
+export function e2e(db, databaseName) {
 
-const database = 'HR'
-describe('connection', function () {
-    this.timeout(0)
-    const teradata = new Teradata({host: '129.150.42.249'})
-    it('connect, disconnect', function () {
-        teradata.connect()
-        teradata.disconnect()
-    })
-})
+	it('connect, disconnect', async () => {
+		db.connect();
+		db.disconnect();
+		db.connect();
+	});
 
-describe('SystemInfo', function () {
-    this.timeout(0)
-
-    const systemInfo = new SystemInfo({host: '129.150.42.249'})
-    before(() => {
-        systemInfo.connect()
-    })
-
-    it('version', async () => {
-        const versionResult = systemInfo.version()
-        assert.equal(versionResult, '17.20.03.02')
-    })
-
-    after(() => {
-        systemInfo.disconnect()
-    })
-})
-describe('vantage express sample', function () {
-    this.timeout(0)
-    const teradata = new Teradata({host: '129.150.42.249'})
-    const databaseConnect = new Database(teradata)
-
-    before(() => {
-        teradata.connect()
-        databaseConnect.connect()
-    })
-    it('get database', () => {
-        const result = databaseConnect.exist(database)
-        console.debug(result)
-    })
-
-    it('create database', async () => {
-        const create = `CREATE DATABASE ${database}
+	it('create database', async () => {
+		const create = `CREATE DATABASE ${databaseName}
 AS PERMANENT = 60e6, -- 60MB
-    SPOOL = 120e6; -- 120MB`
-        teradata.execute(create)
-    })
-    it('create table', () => {
-        const employees = `CREATE SET TABLE ${database}.Employees (
+    SPOOL = 120e6; -- 120MB`;
+		db.execute(create);
+	});
+	it('create table', () => {
+		const employees = `CREATE SET TABLE ${databaseName}.Employees (
    GlobalID INTEGER,
    FirstName VARCHAR(30),
    LastName VARCHAR(30),
@@ -58,12 +21,11 @@ AS PERMANENT = 60e6, -- 60MB
    JoinedDate DATE FORMAT 'YYYY-MM-DD',
    DepartmentCode BYTEINT
 )
-UNIQUE PRIMARY INDEX ( GlobalID );`
-        teradata.execute(employees)
-    })
-
-    it('insert sample rows', () => {
-        const rows = `INSERT INTO ${database}.Employees (
+UNIQUE PRIMARY INDEX ( GlobalID );`;
+		db.execute(employees);
+	});
+	it('insert sample rows', () => {
+		const rows = `INSERT INTO ${databaseName}.Employees (
    GlobalID,
    FirstName,
    LastName,
@@ -78,61 +40,55 @@ VALUES (
    '1980-01-05',
    '2004-08-01',
    01
-);`
-        const result = teradata.query(rows)
-        console.log(result)
-    })
-    it('create view', () => {
-        const sql = `
-        CREATE VIEW Employee_View AS   
-            SELECT Emp_Id, First_Name, Last_Name, Department_No, BirthDate,
-            FROM Employees;`
-    })
-    it('truncate table', () => {
-        databaseConnect.truncate(database, 'Employees')
-    })
+);`;
+		const result = db.query(rows);
+		console.log(result);
+	});
 
-    it('drop database', () => {
-        databaseConnect.drop(database)
-    })
-    after(() => {
-        teradata.disconnect()
-    })
-})
-describe('CTE', function () {
-    this.timeout(0)
+}
 
-    const db = new Database({host: '129.150.42.249'})
-    db.connect()
-    const tbl = new Table(db)
-    const tableName = 't1'
-    before(() => {
-        db.use(database)
-        tbl.drop(tableName)
-    })
-    it('RECURSIVE CTE # INS == insert == insert into', async () => {
+export function dba(db, databaseName) {
 
-        db.execute(`CREATE TABLE ${tableName}(a1 INT, b1 INT);`)
-        const insert = `insert into t1(1,2);
+	it('get database', () => {
+		const _dba = db.dba;
+		const result = _dba.exist(databaseName);
+		console.debug(result);
+	});
+
+
+	it('truncate table', () => {
+		const _dba = db.dba;
+		_dba.truncate(databaseName, 'Employees');
+	});
+
+	it('drop database', () => {
+		const _dba = db.dba;
+		_dba.drop(databaseName);
+	});
+}
+
+export function cte(db, databaseName, cteTable) {
+	it('RECURSIVE CTE', async () => {
+		db.use(databaseName);
+		db.execute(`CREATE TABLE ${cteTable}(a1 INT, b1 INT);`);
+		const insert = `insert into t1(1,2);
 insert into t1(1,4);
 insert into t1(2,3);
-insert into t1(3,4);`
-        // insert into is the ANSI standard, but the `into` is optional in mysql, SQL server and teradata
+insert into t1(3,4);`;
+		// insert into is the ANSI standard, but the `into` is optional in mysql, SQL server and teradata
+		//  INS == insert == insert into
 
-        db.execute(insert)
-        const cteQuery = `WITH
-RECURSIVE s3 (MinVersion)  AS (SELECT a1 FROM ${tableName} WHERE a1 > 1
+		db.execute(insert);
+		const cteQuery = `WITH
+RECURSIVE s3 (MinVersion)  AS (SELECT a1 FROM ${cteTable} WHERE a1 > 1
                                UNION ALL
                               SEL MinVersion FROM s3 WHERE MinVersion > 3),
-RECURSIVE s4 (MinVersion)  AS (SELECT a1 FROM ${tableName} WHERE a1 = 2
+RECURSIVE s4 (MinVersion)  AS (SELECT a1 FROM ${cteTable} WHERE a1 = 2
                               UNION ALL
                               SEL MinVersion FROM S4 WHERE MinVersion > 2)
-SEL * FROM s3,s4;`
-        const result = db.query(cteQuery, true)
-        console.debug(result)
+SEL * FROM s3,s4;`;
+		const result = db.query(cteQuery, undefined, {withHeader: true});
+		console.debug(result);
 
-    })
-    after(() => {
-        db.disconnect()
-    })
-})
+	});
+}

@@ -1,12 +1,15 @@
 {
   "name": "@davidkhala/teradata",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
-    "teradata-nodejs-driver": "latest",
+    "teradatasql": "latest",
     "@davidkhala/db": "latest"
   },
   "devDependencies": {
     "mocha": "latest"
   },
-  "type": "module"
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
 }

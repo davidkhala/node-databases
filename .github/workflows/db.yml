@@ -1,19 +1,10 @@
 name: database
 on: push
+env:
+  ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+  COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
+  COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
 jobs:
-  mongoDB:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mongodb
-    steps:
-      - name: setup dockerode
-        uses: davidkhala/setup-dockerode@main
-      - run: npm install
-      - run: npm test
-        env:
-          ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
-          COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
   leveldb:
     runs-on: ubuntu-latest
     defaults:
@@ -27,33 +18,14 @@ jobs:
       - run: npm install
       - run: npm test
 
-  tinkerpop:
+  db-dockerode:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        db: [ neo4j, postgre, tinkerpop, mongodb ]
     defaults:
       run:
-        working-directory: tinkerpop
-    steps:
-      - name: setup dockerode
-        uses: davidkhala/setup-dockerode@main
-      - run: npm install
-      - run: npm test
-        env:
-          COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
-  neo4j:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: neo4j
-    steps:
-      - name: setup dockerode
-        uses: davidkhala/setup-dockerode@main
-      - run: npm install
-      - run: npm test
-  postgre:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: postgre
+        working-directory: ${{matrix.db}}
     steps:
       - name: setup dockerode
         uses: davidkhala/setup-dockerode@main

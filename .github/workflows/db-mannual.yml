@@ -1,0 +1,18 @@
+name: manually triggered workflows
+on: workflow_dispatch
+env:
+  TERADATA_CLEARSCAPE_PASSWORD: ${{ secrets.TERADATA_CLEARSCAPE_PASSWORD }}
+jobs:
+  teradata:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: teradata
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+
