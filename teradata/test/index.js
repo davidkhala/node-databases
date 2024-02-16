@@ -58,7 +58,8 @@ export function dba(db, databaseName) {
 
 	it('truncate table', () => {
 		const _dba = db.dba;
-		_dba.truncate(databaseName, 'Employees');
+		_dba.use(databaseName);
+		_dba.truncateTable('Employees');
 	});
 
 	it('drop database', () => {

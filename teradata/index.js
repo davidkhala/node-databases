@@ -76,10 +76,13 @@ export class TDDBA extends Teradata {
 	}
 
 	/**
-	 * @param table_name can be in form of ${dbName}.${tableName}
+	 * @param table_name
+	 * @param [database_name]
+
 	 */
-	truncateTable(table_name) {
-		this.execute(`DELETE ${table_name} ALL`);
+	truncateTable(table_name, database_name) {
+		const target = database_name ? `${database_name}.${table_name}` : table_name;
+		this.execute(`DELETE ${target} ALL`);
 	}
 
 	dropTable(tableName) {
