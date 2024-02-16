@@ -5,6 +5,9 @@
     "teradatasql": "latest",
     "@davidkhala/db": "latest"
   },
+  "scripts": {
+    "test": "mocha test"
+  },
   "devDependencies": {
     "mocha": "latest"
   },
