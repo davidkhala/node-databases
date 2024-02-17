@@ -5,10 +5,9 @@ import assert from 'assert';
 const database = 'HR';
 
 
-const teradata = new VantageExpress({domain: '34.150.95.132'});
+const teradata = new VantageExpress({domain: '35.241.102.81'});
 describe('vantage express sample', function () {
 	this.timeout(0);
-
 
 	before(async () => {
 		await teradata.connect();
