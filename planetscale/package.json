@@ -1,0 +1,22 @@
+{
+  "name": "@davidkhala/planetscale",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@planetscale/database": "latest",
+    "@davidkhala/db": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "type": "module"
+}

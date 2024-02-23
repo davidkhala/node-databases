@@ -4,12 +4,16 @@ env:
   ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
   COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
   COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
+  PLANETSCALE_PASSWORD: ${{ secrets.PLANETSCALE_PASSWORD}}
 jobs:
-  leveldb:
+  db-nodocker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        db: [ leveldb, planetscale ]
     defaults:
       run:
-        working-directory: leveldb
+        working-directory: ${{matrix.db}}
     steps:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main

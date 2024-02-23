@@ -10,8 +10,10 @@ jobs:
       run:
         working-directory: neo4j
     steps:
-      - name: setup dockerode
-        uses: davidkhala/setup-dockerode@main
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
       - run: npm install
       - run: npm run test-aura
         env:
