@@ -1,7 +1,8 @@
 import DB from '@davidkhala/db';
 import {Client, fql} from 'fauna';
 
-export class Fauna extends DB {
+
+export class FaunaDB extends DB {
 
 	constructor({password}) {
 		super({username: '-', password});
@@ -15,8 +16,8 @@ export class Fauna extends DB {
 		this.connection.close();
 	}
 
-	async query(template, values = [], requestOptions = {}) {
-		const q = fql([template], ...values);
+	async query(queryString, requestOptions = {}) {
+		const q = fql([queryString]);
 		const {data} = await this.connection.query(q, requestOptions);
 		return data;
 	}

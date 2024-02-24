@@ -20,6 +20,6 @@ export default class Planetscale extends DB {
 
 
 	async query(template, values = [], requestOptions = {}) {
-		return await this.connection.execute(template, values);
+		return await this.connection.execute(template, values, requestOptions);
 	}
 }
