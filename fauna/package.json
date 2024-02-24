@@ -1,0 +1,22 @@
+{
+  "name": "@davidkhala/fauna",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "dependencies": {
+    "fauna": "latest",
+    "@davidkhala/db": "latest"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module"
+}
