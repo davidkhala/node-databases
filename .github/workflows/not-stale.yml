@@ -1,8 +1,11 @@
-name: always-free DBaaS
+name: always-free DBaaS (terminate once stale)
 on:
   workflow_dispatch:
   schedule:
     - cron: 0 0 * * */2
+env:
+  REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+  PLANETSCALE_PASSWORD: ${{ secrets.PLANETSCALE_PASSWORD}}
 jobs:
   aura-db:
     runs-on: ubuntu-latest
@@ -18,11 +21,14 @@ jobs:
       - run: npm run test-aura
         env:
           NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
-  redis:
+  data-cloud:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        provider: [ redis, planetscale ]
     defaults:
       run:
-        working-directory: redis
+        working-directory: ${{matrix.provider}}
     steps:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
@@ -30,5 +36,3 @@ jobs:
           check-latest: true
       - run: npm install
       - run: npm test
-        env:
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}

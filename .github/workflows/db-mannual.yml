@@ -1,4 +1,4 @@
-name: manually triggered workflows
+name: DBaaS (PAYG)
 on: workflow_dispatch
 env:
   TERADATA_CLEARSCAPE_PASSWORD: ${{ secrets.TERADATA_CLEARSCAPE_PASSWORD }}
