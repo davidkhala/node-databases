@@ -1,12 +1,15 @@
 {
   "name": "@davidkhala/redis",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "dependencies": {
     "redis": "latest",
     "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test/*"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "mocha": "latest"

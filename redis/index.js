@@ -3,10 +3,9 @@ import DB from '@davidkhala/db/index.js';
 
 export default class Client extends DB {
 
-	constructor({domain, port, username = '', password = ''}) {
-		super({domain, port, username, password});
+	constructor({domain, port, username = '', password = '', dialect = 'redis'}) {
+		super({domain, port, username, password, dialect});
 
-		this.dialect = 'redis';
 		const url = this.connectionString;
 		this.connection = createClient({
 			url
