@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/postgresql",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "postgresql client",
   "dependencies": {
     "pg": "latest",
@@ -12,7 +12,8 @@
     "@davidkhala/light": "latest"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "test-aurora": "mocha test-aurora"
   },
   "repository": {
     "type": "git",
