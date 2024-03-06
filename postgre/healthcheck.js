@@ -1,0 +1,1 @@
+export const Test = 'pg_isready -U postgres';

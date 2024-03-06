@@ -1,4 +1,6 @@
-import {OCIContainerOptsBuilder, OCI} from '@davidkhala/dockerode/oci.js';
+import {OCI} from '@davidkhala/container/oci.js';
+import {OCIContainerOptsBuilder} from '@davidkhala/container/options.js';
+import {Healthcheck} from '../docker/option.js';
 
 /**
  *
@@ -14,10 +16,14 @@ export async function docker(manager, {HostPort, password, postgres_envs = {}}) 
 		cmd.push(`--${key}=${value}`);
 	}
 	const opts = new OCIContainerOptsBuilder(Image, cmd);
-
+	const name = Image;
 	opts.setPortBind(`${HostPort}:5432`);
-	opts.setName(Image);
-	opts.setEnv([`POSTGRES_PASSWORD=${password}`]);
-	await manager.containerStart(opts.opts, undefined, true);
+
+	opts.opts.Healthcheck = Healthcheck;
+
+	opts.name = name;
+	opts.env = [`POSTGRES_PASSWORD=${password}`];
+	await manager.containerStart(opts.opts, true);
+	await manager.containerWaitForHealthy(name);
 	return async () => manager.containerDelete(Image);
 }

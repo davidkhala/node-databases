@@ -6,6 +6,7 @@ env:
   COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
   PLANETSCALE_PASSWORD: ${{ secrets.PLANETSCALE_PASSWORD}}
   FAUNA_PASSWORD: ${{ secrets.FAUNA_PASSWORD }}
+  SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
 jobs:
   db-nodocker:
     runs-on: ubuntu-latest
