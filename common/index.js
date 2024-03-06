@@ -70,11 +70,11 @@ export class Connectable {
 export default class DB extends Connectable {
 	/**
 	 *
-	 * @param {ConnectionOpts} options
+	 * @param {ConnectionOpts} [options]
 	 * @param {string} [connectionString]
 	 * @param {Console|Object} [logger]
 	 */
-	constructor({domain, port, name, username, password, dialect, driver}, connectionString, logger) {
+	constructor({domain, port, name, username, password, dialect, driver} = {}, connectionString, logger) {
 		super();
 		if (connectionString) {
 			this.connectionString = connectionString;

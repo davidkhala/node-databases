@@ -13,12 +13,13 @@ export default class PostGRE extends DB {
 	 * @param [query_timeout]
 	 * @param [username]
 	 * @param [password]
+	 * @param [logger]
 	 */
 	constructor({
 		domain, port = 5432, username = 'postgres', password, name
-	}, connectionString) {
+	}, connectionString, logger) {
 		const dialect = 'postgres'; // both 'postgresql' or 'postgres' are OK
-		super({domain, username, password, port, name, dialect}, connectionString);
+		super({domain, username, password, port, name, dialect}, connectionString, logger);
 
 		this.connection = new Client({
 			user: username, port, host: domain, password, database: name,

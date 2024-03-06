@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/postgresql",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "postgresql client",
   "dependencies": {
     "pg": "latest",
