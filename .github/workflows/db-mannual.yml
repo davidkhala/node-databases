@@ -1,7 +1,6 @@
 name: DBaaS (PAYG)
 on: workflow_dispatch
-env:
-  TERADATA_CLEARSCAPE_PASSWORD: ${{ secrets.TERADATA_CLEARSCAPE_PASSWORD }}
+
 jobs:
   teradata:
     runs-on: ubuntu-latest
@@ -15,4 +14,19 @@ jobs:
           check-latest: true
       - run: npm install
       - run: npm test
-
+        env:
+          TERADATA_CLEARSCAPE_PASSWORD: ${{ secrets.TERADATA_CLEARSCAPE_PASSWORD }}
+  planetscale:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: planetscale
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+        env:
+          PLANETSCALE_PASSWORD: ${{ secrets.PLANETSCALE_PASSWORD}}

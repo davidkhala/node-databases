@@ -5,7 +5,6 @@ on:
     - cron: 0 0 * * */2
 env:
   REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-  PLANETSCALE_PASSWORD: ${{ secrets.PLANETSCALE_PASSWORD}}
 jobs:
   aura-db:
     runs-on: ubuntu-latest
@@ -25,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        provider: [ redis, planetscale ]
+        provider: [ redis ]
     defaults:
       run:
         working-directory: ${{matrix.provider}}
