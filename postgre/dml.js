@@ -1,4 +1,4 @@
-import PostGRE from './index.js';
+import PG from './index.js';
 import assert from 'assert';
 
 export const DefaultDatabase = {
@@ -6,7 +6,7 @@ export const DefaultDatabase = {
 	template1: 'template1',
 	postgres: 'postgres'
 };
-export default class DML extends PostGRE {
+export default class DML extends PG {
 	async databases(nameOnly) {
 		const result = await this.query('SELECT * FROM pg_database');
 		const dbs = result.rows.map(({datname}) => datname);

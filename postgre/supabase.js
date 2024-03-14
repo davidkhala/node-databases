@@ -1,6 +1,6 @@
-import PostGRE from './index.js';
+import PG from './index.js';
 
-export default class Supabase extends PostGRE {
+export default class Supabase extends PG {
 	/**
 	 *
 	 * @param user
