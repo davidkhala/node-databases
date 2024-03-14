@@ -62,6 +62,10 @@ export class PGPool extends PG {
 		this.pool.release();
 		delete this.pool;
 	}
+
+	async destroy() {
+		await this.connection.end();
+	}
 }
 
 

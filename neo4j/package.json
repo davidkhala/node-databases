@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "mocha test",
-    "test-aura": "mocha test-aura"
+    "test:aura": "mocha test-aura"
   },
   "devDependencies": {
     "mocha": "latest",

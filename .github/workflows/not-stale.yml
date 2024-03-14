@@ -2,7 +2,7 @@ name: always-free DBaaS (terminate once stale)
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 0 * * */2
+    - cron: 0 0 * * */3
 env:
   REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
 jobs:
@@ -17,9 +17,23 @@ jobs:
         with:
           check-latest: true
       - run: npm install
-      - run: npm run test-aura
+      - run: npm run test:aura
         env:
           NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+  supabase:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: postgre
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm run test:supabase
+        env:
+          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
   data-cloud:
     runs-on: ubuntu-latest
     strategy:

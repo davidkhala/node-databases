@@ -14,7 +14,8 @@
   },
   "scripts": {
     "test": "mocha test",
-    "test-aurora": "mocha test-aurora"
+    "test:aurora": "mocha test-aurora",
+    "test:supabase":"mocha test/supabase.js"
   },
   "repository": {
     "type": "git",
