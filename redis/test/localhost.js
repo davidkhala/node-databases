@@ -1,18 +1,13 @@
 import Client, {RedisTx} from '../index.js';
 import assert from 'assert';
 import {ContainerManager} from '@davidkhala/docker/docker.js';
-import {docker} from './recipe.js';
+import {dragonFly, stackServer} from './recipe.js';
 
-describe('localhost', function () {
-	this.timeout(0);
-	const client = new Client({domain: 'localhost'});
-	const dockerInstance = new ContainerManager(undefined, console);
-
-	let stop;
-	before(async () => {
-		stop = await docker(dockerInstance);
-		await client.connect();
-	});
+/**
+ *
+ * @param {Client} client
+ */
+const tests = (client) => {
 	it('get/set', async () => {
 		const value = 'b';
 		const key = 'a';
@@ -45,6 +40,37 @@ describe('localhost', function () {
 		await redisTx.commit();
 		assert.equal(await client.get(key), value);
 	});
+};
+describe('stackServer', function () {
+	this.timeout(0);
+	const client = new Client({domain: 'localhost'});
+	const dockerInstance = new ContainerManager(undefined, console);
+
+	let stop;
+	before(async () => {
+		stop = await stackServer(dockerInstance);
+		await client.connect();
+	});
+	tests(client);
+
+	after(async () => {
+		await client.disconnect();
+		await stop();
+	});
+});
+describe('dragonFly', function () {
+	this.timeout(0);
+	const client = new Client({domain: 'localhost'});
+	const dockerInstance = new ContainerManager(undefined, console);
+
+	let stop;
+	before(async () => {
+		stop = await dragonFly(dockerInstance);
+		await client.connect();
+	});
+
+	tests(client);
+
 	after(async () => {
 		await client.disconnect();
 		await stop();
