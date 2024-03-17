@@ -34,7 +34,7 @@ jobs:
       REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre, tinkerpop, mongodb, redis ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb, redis ]
     defaults:
       run:
         working-directory: ${{matrix.db}}

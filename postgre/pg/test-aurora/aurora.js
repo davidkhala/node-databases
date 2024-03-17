@@ -23,8 +23,6 @@ describe('aws aurora serverless v2', function () {
 		await pgro.connect();
 		const res = await pgro.databases(true);
 		assert.ok(res.includes('rdsadmin')); // aws extra database/user
-
-
 		await pgro.disconnect();
 	});
 });

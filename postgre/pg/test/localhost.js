@@ -1,6 +1,6 @@
 import {ContainerManager} from '@davidkhala/docker/docker.js';
 import PG from '../index.js';
-import {docker} from './recipe.js';
+import {docker} from '@davidkhala/postgres-format/test-utils/recipe.js';
 
 describe('docker postgres', function () {
 	this.timeout(0);

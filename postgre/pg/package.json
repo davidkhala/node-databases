@@ -1,10 +1,11 @@
 {
-  "name": "@davidkhala/postgresql",
-  "version": "0.0.3",
-  "description": "postgresql client",
+  "name": "@davidkhala/pg",
+  "version": "0.0.0",
+  "description": "postgresql client based on npm pg",
   "dependencies": {
     "pg": "latest",
-    "@davidkhala/db": "latest"
+    "@davidkhala/db": "latest",
+    "@davidkhala/postgres-format": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
