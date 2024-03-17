@@ -147,7 +147,7 @@ export class DBA {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		Object.assign(this, db, {db});
+		Object.assign(this, db);
 	}
 
 	/**
@@ -167,7 +167,7 @@ export class Transaction {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		Object.assign(this, db, {db});
+		Object.assign(this, db);
 	}
 
 	/**
@@ -176,16 +176,6 @@ export class Transaction {
 	 */
 	begin() {
 		return this;
-	}
-
-	/**
-	 * @abstract
-	 * @param {string} template
-	 * @param {Object} [values]
-	 * @param {Object} [requestOptions]
-	 */
-	async run(template, values = {}, requestOptions = {}) {
-
 	}
 
 	/**

@@ -1,8 +1,8 @@
-import {ORM} from '../../mysql/orm.js';
+import {ORM} from '@davidkhala/sequelize/orm.js';
 import {consoleLogger} from '@davidkhala/logger/log4.js';
 import {containerStart, mysql, setup} from './_connection.js';
-import {MySQLAdmin} from '../../mysql/admin.js';
-import MySQL from '../../mysql/mysql.js';
+import {MySQLAdmin} from '../admin.js';
+import MySQL from '../mysql.js';
 
 const logger = consoleLogger('mysql: admin test');
 

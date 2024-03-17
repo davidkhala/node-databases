@@ -1,15 +1,29 @@
 import {createClient} from 'redis';
-import DB from '@davidkhala/db/index.js';
+import DB, {Transaction} from '@davidkhala/db/index.js';
 
 export default class Client extends DB {
 
-	constructor({domain, port, username = '', password = '', dialect = 'redis'}) {
+	constructor({
+		domain, username = '', password = '',
+		dialect = 'redis', port = 6379
+	}) {
 		super({domain, port, username, password, dialect});
 
-		const url = this.connectionString;
 		this.connection = createClient({
-			url
+			url: this.connectionString
 		});
+	}
+
+	async hSet(table, key, value) {
+		await this.connection.hSet(table, key, value);
+	}
+
+	async hGet(table, key) {
+		return await this.connection.hGet(table, key);
+	}
+
+	async hGetAll(table) {
+		return await this.connection.hGetAll(table);
 	}
 
 	async get(key) {
@@ -31,5 +45,35 @@ export default class Client extends DB {
 
 	async disconnect() {
 		await this.connection.disconnect();
+	}
+}
+
+export class RedisTx extends Transaction {
+
+	constructor(db) {
+		super(db);
+	}
+
+	begin() {
+		this.tx = this.connection.multi();
+		return this.tx;
+	}
+
+	close() {
+		this.tx.discard();
+		delete this.tx;
+	}
+
+	async commit() {
+		return await this.tx.exec();
+	}
+
+	/**
+	 * https://redis.io/docs/interact/transactions/#what-about-rollbacks
+	 */
+	async rollback(e) {
+		// Errors happening after EXEC instead are not handled in a special way
+		// all the other commands will be executed even if some command fails during the transaction.
+		throw Error('Redis does not support rollbacks of transactions');
 	}
 }

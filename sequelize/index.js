@@ -1,26 +1,20 @@
 import DB from '@davidkhala/db/index.js';
 import Sequelize from 'sequelize';
 
-const levels = [
-	'OFF',  // nothing is logged
-	'FATAL', // fatal errors are logged
-	'ERROR', // errors are logged
-	'WARN',	// warnings are logged
-	'INFO',	// infos are logged
-	'DEBUG', // debug infos are logged
-	'TRACE', // traces are logged
-	'ALL'	// everything is logged
-];
+export const {DataTypes} = Sequelize;
+
+export const dataTypeMap = {
+	string: DataTypes.STRING,
+	object: DataTypes.JSON,
+	number: DataTypes.FLOAT,
+	boolean: DataTypes.BOOLEAN
+};
+export const modelOf = (obj) => dataTypeMap[typeof obj];
 
 export class AbstractSequelize extends DB {
 
-	/**
-	 *
-	 * @param {number} [loggingLevel] [level reference]{@link levels}
-	 */
-	constructor({domain, port, name, username, password, dialect, driver}, logger, loggingLevel = 4) {
+	constructor({domain, port, name, username, password, dialect, driver}, logger) {
 		super({domain, port, name, username, password, dialect, driver}, undefined, logger);
-		this.loggingLevel = loggingLevel;
 		this.reset();
 	}
 
@@ -32,17 +26,9 @@ export class AbstractSequelize extends DB {
 	reset() {
 		delete this.connection;
 		const {name, username, password, domain: host, port, logger, dialect} = this;
-		let logging = !!logger;
-		switch (typeof logger) {
-			case 'function':
-				logging = logger;
-				break;
-			case 'object':
-				logging = (...msg) => this.loggingLevel > 4 ? logger.debug(...msg) : logger.info(msg[0]);
-		}
 
 		this.connection = new Sequelize(name, username, password, {
-			logging, host, port, dialect, timestamps: false, pool: {
+			logging: logger, host, port, dialect, timestamps: false, pool: {
 				max: 200, min: 0, idle: 10000
 			}, define: {
 				charset: 'utf8', freezeTableName: true // prevent sequelize from pluralizing table names
@@ -61,6 +47,7 @@ export class AbstractSequelize extends DB {
 
 	async _connect() {
 		await this.connection.authenticate();
+		return true;
 	}
 
 	setModel(tagName, model, opts) {

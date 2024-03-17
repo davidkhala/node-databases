@@ -1,0 +1,17 @@
+on: push
+jobs:
+  common:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dir: [ common, mysql, sequelize ]
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test

@@ -1,10 +1,10 @@
 import assert from 'assert';
-import MySQL from '../../mysql/mysql.js';
+import MySQL from '../mysql.js';
 import {consoleLogger} from '@davidkhala/logger/log4.js';
-import {DefaultDatabase} from '../../mysql/index.js';
+import {DefaultDatabase} from '@davidkhala/mysql-format/const.js';
 import dataObjects from './dataObjects.js';
-import {docker} from './recipe.js';
-import {ContainerManager} from '@davidkhala/dockerode/docker.js';
+import {docker} from '@davidkhala/mysql-format/test-utils/recipe.js';
+import {ContainerManager} from '@davidkhala/docker/docker.js';
 
 const logger = consoleLogger('mysql:test');
 const password = 'password';
@@ -35,4 +35,4 @@ export async function setup(_mysql) {
 	}
 	return result;
 
-};
+}

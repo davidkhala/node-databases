@@ -1,18 +1,21 @@
 {
   "name": "@davidkhala/redis",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "redis": "latest",
     "@davidkhala/db": "latest"
   },
   "scripts": {
-    "test": "mocha test/*"
+    "test": "mocha test"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@davidkhala/light": "latest",
+    "@davidkhala/container": "latest",
+    "@davidkhala/docker": "latest"
   },
   "type": "module"
 }

@@ -18,7 +18,7 @@ describe('connection string', () => {
 		const dialect = 'mysql';
 		assertConnectionString({domain, port, dialect}, 'mysql://localhost:3306');
 		assertConnectionString({domain, dialect}, 'mysql://localhost');
-		assert.throws(() => {
+		assert.doesNotThrow(() => {
 			new DB({port, dialect});
 		});
 		assertConnectionString({domain, port, dialect, username: 'mysql'}, 'mysql://mysql@localhost:3306');

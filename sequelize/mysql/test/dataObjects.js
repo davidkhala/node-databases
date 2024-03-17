@@ -1,7 +1,7 @@
 /**
  * Sample data objects
  */
-import {DataTypes} from '../../mysql/index.js';
+import {DataTypes} from '@davidkhala/sequelize/index.js';
 const User = {
 	id: {
 		type: DataTypes.INTEGER,

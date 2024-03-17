@@ -1,9 +1,8 @@
-import {DBAdmin} from '../admin.js';
+import {DBAdmin} from '@davidkhala/sequelize/admin.js';
 
 export class MySQLAdmin extends DBAdmin {
-	constructor(mysql, logger) {
+	constructor(mysql) {
 		super(mysql);
-		this.logger = logger;
 	}
 
 	async dropTable(tableName) {

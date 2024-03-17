@@ -2,7 +2,7 @@
  * unsupported sample data objects
  *
  */
-import {DataTypes} from '../../mysql/index.js';
+import {DataTypes} from '../index.js';
 
 export const caseSensitive = {
 	id: {

@@ -1,4 +1,4 @@
-import {AbstractSequelize} from '../index.js';
+import {AbstractSequelize} from '@davidkhala/sequelize/index.js';
 
 
 export default class MySQL extends AbstractSequelize {
@@ -17,11 +17,4 @@ export default class MySQL extends AbstractSequelize {
 	}
 
 }
-
-
-
-
-
-
-
 

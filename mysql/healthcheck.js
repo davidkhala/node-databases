@@ -1,0 +1,1 @@
+export const Test = 'mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD';

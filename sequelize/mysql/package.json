@@ -1,0 +1,25 @@
+{
+  "name": "@davidkhala/sequelize-mysql",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "@davidkhala/sequelize": "^0.0.2",
+    "mysql2": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "@davidkhala/docker": "latest",
+    "@davidkhala/container": "latest",
+    "@davidkhala/mysql-format": "1.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module"
+}

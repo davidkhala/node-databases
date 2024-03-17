@@ -1,20 +1,19 @@
 {
   "name": "@davidkhala/sequelize",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "dependencies": {
     "sequelize": "latest",
-    "mysql2": "latest",
     "@davidkhala/db": "latest"
   },
   "devDependencies": {
     "@davidkhala/logger": "latest",
-    "mocha": "latest",
-    "@davidkhala/dockerode": "latest"
+    "mocha": "latest"
   },
   "scripts": {
-    "test": "mocha test/**"
+    "test": "mocha test"
   },
   "publishConfig": {
+    "access": "public",
     "tag": "latest"
   },
   "type": "module"

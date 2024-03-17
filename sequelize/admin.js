@@ -1,11 +1,14 @@
-export class DBAdmin {
+import {DBA} from '@davidkhala/db';
+
+export class DBAdmin extends DBA {
 	/**
 	 *
 	 * @param {Sequelize} connection
+	 * @param logger
 	 */
-	constructor({connection}) {
+	constructor({connection, logger}) {
+		super({connection, logger});
 		this.interface = connection.getQueryInterface();
-		this.connection = connection;
 	}
 
 	async dropTable(tableName) {
@@ -25,6 +28,13 @@ export class DBAdmin {
 			return;
 		}
 		await this.interface.createDatabase(database);
+	}
+
+	async clear() {
+		const DBs = await this.showDatabases();
+		for (const db of DBs) {
+			await this.dropDatabase(db);
+		}
 	}
 
 	/**
