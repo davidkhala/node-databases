@@ -1,0 +1,23 @@
+{
+  "name": "@davidkhala/neon",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "latest",
+    "@davidkhala/db": "latest",
+    "@davidkhala/postgres-format": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module"
+}
