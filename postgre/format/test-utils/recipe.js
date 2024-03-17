@@ -1,6 +1,6 @@
 import {OCI} from '@davidkhala/container/oci.js';
 import {OCIContainerOptsBuilder} from '@davidkhala/container/options.js';
-import {Healthcheck} from '../docker/option.js';
+import {Test} from '../healthcheck.js';
 
 /**
  *
@@ -19,7 +19,7 @@ export async function docker(manager, {HostPort, password, postgres_envs = {}}) 
 	const name = Image;
 	opts.setPortBind(`${HostPort}:5432`);
 
-	opts.opts.Healthcheck = Healthcheck;
+	opts.setHealthCheck({useShell: true, interval: 1000, commands: [Test]});
 
 	opts.name = name;
 	opts.env = [`POSTGRES_PASSWORD=${password}`];

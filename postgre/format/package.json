@@ -1,0 +1,21 @@
+{
+  "name": "@davidkhala/postgres-format",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "@davidkhala/container": "latest",
+    "@davidkhala/docker": "latest"
+  },
+  "type": "module",
+  "publishConfig": {
+    "access": "public"
+  }
+}
