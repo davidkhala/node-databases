@@ -1,5 +1,6 @@
 import DB from '@davidkhala/db/index.js';
 import Sequelize from 'sequelize';
+import assert from 'assert';
 
 export const {DataTypes} = Sequelize;
 
@@ -23,12 +24,27 @@ export class AbstractSequelize extends DB {
 		this.reset();
 	}
 
+	get logging() {
+
+		switch (typeof this.logger) {
+			case 'boolean':
+				return this.logger;
+			case 'undefined':
+				return false;
+			default:
+				return (msg, sequelize) => {
+					assert.ok(sequelize);
+					this.logger.log(msg);
+				};
+		}
+	}
+
 	reset() {
 		delete this.connection;
-		const {name, username, password, domain: host, port, logger, dialect} = this;
+		const {name, username, password, domain: host, port, dialect} = this;
 
 		this.connection = new Sequelize(name, username, password, {
-			logging: logger, host, port, dialect, timestamps: false, pool: {
+			logging: this.logging, host, port, dialect, timestamps: false, pool: {
 				max: 200, min: 0, idle: 10000
 			}, define: {
 				charset: 'utf8', freezeTableName: true // prevent sequelize from pluralizing table names

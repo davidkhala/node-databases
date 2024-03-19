@@ -51,7 +51,8 @@ export class Neo4j extends DB {
 		return result;
 
 	}
-	async queryOne(template, values = {}){
+
+	async queryOne(template, values = {}) {
 		const {records} = await this.session.run(template, values);
 
 		const fields = records.map(({_fields}) => _fields);
@@ -143,7 +144,7 @@ export class Neo4jAdmin extends DBA {
 	}
 
 	async passwd(currentPassword, newPassword) {
-		const clonedOpts = Object.assign({}, this, {name: DefaultDatabase.system});
+		const clonedOpts = Object.assign({}, this.db, {name: DefaultDatabase.system});
 		const cloned = new Neo4j(clonedOpts, undefined, this.logger);
 		await cloned.connect();
 

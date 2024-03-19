@@ -2,6 +2,7 @@ import Client, {RedisTx} from '../index.js';
 import assert from 'assert';
 import {ContainerManager} from '@davidkhala/docker/docker.js';
 import {dragonFly, stackServer} from './recipe.js';
+import {socketPath} from '@davidkhala/docker/constants.js';
 
 /**
  *
@@ -44,7 +45,7 @@ const tests = (client) => {
 describe('stackServer', function () {
 	this.timeout(0);
 	const client = new Client({domain: 'localhost'});
-	const dockerInstance = new ContainerManager(undefined, console);
+	const dockerInstance = new ContainerManager({socketPath: socketPath(true)}, console);
 
 	let stop;
 	before(async () => {
@@ -61,7 +62,7 @@ describe('stackServer', function () {
 describe('dragonFly', function () {
 	this.timeout(0);
 	const client = new Client({domain: 'localhost'});
-	const dockerInstance = new ContainerManager(undefined, console);
+	const dockerInstance = new ContainerManager({socketPath: socketPath(true)}, console);
 
 	let stop;
 	before(async () => {

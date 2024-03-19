@@ -39,6 +39,10 @@ export class GremlinServer extends AbstractGremlin {
 
 export class GremlinServerAdmin extends AbstractGremlinAdmin {
 
+	get g() {
+		return this.db.g;
+	}
+
 	async clear() {
 		await AbstractGremlin.query(this.g.V().drop());
 	}

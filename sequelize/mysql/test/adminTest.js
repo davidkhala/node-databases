@@ -48,8 +48,8 @@ describe('SQL admin test', function () {
 		await showAllTables();
 	});
 	it('dropAllTable', async () => {
-		const mysql_1 = new MySQL({password: mysql.password, name: 'database'});
-		const dba_1 = new MySQLAdmin(mysql_1, logger);
+		const mysql_1 = new MySQL({password: mysql.password, name: 'database'}, logger);
+		const dba_1 = new MySQLAdmin(mysql_1);
 		await dba_1.dropAllTables();
 		await showAllTables();
 	});

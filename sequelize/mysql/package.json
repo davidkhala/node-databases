@@ -5,14 +5,15 @@
     "test": "mocha test"
   },
   "dependencies": {
-    "@davidkhala/sequelize": "^0.0.2",
+    "@davidkhala/sequelize": "latest",
     "mysql2": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
     "@davidkhala/docker": "latest",
     "@davidkhala/container": "latest",
-    "@davidkhala/mysql-format": "1.0.1"
+    "@davidkhala/mysql-format": "latest",
+    "@davidkhala/logger": "latest"
   },
   "repository": {
     "type": "git",

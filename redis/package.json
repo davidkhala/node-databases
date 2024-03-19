@@ -2,8 +2,8 @@
   "name": "@davidkhala/redis",
   "version": "0.0.4",
   "dependencies": {
-    "redis": "latest",
-    "@davidkhala/db": "latest"
+    "@davidkhala/db": "latest",
+    "redis": "latest"
   },
   "scripts": {
     "test": "mocha test"

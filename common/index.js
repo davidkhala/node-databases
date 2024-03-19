@@ -147,7 +147,19 @@ export class DBA {
 	 * @param {DB} db DB instance
 	 */
 	constructor(db) {
-		Object.assign(this, db);
+		this.db = db;
+	}
+
+	get logger() {
+		return this.db.logger;
+	}
+
+	get connection() {
+		return this.db.connection;
+	}
+
+	get connectionString() {
+		return this.db.connectionString;
 	}
 
 	/**

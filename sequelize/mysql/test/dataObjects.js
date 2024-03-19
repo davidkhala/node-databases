@@ -1,7 +1,7 @@
+import {DataTypes} from '../index.js';
 /**
  * Sample data objects
  */
-import {DataTypes} from '@davidkhala/sequelize/index.js';
 const User = {
 	id: {
 		type: DataTypes.INTEGER,

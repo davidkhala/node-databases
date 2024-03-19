@@ -30,16 +30,30 @@ jobs:
       # for postgre
       SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
-      # for redis
-      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb, redis ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb, ]
     defaults:
       run:
         working-directory: ${{matrix.db}}
     steps:
       - name: setup dockerode
         uses: davidkhala/setup-dockerode@main
+      - run: npm install
+      - run: npm test
+  redis:
+    runs-on: ubuntu-latest
+    env:
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+    defaults:
+      run:
+        working-directory: redis
+    steps:
+      # take care of root permission required by dragonFly
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+          node-version: lts/*
+      - uses: actions/checkout@main
       - run: npm install
       - run: npm test

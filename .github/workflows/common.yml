@@ -9,9 +9,6 @@ jobs:
       run:
         working-directory: ${{ matrix.dir }}
     steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
-        with:
-          check-latest: true
+      - uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test

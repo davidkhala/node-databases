@@ -12,5 +12,6 @@ describe('syntax', function () {
 		assert.equal(modelOf(null), modelOf({}));
 		assert.ifError(modelOf(undefined));
 
+		assert.ifError(DataTypes.TIMESTAMP); // no native TIMESTAMP
 	});
 });
