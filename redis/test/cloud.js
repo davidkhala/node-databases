@@ -3,7 +3,7 @@ import assert from 'assert';
 
 describe('redisCloud', function () {
 	this.timeout(0);
-	const endpoint = 'redis-13435.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:13435';
+	const endpoint = 'redis-17372.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:17372';
 	const [domain, port] = endpoint.split(':');
 
 
