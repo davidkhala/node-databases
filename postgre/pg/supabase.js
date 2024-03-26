@@ -12,7 +12,6 @@ export default class Supabase extends PG {
 	 * @param [logger]
 	 */
 	constructor({user, region, password, projectName}, txMode, connectionString, logger) {
-		// postgres://postgres.qplmusgcroaumzwhypmy:[YOUR-PASSWORD]@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres
 		if (connectionString) {
 			super({}, connectionString, logger);
 		} else {
