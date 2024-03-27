@@ -2,9 +2,14 @@ import {createClient} from '@supabase/supabase-js';
 import {Connectable} from '@davidkhala/db/index.js';
 
 export default class Supabase extends Connectable {
-	constructor(projectName, ANON_KEY) {
+	/**
+	 *
+	 * @param projectName
+	 * @param key either ANON_key or service_role key.
+	 */
+	constructor(projectName, key) {
 		super();
-		this.connection = createClient(`https://${projectName}.supabase.co`, ANON_KEY, {
+		this.connection = createClient(`https://${projectName}.supabase.co`, key, {
 			auth: {
 				autoRefreshToken: false,
 				persistSession: false,
@@ -14,8 +19,9 @@ export default class Supabase extends Connectable {
 	}
 
 	async userCreate(email, password) {
-		const {data, error} = await this.connection.auth.signUp({
-			email, password
+		const {data, error} = await this.connection.auth.admin.createUser({
+			email, password,
+			email_confirm: true
 		});
 		if (error) {
 			throw error;
@@ -24,4 +30,12 @@ export default class Supabase extends Connectable {
 		return user;
 	}
 
+	async listUsers() {
+		const {data, error} = await this.connection.auth.admin.listUsers();
+		if (error) {
+			throw error;
+		}
+		return data.users;
+	}
 }
+

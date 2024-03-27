@@ -1,11 +1,18 @@
 import Supabase from '../index.js';
+import * as assert from 'assert';
 
-describe('serverless supabase', function () {
+describe('restful supabase', function () {
 	this.timeout(0);
 	const projectName = 'qplmusgcroaumzwhypmy';
-	const ANON_KEY = process.env.ANON_KEY;
-	const supabase = new Supabase(projectName, ANON_KEY);
+	const service_role = process.env.SUPABASE_SERVICE_ROLE;
+
+	const supabase = new Supabase(projectName, service_role);
+
 	it('create user', async () => {
-		await supabase.userCreate('david_khala@gmail.com', 'password');
+		await supabase.userCreate('davidkhala@gmail.com', 'password');
+	});
+	it('list users', async () => {
+		const users = await supabase.listUsers();
+		assert.ok(Array.isArray(users));
 	});
 });
