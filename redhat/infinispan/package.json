@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "infinispan": "0.9.0",
+    "@davidkhala/db": "latest"
+  },
+  "description": "",
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "name": "@davidkhala/infinispan",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "version": "0.0.0",
+  "type": "module"
+}
