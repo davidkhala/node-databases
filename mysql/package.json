@@ -1,12 +1,15 @@
 {
-  "name": "@davidkhala/mysql-format",
-  "version": "1.0.2",
+  "name": "@davidkhala/mysql",
+  "version": "0.0.0",
   "scripts": {
     "test": "mocha test"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "dependencies": {
+    "mysql2": "latest"
   },
   "devDependencies": {
     "@davidkhala/container": "latest",

@@ -6,13 +6,12 @@
   },
   "dependencies": {
     "@davidkhala/sequelize": "latest",
-    "mysql2": "latest"
+    "@davidkhala/mysql": "latest"
   },
   "devDependencies": {
     "mocha": "latest",
     "@davidkhala/docker": "latest",
     "@davidkhala/container": "latest",
-    "@davidkhala/mysql-format": "latest",
     "@davidkhala/logger": "latest"
   },
   "repository": {

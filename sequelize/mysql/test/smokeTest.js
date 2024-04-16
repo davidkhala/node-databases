@@ -2,7 +2,7 @@ import {ORM} from '@davidkhala/sequelize/orm.js';
 import {setup, mysql, containerStart} from './_connection.js';
 import {consoleLogger} from '@davidkhala/logger/log4.js';
 import MySQL from '../mysql.js';
-import {DefaultDatabase} from '@davidkhala/mysql-format/const.js';
+import {DefaultDatabase} from '@davidkhala/mysql/const.js';
 
 const logger = consoleLogger('mysql:smoke test');
 

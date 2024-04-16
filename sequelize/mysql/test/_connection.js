@@ -1,9 +1,9 @@
 import assert from 'assert';
 import MySQL from '../mysql.js';
 import {consoleLogger} from '@davidkhala/logger/log4.js';
-import {DefaultDatabase} from '@davidkhala/mysql-format/const.js';
+import {DefaultDatabase} from '@davidkhala/mysql/const.js';
 import dataObjects from './dataObjects.js';
-import {docker} from '@davidkhala/mysql-format/test-utils/recipe.js';
+import {docker} from '@davidkhala/mysql/test-utils/recipe.js';
 import {ContainerManager} from '@davidkhala/docker/docker.js';
 
 const logger = consoleLogger('mysql:test');
