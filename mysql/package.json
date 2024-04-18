@@ -9,7 +9,8 @@
     "url": "https://github.com/davidkhala/node-databases.git"
   },
   "dependencies": {
-    "mysql2": "latest"
+    "mysql2": "latest",
+    "@davidkhala/db": "latest"
   },
   "devDependencies": {
     "@davidkhala/container": "latest",

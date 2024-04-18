@@ -22,5 +22,6 @@ export async function docker(manager, {HostPort, password}) {
 	});
 	await manager.containerStart(opts.opts, true);
 	await manager.containerWaitForHealthy(name);
+    // TODO docker exec
 	return async () => manager.containerDelete(name);
 }
