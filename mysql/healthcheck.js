@@ -1,1 +1,1 @@
-export const Test = 'mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD';
+export const Test = 'mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD && mysqladmin ping -uroot -p$MYSQL_ROOT_PASSWORD';

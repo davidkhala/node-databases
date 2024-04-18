@@ -18,5 +18,11 @@ export default class MySQL extends DB {
         const [results, fields] = await this.connection.query(template, values);
         return [results, fields]
     }
+    async disconnect(force){
+        await this.connection.end()
+        if(force){
+            this.connection.destroy()
+        }
+    }
 }
 
