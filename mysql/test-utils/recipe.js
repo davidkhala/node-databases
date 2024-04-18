@@ -21,9 +21,21 @@ export async function docker(manager, {HostPort, password}) {
         useShell: true, commands: [Test]
     });
     await manager.containerStart(opts.opts, true);
-    await manager.containerWaitForHealthy(name);
 
-    // unstable here
+
+    const waitUntilPing = async () => {
+        try {
+            await manager.containerExec(name, {Cmd: ['mysql', '-uroot', `-p${password}`, '-e', 'select 1']})
+
+        } catch (e) {
+            if (!(e.code === 0 && e.stdout === '1\n1\n')) {
+                await waitUntilPing()
+            }
+        }
+    }
+
+    await waitUntilPing()
+    await waitUntilPing() // mysql issue, a double check is required.
 
     const command = `ALTER USER 'root'@'%' IDENTIFIED BY '${password}';`
     try {
