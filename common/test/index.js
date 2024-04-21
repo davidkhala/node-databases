@@ -1,5 +1,6 @@
 import DB from '../index.js';
 import assert from 'assert';
+import {parse} from '../connection-string.js';
 
 describe('connection string', () => {
 	const assertConnectionString = (opts, connectionStr) => assert.strictEqual(new DB(opts).connectionString, connectionStr);
@@ -31,6 +32,10 @@ describe('connection string', () => {
 		}, 'mysql://mysql:password@localhost:3306');
 		assertConnectionString({domain, port, dialect, driver: 'maria'}, 'mysql+maria://localhost:3306');
 
+	});
+	it('parse', () => {
+		const connectionString = 'mysql://avnadmin';
+		parse(connectionString);
 	});
 });
 describe('retry connect', () => {

@@ -1,4 +1,5 @@
 import assert from 'assert';
+import {build} from './connection-string.js';
 
 /**
  * @typedef {Object} ConnectionOpts
@@ -94,10 +95,8 @@ export default class DB extends Connectable {
 		if (this._connectionString) {
 			return this._connectionString;
 		}
-		const {dialect, driver, username: u, password: p, domain, port: P, name: n} = this;
-		const auth = `${u || ''}${p ? ':' + p : ''}${u ? '@' : ''}`;
+		return build(this, this.options);
 
-		return `${dialect}${driver ? '+' + driver : ''}://${auth}${domain}${P ? ':' + P : ''}${n ? '/' + n : ''}`;
 	}
 
 	get dialect() {

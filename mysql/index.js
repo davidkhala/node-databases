@@ -2,8 +2,8 @@ import mysql from 'mysql2/promise';
 import DB from '@davidkhala/db/index.js';
 
 export default class MySQL extends DB {
-	constructor({domain, username, password}) {
-		super({domain, username, password});
+	constructor({domain, username, password, name}, connectionString, logger) {
+		super({domain, username, password, name}, connectionString, logger);
 
 	}
 
