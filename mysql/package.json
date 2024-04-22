@@ -15,7 +15,8 @@
   "devDependencies": {
     "@davidkhala/container": "latest",
     "@davidkhala/docker": "latest",
-    "mocha": "latest"
+    "mocha": "latest",
+    "connection-string": "latest"
   },
   "publishConfig": {
     "access": "public"

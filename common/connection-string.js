@@ -1,4 +1,4 @@
-import {ConnectionString} from 'connection-string';
+
 
 export const build = ({dialect, driver, username: u, password: p, domain, port: P, name: n}, queries) => {
 	const auth = `${u || ''}${p ? ':' + p : ''}${u ? '@' : ''}`;
@@ -9,10 +9,6 @@ export const build = ({dialect, driver, username: u, password: p, domain, port: 
 		return base;
 	}
 
-};
-export const parse = (str) => {
-	const a = new ConnectionString(str);
-	console.debug(a)
 };
 
 

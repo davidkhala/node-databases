@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "eslint": "latest",
+    "globals": "latest",
+    "@eslint/js": "latest"
+  },
+  "scripts": {
+    "lint": "eslint"
+  },
+  "private": true,
+  "type": "module"
+}

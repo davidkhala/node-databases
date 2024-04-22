@@ -1,6 +1,6 @@
 import DB from '../index.js';
+import {parse} from '../vendor/connection-string.js'
 import assert from 'assert';
-import {parse} from '../connection-string.js';
 
 describe('connection string', () => {
 	const assertConnectionString = (opts, connectionStr) => assert.strictEqual(new DB(opts).connectionString, connectionStr);
@@ -34,7 +34,7 @@ describe('connection string', () => {
 
 	});
 	it('parse', () => {
-		const connectionString = 'mysql://avnadmin';
+		const connectionString = 'mysql://avnadmin:password@mysql-davidkhala.d.aivencloud.com:22013/defaultdb?ssl-mode=REQUIRED';
 		parse(connectionString);
 	});
 });
