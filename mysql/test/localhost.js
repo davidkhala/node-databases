@@ -3,7 +3,7 @@ import {socketPath} from '@davidkhala/docker/constants.js';
 import {docker} from '../test-utils/recipe.js';
 import MySQL from '../index.js';
 
-describe('test-utils', function () {
+describe('docker', function () {
 	this.timeout(0);
 	const password = 'password';
 	const manager = new ContainerManager({socketPath: socketPath(true)});

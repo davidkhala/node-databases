@@ -1,6 +1,5 @@
 import {ContainerManager} from '@davidkhala/docker/docker.js';
 import {OCIContainerOptsBuilder} from '@davidkhala/container/options.js';
-import {Test, Test3} from '../healthcheck.js';
 
 /**
  *
@@ -17,17 +16,30 @@ export async function docker(manager, {HostPort, password}) {
 
 	opts.name = name;
 	opts.env = [`MYSQL_ROOT_PASSWORD=${password}`];
-	opts.setHealthCheck({
-		useShell: true, commands: [`${Test} && ${Test3} && ${Test3}`]
-	});
+
 	await manager.containerStart(opts.opts, true);
-	await manager.containerWaitForHealthy(name);
+
+	const isNotError = (e) => {
+		return e.code === 0 && e.stderr === 'mysql: [Warning] Using a password on the command line interface can be insecure.\n';
+	};
+
+	const Cmd = ['mysql', '-uroot', `-p${password}`, '-e', 'select 1'];
+	let finality = 0;
+	while (finality < 2) {
+		try {
+			await manager.containerExec(name, {Cmd});
+		} catch (e) {
+			if (isNotError(e)) {
+				finality++;
+			}
+		}
+	}
 
 	const command = `ALTER USER 'root'@'%' IDENTIFIED BY '${password}';`;
 	try {
 		await manager.containerExec(name, {Cmd: ['mysql', '-uroot', `-p${password}`, '-e', command]});
 	} catch (e) {
-		if (!(e.code === 0 && e.stderr === 'mysql: [Warning] Using a password on the command line interface can be insecure.\n')) {
+		if (!isNotError(e)) {
 			throw e;
 		}
 	}
