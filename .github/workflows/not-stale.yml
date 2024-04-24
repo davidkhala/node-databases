@@ -1,28 +1,13 @@
 name: always-free DBaaS (terminate once stale)
 on:
-  workflow_dispatch:
   schedule:
     - cron: 0 0 * * */3
 jobs:
-  aura-db:
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: neo4j
-    steps:
-      - uses: actions/checkout@main
-      - uses: actions/setup-node@main
-        with:
-          check-latest: true
-      - run: npm install
-      - run: npm run test:aura
-        env:
-          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
   supabase:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: postgre
+        working-directory: postgre/pg
     steps:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
