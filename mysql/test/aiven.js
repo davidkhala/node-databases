@@ -1,8 +1,8 @@
 import MySQL from '../index.js';
 
-describe('free', function () {
+describe('aiven cloud', function () {
 	this.timeout(0);
-	const password = process.env.password;
+	const password = process.env.AIVEN_PASSWORD;
 	it('connect by string', async () => {
 		const connectionString = `mysql://avnadmin:${password}@mysql-davidkhala.d.aivencloud.com:22013/defaultdb?ssl-mode=REQUIRED`;
 

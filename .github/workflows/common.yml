@@ -12,3 +12,5 @@ jobs:
       - uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
+        env:
+          AIVEN_PASSWORD: ${{ secrets.AIVEN_PASSWORD }}
