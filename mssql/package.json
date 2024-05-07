@@ -1,0 +1,26 @@
+{
+  "name": "@davidkhala/mssql",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "dependencies": {
+    "tedious": "latest",
+    "async": "latest",
+    "@davidkhala/db": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "@davidkhala/docker": "latest",
+    "@davidkhala/light": "latest"
+  },
+  "type": "module"
+}

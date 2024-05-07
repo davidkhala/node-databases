@@ -33,7 +33,7 @@ jobs:
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql ]
     defaults:
       run:
         working-directory: ${{matrix.db}}

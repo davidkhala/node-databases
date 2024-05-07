@@ -25,5 +25,5 @@ export async function docker(manager, {HostPort, password, postgres_envs = {}}) 
 	opts.env = [`POSTGRES_PASSWORD=${password}`];
 	await manager.containerStart(opts.opts, true);
 	await manager.containerWaitForHealthy(name);
-	return async () => manager.containerDelete(Image);
+	return async () => manager.containerDelete(name);
 }
