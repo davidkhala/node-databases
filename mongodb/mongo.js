@@ -16,7 +16,7 @@ export default class MongoDB extends DB {
 		if (connectionString) {
 			this.connectionString = connectionString;
 		}
-		this.connection = new MongoClient(this.connectionString, {useNewUrlParser: true, useUnifiedTopology: true});
+		this.connection = new MongoClient(this.connectionString, {});
 	}
 
 	async connect(name) {

@@ -1,5 +1,5 @@
 import {docker} from './recipe.js';
-import {ContainerManager} from '@davidkhala/dockerode/docker.js';
+import {ContainerManager} from '@davidkhala/docker/docker.js';
 import MongoDB from '../mongo.js';
 import assert from 'assert';
 
@@ -9,13 +9,14 @@ describe('docker: password less', function () {
 	const HostPort = 27016;
 
 	let stopCallback;
-	after(async () => {
-		await stopCallback();
-	});
-	it('start', async () => {
+	before(async () => {
 		const manager = new ContainerManager();
 		stopCallback = await docker(manager, {HostPort});
 	});
+	after(async () => {
+		await stopCallback();
+	});
+
 	it('connect', async () => {
 		const mongoConnect = new MongoDB({domain, port: HostPort});
 		await mongoConnect.connect();

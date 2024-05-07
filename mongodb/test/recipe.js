@@ -1,5 +1,5 @@
-import {OCIContainerOptsBuilder, OCI} from '@davidkhala/dockerode/oci.js';
-
+import {OCIContainerOptsBuilder} from '@davidkhala/container/options.js';
+import {OCI} from '@davidkhala/container/oci.js';
 /**
  *
  * @param {OCI} manager
@@ -11,7 +11,7 @@ export async function docker(manager, {HostPort}) {
 	const opts = new OCIContainerOptsBuilder(Image);
 
 	opts.setPortBind(`${HostPort}:27017`);
-	opts.setName(Image);
-	await manager.containerStart(opts.opts, undefined, true);
+	opts.name = Image;
+	await manager.containerStart(opts.opts, true);
 	return async () => await manager.containerDelete(Image);
 }

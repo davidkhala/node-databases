@@ -3,14 +3,15 @@
   "version": "0.0.2",
   "dependencies": {
     "mongodb": "latest",
-    "@davidkhala/db": "^0.0.5-beta.1"
+    "@davidkhala/db": "latest"
   },
   "scripts": {
     "test": "mocha test"
   },
   "devDependencies": {
     "mocha": "latest",
-    "@davidkhala/dockerode": "latest"
+    "@davidkhala/docker": "latest",
+    "@davidkhala/container": "latest"
   },
   "type": "module"
 }

@@ -24,6 +24,7 @@ jobs:
     env:
       # for mongodb
       ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+      ADB_PASSWORD: ${{secrets.ADB_PASSWORD}}
       # for tinkerpop
       COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
       COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
@@ -32,7 +33,7 @@ jobs:
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb, ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb ]
     defaults:
       run:
         working-directory: ${{matrix.db}}
