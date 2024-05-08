@@ -3,7 +3,7 @@ import DB from '@davidkhala/db';
 
 export const root = 'sa';
 export default class MSSQL extends DB {
-	constructor({domain, port = 1433, name, username, password}) {
+	constructor({domain, port = 1433, name = 'master', username, password}) {
 		super({domain, port, name, username, password});
 	}
 

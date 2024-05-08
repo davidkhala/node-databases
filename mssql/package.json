@@ -1,7 +1,6 @@
 {
   "name": "@davidkhala/mssql",
-  "version": "0.0.0",
-  "description": "",
+  "version": "0.0.1",
   "scripts": {
     "test": "mocha test"
   },
@@ -20,6 +19,7 @@
   "devDependencies": {
     "mocha": "latest",
     "@davidkhala/docker": "latest",
+    "@davidkhala/container": "latest",
     "@davidkhala/light": "latest"
   },
   "type": "module"
