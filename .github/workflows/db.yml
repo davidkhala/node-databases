@@ -31,6 +31,8 @@ jobs:
       # for postgre
       SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
+      # for Azure SQL
+      AZURE_SQL_PASSWORD: ${{ secrets.AZURE_SQL_PASSWORD }}
     strategy:
       matrix:
         db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql ]
