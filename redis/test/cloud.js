@@ -3,9 +3,13 @@ import assert from 'assert';
 
 describe('redisCloud', function () {
 	this.timeout(0);
-	const endpoint = 'redis-17372.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:17372';
-	const [domain, port] = endpoint.split(':');
 
+	let domain, port
+
+	before(async ()=> {
+		const endpoint = process.env.REDIS_ENDPOINT;
+		[domain, port] = endpoint.split(':');
+	})
 
 	it('connect', async () => {
 		const client = new Client({domain, port});
@@ -42,12 +46,15 @@ describe('redisCloud', function () {
 
 
 });
-describe('render.com', function () {
+describe('render', function () {
 	this.timeout(0);
-
-	const endpoint = 'red-cnfv8g5a73kc73dcurc0:QpXiOKD4OavTTzTNefrDtbM1v6ZisYiF@singapore-redis.render.com:6379';
-	const [domain, port] = endpoint.split(':');
 	const dialect = 'rediss';
+	let domain, port
+	before(async ()=> {
+		const endpoint = 'red-cnfv8g5a73kc73dcurc0:QpXiOKD4OavTTzTNefrDtbM1v6ZisYiF@singapore-redis.render.com:6379';
+		[domain, port] = endpoint.split(':');
+	})
+
 	it('connect', async () => {
 		const client = new Client({domain, port, dialect});
 		await client.connect();

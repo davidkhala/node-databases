@@ -48,6 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      REDIS_ENDPOINT: ${{ vars.REDIS_ENDPOINT}}
     defaults:
       run:
         working-directory: redis
