@@ -2,7 +2,8 @@
   "name": "@davidkhala/mysql",
   "version": "0.0.2-rc1",
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "test:aiven": "mocha test-aiven"
   },
   "repository": {
     "type": "git",

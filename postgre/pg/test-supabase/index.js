@@ -1,9 +1,9 @@
 import Supabase from '../supabase.js';
 
 const user = 'postgres';
-const projectName = 'qplmusgcroaumzwhypmy';
+const projectName = process.env.PROJECT;
 const region = 'aws-0-ap-southeast-1';
-const password = process.env.SUPABASE_PASSWORD;
+const password = process.env.DB_PASSWORD;
 describe('supabase: Transaction mode', function () {
 	this.timeout(0);
 	const db = new Supabase({user, region, password, projectName}, true);

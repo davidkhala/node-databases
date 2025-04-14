@@ -1,16 +1,16 @@
 {
   "name": "@davidkhala/neon",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "test": "mocha test"
   },
   "dependencies": {
     "@neondatabase/serverless": "latest",
-    "@davidkhala/db": "latest",
-    "@davidkhala/postgres-format": "latest"
+    "@davidkhala/db": "latest"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@davidkhala/postgres-format": "latest"
   },
   "repository": {
     "type": "git",

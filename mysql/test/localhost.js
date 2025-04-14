@@ -6,7 +6,7 @@ import MySQL from '../index.js';
 describe('docker', function () {
 	this.timeout(0);
 	const password = 'password';
-	const manager = new ContainerManager({socketPath: socketPath(true)});
+	const manager = new ContainerManager({socketPath: socketPath()});
 
 	const username = 'root';
 	const mysql = new MySQL({domain: 'localhost', username, password});

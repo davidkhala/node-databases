@@ -3,8 +3,8 @@ import * as assert from 'assert';
 
 describe('restful supabase', function () {
 	this.timeout(0);
-	const projectName = 'qplmusgcroaumzwhypmy';
-	const service_role = process.env.SUPABASE_SERVICE_ROLE;
+	const projectName = process.env.PROJECT;
+	const service_role = process.env.SERVICE_ROLE;
 
 	const supabase = new Supabase(projectName, service_role);
 

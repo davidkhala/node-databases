@@ -5,10 +5,12 @@ import * as assert from 'assert';
 describe('pooled connection', function () {
 	this.timeout(0);
 	it('', async () => {
+		process.env.NEON_PASSWORD  = "4iJs7VuOjYhD"
 		const connectionString = `postgresql://neondb_owner:${process.env.NEON_PASSWORD}@ep-jolly-voice-a17npw2v-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require`;
 		const neon = new NeonServerless(connectionString);
 		const [vr] = await neon.query(version);
 		assert.ok(vr.version);
-		console.info(await neon.query(databases));
+		const dbs = await neon.query(databases)
+		assert.deepEqual(dbs.map(db=>db.datname),[ 'postgres', 'template1', 'template0', 'neondb' ] )
 	});
 });

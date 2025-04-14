@@ -4,13 +4,11 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dir: [ common, mysql, sequelize ]
+        dir: [ common, sequelize ]
     defaults:
       run:
         working-directory: ${{ matrix.dir }}
     steps:
-      - uses: davidkhala/setup-dockerode@main
+      - uses: actions/checkout@main
       - run: npm install
       - run: npm test
-        env:
-          AIVEN_PASSWORD: ${{ secrets.AIVEN_PASSWORD }}

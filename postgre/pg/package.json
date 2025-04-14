@@ -16,7 +16,7 @@
   "scripts": {
     "test": "mocha test",
     "test:aurora": "mocha test-aurora",
-    "test:supabase":"mocha test/supabase.js"
+    "test:supabase": "mocha test-supabase"
   },
   "repository": {
     "type": "git",

@@ -1,10 +1,13 @@
-name: always-free DBaaS (terminate once stale)
+name: Retain always-free DBaaS
 on:
+  workflow_dispatch:
   schedule:
     - cron: 0 0 * * */3
+  push:
 jobs:
-  supabase:
+  supabase-pg:
     runs-on: ubuntu-latest
+    environment: SUPABASE
     defaults:
       run:
         working-directory: postgre/pg
@@ -16,7 +19,24 @@ jobs:
       - run: npm install
       - run: npm run test:supabase
         env:
-          SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          PROJECT: ${{vars.PROJECT}}
+  supabase-backend:
+    runs-on: ubuntu-latest
+    environment: SUPABASE
+    defaults:
+      run:
+        working-directory: supabase
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test
+        env:
+          PROJECT: ${{vars.PROJECT}}
+          SERVICE_ROLE: ${{secrets.SERVICE_ROLE}}
   redis:
     runs-on: ubuntu-latest
     defaults:
@@ -31,3 +51,33 @@ jobs:
       - run: npm test
         env:
           REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+  Atlas:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: mongodb
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm test:atlas
+        env:
+          ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
+  Aiven:
+    runs-on: ubuntu-latest
+    environment: AIVEN
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+        working-directory: mysql
+      - run: npm test:aiven
+        working-directory: mysql
+        env:
+          MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
+          MYSQL_HOST: ${{vars.MYSQL_HOST}}
+          MYSQL_CA: ${{vars.MYSQL_CA}}

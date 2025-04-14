@@ -23,25 +23,22 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # for mongodb
-      ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
       ADB_PASSWORD: ${{secrets.ADB_PASSWORD}}
       # for tinkerpop
       COSMOS_MONGODB_PASSWORD: ${{ secrets.COSMOS_MONGODB_PASSWORD }}
       COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
       # for postgre
-      SUPABASE_PASSWORD: ${{ secrets.SUPABASE_PASSWORD }}
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
       # for Azure SQL
       AZURE_SQL_PASSWORD: ${{ secrets.AZURE_SQL_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, mysql ]
     defaults:
       run:
         working-directory: ${{matrix.db}}
     steps:
-      - name: setup dockerode
-        uses: davidkhala/setup-dockerode@main
+      - uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
   redis:
