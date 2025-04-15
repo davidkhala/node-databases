@@ -8,14 +8,15 @@ describe('localhost: docker', function () {
 	const db = new MSSQL({domain: 'localhost', username: root, password});
 	let stop;
 	before(async () => {
-		const manager = new ContainerManager({});
+		const manager = new ContainerManager();
 		stop = await docker(manager, {password});
 	});
-	after(async () => {
-		await stop();
-	});
+
 	it('connect', async () => {
 		await db.connect();
 		await db.disconnect();
+	});
+	after(async () => {
+		await stop();
 	});
 });

@@ -5,6 +5,22 @@ on:
     - cron: 0 0 * * */3
   push:
 jobs:
+  aura-db:
+    environment: AURA
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: neo4j
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          check-latest: true
+      - run: npm install
+      - run: npm run test:aura
+        env:
+          NEO4J_PASSWORD: ${{ secrets.NEO4J_PASSWORD }}
+          INSTANCE: ${{vars.INSTANCE}}
   supabase-pg:
     runs-on: ubuntu-latest
     environment: SUPABASE
@@ -39,18 +55,25 @@ jobs:
           SERVICE_ROLE: ${{secrets.SERVICE_ROLE}}
   redis:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        deploy: [redis-cloud, render]
+    environment: ${{matrix.deploy}}
     defaults:
       run:
         working-directory: redis
+    env:
+      REDIS_ENDPOINT: ${{ vars.REDIS_ENDPOINT}}
+      REDIS_USER : ${{ vars.REDIS_USER }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
     steps:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
         with:
           check-latest: true
       - run: npm install
-      - run: npm test
-        env:
-          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      - run: npm run test:${{matrix.deploy}}
+
   Atlas:
     runs-on: ubuntu-latest
     defaults:
@@ -62,7 +85,7 @@ jobs:
         with:
           check-latest: true
       - run: npm install
-      - run: npm test:atlas
+      - run: npm run test:atlas
         env:
           ATLAS_PASSWORD: ${{ secrets.ATLAS_PASSWORD }}
   Aiven:
@@ -75,7 +98,7 @@ jobs:
           check-latest: true
       - run: npm install
         working-directory: mysql
-      - run: npm test:aiven
+      - run: npm run test:aiven
         working-directory: mysql
         env:
           MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}

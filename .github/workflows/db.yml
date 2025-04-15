@@ -29,11 +29,9 @@ jobs:
       COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
       # for postgre
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
-      # for Azure SQL
-      AZURE_SQL_PASSWORD: ${{ secrets.AZURE_SQL_PASSWORD }}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, mysql ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, mysql, redis]
     defaults:
       run:
         working-directory: ${{matrix.db}}
@@ -41,20 +39,21 @@ jobs:
       - uses: davidkhala/setup-dockerode@main
       - run: npm install
       - run: npm test
-  redis:
+  Azure-SQL:
     runs-on: ubuntu-latest
-    env:
-      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
-      REDIS_ENDPOINT: ${{ vars.REDIS_ENDPOINT}}
     defaults:
       run:
-        working-directory: redis
+        working-directory: mssql
+    environment: Azure
+    env:
+      SQL_PASSWORD: ${{secrets.SQL_PASSWORD}}
+      SQL_DOMAIN: ${{vars.SQL_DOMAIN}}
+      SQL_USER: ${{vars.SQL_USER}}
     steps:
-      # take care of root permission required by dragonFly
       - uses: actions/setup-node@main
         with:
           check-latest: true
           node-version: lts/*
       - uses: actions/checkout@main
       - run: npm install
-      - run: npm test
+      - run: npm run test:azure

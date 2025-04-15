@@ -42,7 +42,7 @@ VALUES (
    01
 );`;
 		const result = db.query(rows);
-		console.log(result);
+		console.debug(result);
 	});
 
 }

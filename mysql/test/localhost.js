@@ -4,24 +4,24 @@ import {docker} from '../test-utils/recipe.js';
 import MySQL from '../index.js';
 
 describe('docker', function () {
-	this.timeout(0);
-	const password = 'password';
-	const manager = new ContainerManager({socketPath: socketPath()});
+    this.timeout(0);
+    const password = 'password';
+    const manager = new ContainerManager({socketPath: socketPath()});
 
-	const username = 'root';
-	const mysql = new MySQL({domain: 'localhost', username, password});
-	let stop;
-	before(async () => {
-		// start and stop take 12 seconds
-		stop = await docker(manager, {HostPort: 3306, password});
-	});
-	it('', async () => {
-		await mysql.connect();
-		await mysql.disconnect();
-	});
+    const port = 3307 // avoid conflict with CI built-in mysql
+    const username = 'root';
+    const mysql = new MySQL({domain: 'localhost', username, password, port});
+    let stop;
+    before(async () => {
+        stop = await docker(manager, {HostPort: port, password});
+    });
+    it('', async () => {
+        await mysql.connect();
+        await mysql.disconnect();
+    });
 
-	after(async () => {
-		await stop();
-	});
+    after(async () => {
+        await stop();
+    });
 });
 

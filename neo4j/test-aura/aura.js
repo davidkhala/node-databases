@@ -5,7 +5,8 @@ import {querySet} from '../test/recipe.js';
 describe('AuraDB', function () {
 	this.timeout(0);
 	const password = process.env.NEO4J_PASSWORD;
-	const neo4j = new AuraDB({instance: 'fd422580', password});
+	const instance = process.env.INSTANCE
+	const neo4j = new AuraDB({instance, password});
 	const dba = new Neo4jAdmin(neo4j);
 	before(async () => {
 		await neo4j.connect();
