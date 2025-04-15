@@ -10,7 +10,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: --health-cmd="mysqladmin status -uroot -p$MYSQL_ROOT_PASSWORD"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main

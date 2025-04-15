@@ -8,7 +8,7 @@ describe('docker', function () {
     const password = 'password';
     const manager = new ContainerManager({socketPath: socketPath()});
 
-    const port = 3307 // avoid conflict with CI built-in mysql
+    const port = 3306
     const username = 'root';
     const mysql = new MySQL({domain: 'localhost', username, password, port});
     let stop;

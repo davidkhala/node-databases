@@ -16,6 +16,7 @@
   "devDependencies": {
     "@davidkhala/container": "latest",
     "@davidkhala/docker": "latest",
+    "@davidkhala/light": "latest",
     "mocha": "latest"
   },
   "publishConfig": {
