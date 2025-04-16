@@ -10,7 +10,7 @@ describe('Azure SQL', function () {
 		const name = 'mssql';
 
 		const mssql = new MSSQL({domain, username, port, password, name});
-		await mssql.connect();
+		await mssql.connect(60000);
 		mssql.disconnect();
 	});
 });

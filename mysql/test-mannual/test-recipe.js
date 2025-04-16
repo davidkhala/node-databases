@@ -1,7 +1,7 @@
 import {ContainerManager} from "@davidkhala/docker/docker.js";
 import {socketPath} from "@davidkhala/docker/constants.js";
 import MySQL from "../index.js";
-import {docker} from "./recipe.js";
+import {docker} from "../test-utils/recipe.js";
 
 describe('docker', function () {
     this.timeout(0);

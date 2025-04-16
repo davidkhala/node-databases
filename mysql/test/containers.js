@@ -1,6 +1,7 @@
 import MySQL from '../index.js';
 import {MySqlContainer} from "@testcontainers/mysql";
 import {user} from '../query.js'
+import * as assert from "node:assert";
 
 describe('testcontainers', function (){
     this.timeout(0);
@@ -17,7 +18,17 @@ describe('testcontainers', function (){
         await mysql.disconnect();
         const query = user.list
         const result = await containerStarted.executeQuery(query, undefined, true)
-        console.debug(result)
+
+        assert.equal(result, `mysql: [Warning] Using a password on the command line interface can be insecure.
+HOST\tUSER
+%\troot
+%\ttest
+localhost\tmysql.infoschema
+localhost\tmysql.session
+localhost\tmysql.sys
+localhost\troot
+`);
+
 
     })
     after(async () => {

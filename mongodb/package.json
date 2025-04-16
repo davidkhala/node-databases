@@ -12,7 +12,8 @@
   "devDependencies": {
     "mocha": "latest",
     "@davidkhala/docker": "latest",
-    "@davidkhala/container": "latest"
+    "@davidkhala/container": "latest",
+    "@testcontainers/mongodb": "latest"
   },
   "type": "module"
 }

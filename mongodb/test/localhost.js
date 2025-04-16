@@ -1,7 +1,8 @@
-import {docker} from './recipe.js';
+import {docker} from '../test-utils/recipe.js';
 import {ContainerManager} from '@davidkhala/docker/docker.js';
 import MongoDB from '../mongo.js';
 import assert from 'assert';
+import {MongoDBController} from "../test-utils/testcontainers.js";
 
 const domain = 'localhost';
 describe('docker: password less', function () {
@@ -30,3 +31,21 @@ describe('docker: password less', function () {
 
 	});
 });
+describe('testcontainers', function (){
+	this.timeout(0);
+	let controller, connectionString;
+	before(async () => {
+		controller = new MongoDBController()
+		await controller.start();
+		connectionString = controller.connectionString
+	})
+	it('connect', async () => {
+		const mongoConnect = new MongoDB({}, connectionString);
+		// FIXME MongoServerSelectionError: getaddrinfo ENOTFOUND 92cd91e60616
+		// await mongoConnect.connect();
+		// await mongoConnect.disconnect();
+	})
+	after(async () => {
+		await controller.stop()
+	})
+})
