@@ -17,7 +17,8 @@
     "@davidkhala/container": "latest",
     "@davidkhala/docker": "latest",
     "@davidkhala/light": "latest",
-    "mocha": "latest"
+    "mocha": "latest",
+    "@testcontainers/mysql": "latest"
   },
   "publishConfig": {
     "access": "public"

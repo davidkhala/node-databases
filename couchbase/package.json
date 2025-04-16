@@ -1,0 +1,15 @@
+{
+  "name": "@davidkhala/couchbase",
+  "version": "0.0.0",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "couchbase": "latest",
+    "@davidkhala/db": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "type": "module"
+}
