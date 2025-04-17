@@ -6,46 +6,46 @@ import {MongoDBController} from "../test-utils/testcontainers.js";
 
 const domain = 'localhost';
 describe('docker: password less', function () {
-	this.timeout(0);
-	const HostPort = 27016;
+    this.timeout(0);
+    const HostPort = 27016;
 
-	let stopCallback;
-	before(async () => {
-		const manager = new ContainerManager();
-		stopCallback = await docker(manager, {HostPort});
-	});
-	after(async () => {
-		await stopCallback();
-	});
+    let stopCallback;
+    before(async () => {
+        const manager = new ContainerManager();
+        stopCallback = await docker(manager, {HostPort});
+    });
 
-	it('connect', async () => {
-		const mongoConnect = new MongoDB({domain, port: HostPort});
-		await mongoConnect.connect();
-		const dbs = await mongoConnect.listDatabases();
-		const expectedDBs = [
-			{name: 'admin', sizeOnDisk: 8192, empty: false},
-			{empty: false, name: 'config', sizeOnDisk: 12288},
-			{name: 'local', sizeOnDisk: 8192, empty: false}];
-		assert.deepStrictEqual(dbs, expectedDBs);
-		await mongoConnect.disconnect();
+    it('connect', async () => {
+        const mongoConnect = new MongoDB({domain, port: HostPort});
+        await mongoConnect.connect();
+        const dbs = await mongoConnect.listDatabases();
+        const expectedDBs = [
+            {name: 'admin', sizeOnDisk: 8192, empty: false},
+            {empty: false, name: 'config', sizeOnDisk: 12288},
+            {name: 'local', sizeOnDisk: 8192, empty: false}];
+        assert.deepStrictEqual(dbs, expectedDBs);
+        await mongoConnect.disconnect();
 
-	});
+    });
+    after(async () => {
+        await stopCallback();
+    });
 });
-describe('testcontainers', function (){
-	this.timeout(0);
-	let controller, connectionString;
-	before(async () => {
-		controller = new MongoDBController()
-		await controller.start();
-		connectionString = controller.connectionString
-	})
-	it('connect', async () => {
-		const mongoConnect = new MongoDB({}, connectionString);
-		// FIXME MongoServerSelectionError: getaddrinfo ENOTFOUND 92cd91e60616
-		// await mongoConnect.connect();
-		// await mongoConnect.disconnect();
-	})
-	after(async () => {
-		await controller.stop()
-	})
+describe('testcontainers', function () {
+    this.timeout(0);
+    let controller, connectionString, port;
+    before(async () => {
+        controller = new MongoDBController()
+        await controller.start();
+        connectionString = controller.connectionString
+        port = controller.port;
+    })
+    it('connect', async () => {
+        const mongoConnect = new MongoDB({domain, port});
+        await mongoConnect.connect(undefined, {directConnection: true});
+        await mongoConnect.disconnect();
+    })
+    after(async () => {
+        await controller.stop()
+    })
 })
