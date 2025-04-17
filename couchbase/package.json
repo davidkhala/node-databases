@@ -9,7 +9,8 @@
     "@davidkhala/db": "latest"
   },
   "devDependencies": {
-    "mocha": "latest"
+    "mocha": "latest",
+    "@testcontainers/couchbase": "latest"
   },
   "type": "module"
 }

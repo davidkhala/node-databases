@@ -33,16 +33,14 @@ describe('docker: password less', function () {
 });
 describe('testcontainers', function () {
     this.timeout(0);
-    let controller, connectionString, port;
+    let controller, port;
     before(async () => {
         controller = new MongoDBController()
         await controller.start();
-        connectionString = controller.connectionString
         port = controller.port;
     })
     it('connect', async () => {
-        const mongoConnect = new MongoDB({domain, port});
-        await mongoConnect.connect(undefined, {directConnection: true});
+        const mongoConnect = await controller.getConnection();
         await mongoConnect.disconnect();
     })
     after(async () => {
