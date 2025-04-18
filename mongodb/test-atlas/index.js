@@ -7,24 +7,23 @@ describe('atlas', function () {
     const password = process.env.ATLAS_PASSWORD;
     const domain = 'free.csxewkh.mongodb.net';
     const connect = new Atlas({domain, username, password});
-    it('connect', async () => {
-        await connect.connect('');
+
+    before(async  () => {
+        await connect.connect('dev');
     })
 
+
     it('create collection', async () => {
-        await connect.connect('dev');
         await connect.createCollection('foo');
         const databases = await connect.listDatabases(true);
         assert.ok(databases.includes('dev'));
     });
     it('list database', async () => {
-        await connect.connect('dev');
         const databases = await connect.listDatabases(true);
         assert.deepStrictEqual(databases, ['dev', 'admin', 'local'])
 
     });
     it('dropDatabase', async () => {
-        await connect.connect('dev');
         await connect.dropDatabase();
         const databases = await connect.listDatabases(true);
         assert.ok(!databases.includes('dev'));
