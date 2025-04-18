@@ -8,10 +8,6 @@ export default class Autonomous extends MongoDB {
 		super({}, uri);
 	}
 
-	async connect() {
-		const {connection} = this;
-		await connection.connect();
-		this.db = connection.db();
-	}
+
 
 }
