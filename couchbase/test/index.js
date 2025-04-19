@@ -19,8 +19,7 @@ describe('testcontainers', function () {
         await controller.stop()
     })
     it('connect', async () => {
-        // const scope = "inventory"
-        // const collection = "airline"
+
 
         const cb = new CouchBase({domain, port, tls: false, username, password})
         console.debug(cb.connectionString)
@@ -36,5 +35,14 @@ describe('testcontainers', function () {
 })
 describe('capella', function () {
     this.timeout(0)
-
+    const scope = "inventory"
+    const collection = "airline"
+    const domain = 'cb.t-cvjm0osaoa0ge.cloud.couchbase.com'
+    const username = 'Administrator'
+    const password = process.env.CAPELLA_PASSWORD
+    it('free', async () => {
+        const cb = new CouchBase({domain, tls: true, username, password})
+        await cb.connect()
+        await cb.disconnect()
+    })
 })

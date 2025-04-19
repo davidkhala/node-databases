@@ -29,6 +29,8 @@ jobs:
       COSMOS_GREMLIN_PASSWORD: ${{ secrets.COSMOS_GREMLIN_PASSWORD }}
       # for postgre
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
+      # for couchbase
+      CAPELLA_PASSWORD: ${{secrets.CAPELLA_PASSWORD}}
     strategy:
       matrix:
         db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, redis, mysql,couchbase ]

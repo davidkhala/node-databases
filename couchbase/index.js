@@ -1,23 +1,31 @@
 import couchbase, {BucketManager, ConflictResolutionType} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
+
 export default class CouchBase extends DB {
     constructor({username, password, domain, bucket: name, port, tls}) {
         const dialect = tls ? 'couchbases' : 'couchbase';
         super({domain, name, username, password, dialect, port});
     }
 
+
     async connect({scope, collection} = {}) {
         const {username, password} = this;
         this.connection = await couchbase.connect(this.connectionString, {
-            username,
-            password,
+            username, password,
         })
         if (this.name) {
             this.bucket = this.connection.bucket(this.name)
             this.scope = this.bucket.scope(scope)
             this.collection = this.scope.collection(collection)
         }
+    }
+
+    get connectionString() {
+        if (this._connectionString) {
+            return this._connectionString;
+        }
+        return `${this.dialect}://${this.domain}${this.port ? ':' + this.port : ''}`
     }
 
     get dba() {
@@ -38,12 +46,10 @@ export class ClusterManager extends DBA {
         this.bucket = new BucketManager(this.connection)
     }
 
-    async bucketCreate(name, memory = 512) {
-        await this.bucket.createBucket({
-            conflictResolutionType: ConflictResolutionType.SequenceNumber,
-            name,
-            ramQuotaMB: memory
-        })
+    async bucketCreate(name, memory = 256, options = {}) {
+        await this.bucket.createBucket(Object.assign(options, {
+            name, ramQuotaMB: memory
+        }))
     }
 
     async bucketDelete(name) {
