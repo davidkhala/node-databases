@@ -1,30 +1,40 @@
 import CouchBase from '../index.js'
-import {CouchbaseContainer} from "@testcontainers/couchbase";
+import {CouchbaseController} from "../test-utils/testcontainers.js";
 
 describe('testcontainers', function () {
     this.timeout(0);
     const username = 'Administrator'
     const password = 'couchbase'
     const domain = 'localhost'
-    let controller
+    const bucket = 'travel-sample'
+
+    let controller, port
     before(async () => {
-        const container = new CouchbaseContainer("couchbase/server")
-        container.withCredentials(username, password)
-        controller = await container.start()
-        console.debug(controller.getConnectionString())
+        controller = new CouchbaseController()
+        controller.container.withCredentials(username, password)
+        await controller.start()
+        port = controller.port
     })
     after(async () => {
         await controller.stop()
     })
     it('connect', async () => {
-        const bucket = 'travel-sample'
-        const scope = "inventory"
-        const collection = "airline"
+        // const scope = "inventory"
+        // const collection = "airline"
 
-        const cb = new CouchBase({username, password, domain, bucket}, false)
-
-
-        await cb.connect({scope, collection})
+        const cb = new CouchBase({domain, port, tls: false, username, password})
+        console.debug(cb.connectionString)
+        await cb.connect()
+        const dba = cb.dba
+        console.debug("before bucketCreate")
+        await dba.bucketCreate(bucket)
+        console.debug("after bucketCreate")
+        await dba.bucketDelete(bucket)
+        console.debug("after bucketDelete")
         await cb.disconnect()
     })
+})
+describe('capella', function () {
+    this.timeout(0)
+
 })

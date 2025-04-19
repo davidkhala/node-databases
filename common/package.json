@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/db",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "publishConfig": {
     "access": "public"
@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "mocha": "latest",
-    "connection-string": "latest"
+    "connection-string": "latest",
+    "testcontainers": "latest"
   },
   "main": "index.js"
 }
