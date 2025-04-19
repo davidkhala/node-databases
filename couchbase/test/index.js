@@ -1,12 +1,15 @@
-import CouchBase from '../index.js'
+import CouchBase, {ClusterManager} from '../index.js'
 import {CouchbaseController} from "../test-utils/testcontainers.js";
+import * as assert from "node:assert";
 
+const bucket = 'travel-sample'
+const username = 'Administrator'
 describe('testcontainers', function () {
     this.timeout(0);
-    const username = 'Administrator'
+
     const password = 'couchbase'
     const domain = 'localhost'
-    const bucket = 'travel-sample'
+
 
     let controller, port
     before(async () => {
@@ -22,14 +25,10 @@ describe('testcontainers', function () {
 
 
         const cb = new CouchBase({domain, port, tls: false, username, password})
-        console.debug(cb.connectionString)
         await cb.connect()
-        const dba = cb.dba
-        console.debug("before bucketCreate")
+        const dba = new ClusterManager(cb)
         await dba.bucketCreate(bucket)
-        console.debug("after bucketCreate")
         await dba.bucketDelete(bucket)
-        console.debug("after bucketDelete")
         await cb.disconnect()
     })
 })
@@ -38,11 +37,21 @@ describe('capella', function () {
     const scope = "inventory"
     const collection = "airline"
     const domain = 'cb.t-cvjm0osaoa0ge.cloud.couchbase.com'
-    const username = 'Administrator'
     const password = process.env.CAPELLA_PASSWORD
     it('free', async () => {
         const cb = new CouchBase({domain, tls: true, username, password})
         await cb.connect()
+        const dba = new ClusterManager(cb)
+        const buckets = await dba.bucketList(true)
+        assert.ok(buckets.includes(bucket))
+        const newBucket = 'new'
+        try {
+            await dba.bucketCreate(newBucket)
+        } catch (e) {
+            console.error(e)
+        }
+
+        await dba.bucketDelete(newBucket)
         await cb.disconnect()
     })
 })
