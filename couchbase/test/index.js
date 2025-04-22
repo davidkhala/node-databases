@@ -44,6 +44,13 @@ describe('capella', function () {
         const dba = new ClusterManager(cb)
         const buckets = await dba.bucketList(true)
         assert.ok(buckets.includes(bucket))
+        try {
+            await dba.grant(username, 'cluster.buckets!create')
+        }catch (err){
+            console.error(err)
+            // '{"message":"Forbidden. User needs the following permissions","permissions":["cluster.admin.security!write"]}'
+        }
+
         const newBucket = 'new'
         try {
             await dba.bucketCreate(newBucket)

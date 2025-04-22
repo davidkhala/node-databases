@@ -1,4 +1,4 @@
-import couchbase, {BucketManager, ConflictResolutionType} from 'couchbase';
+import couchbase, {BucketManager, UserManager} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -43,6 +43,7 @@ export class ClusterManager extends DBA {
     constructor(db) {
         super(db);
         this.bucket = new BucketManager(this.connection)
+        this.users = new UserManager(this.connection)
     }
 
     async bucketCreate(name, memory = 256, options = {}) {
@@ -62,6 +63,13 @@ export class ClusterManager extends DBA {
             return buckets.map(bucket => bucket.name)
         }
         return buckets
+    }
+
+    async grant(username, ...roles) {
+        await this.users.upsertUser({
+            username,
+            roles: roles.map(name => ({name}))
+        })
     }
 
     async clear() {
