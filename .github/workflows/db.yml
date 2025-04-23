@@ -3,11 +3,9 @@ on: push
 jobs:
   db-nodocker:
     runs-on: ubuntu-latest
-    env:
-      FAUNA_PASSWORD: ${{ secrets.FAUNA_PASSWORD }}
     strategy:
       matrix:
-        db: [ leveldb, fauna ]
+        db: [ leveldb ]
     defaults:
       run:
         working-directory: ${{matrix.db}}
