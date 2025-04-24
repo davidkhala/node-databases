@@ -7,16 +7,20 @@ export default class CouchBase extends DB {
         super({domain, name, username, password, dialect, port});
     }
 
-    async connect({scope, collection} = {}) {
+    async connect({scope, collection, bucket} = {}) {
         const {username, password} = this;
         this.connection = await couchbase.connect(this.connectionString, {
             username,
             password,
         })
+
+        if (bucket) {
+            this.name = bucket
+        }
         if (this.name) {
             this.bucket = this.connection.bucket(this.name)
-            this.scope = this.bucket.scope(scope)
-            this.collection = this.scope.collection(collection)
+            this.scope = scope ? this.bucket.scope(scope) : this.bucket.defaultScope()
+            this.collection = collection ? this.scope.collection(collection) : this.bucket.defaultCollection()
         }
     }
 
@@ -47,10 +51,20 @@ export class ClusterManager extends DBA {
     }
 
     async bucketCreate(name, memory = 256, options = {}) {
-        await this.bucket.createBucket(Object.assign(options, {
-            name,
-            ramQuotaMB: memory
-        }))
+        try {
+            await this.bucket.createBucket(Object.assign(options, {
+                name,
+                ramQuotaMB: memory
+            }))
+            return true
+        } catch (err) {
+            const {context: {response_code, response_body}} = err
+            const {errors: {ramQuota}, summaries} = JSON.parse(response_body)
+            if (ramQuota === "RAM quota specified is too large to be provisioned into this cluster." && response_code === 400) {
+                return false
+            }
+            throw err
+        }
     }
 
     async bucketDelete(name) {
@@ -73,7 +87,7 @@ export class ClusterManager extends DBA {
     }
 
     async clear() {
-        // TODO WIP
-        return Promise.resolve(undefined);
+        const buckets = await this.bucketList(true)
+        await Promise.all(buckets.map(name => this.bucketDelete(name)))
     }
 }
