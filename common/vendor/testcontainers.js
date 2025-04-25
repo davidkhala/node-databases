@@ -1,6 +1,6 @@
 import {StartedTestContainer, GenericContainer} from "testcontainers"
 
-export class TestcontainersController {
+export class Controller {
 
     constructor() {
         /**
