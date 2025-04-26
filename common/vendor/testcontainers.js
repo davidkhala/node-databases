@@ -1,4 +1,4 @@
-import {StartedTestContainer, GenericContainer} from "testcontainers"
+// import {StartedTestContainer, GenericContainer} from "testcontainers"
 
 export class Controller {
 
@@ -11,12 +11,15 @@ export class Controller {
 
     async start() {
         /**
-         * @type {StartedTestContainer}
+         * @type StartedTestContainer
          */
         this.handler = await this.container.start();
     }
 
     get port() {
+    }
+    get portMap(){
+        return this.handler.startedTestContainer.boundPorts.ports
     }
 
     get connectionString() {
