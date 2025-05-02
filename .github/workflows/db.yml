@@ -29,9 +29,10 @@ jobs:
       NEON_PASSWORD: ${{ secrets.NEON_PASSWORD }}
       # for couchbase
       CAPELLA_PASSWORD: ${{secrets.CAPELLA_PASSWORD}}
+      CAPELLA_API_SECRET: ${{secrets.CAPELLA_API_SECRET}}
     strategy:
       matrix:
-        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, redis, mysql,couchbase ]
+        db: [ neo4j, postgre/pg,neon, tinkerpop, mongodb,mssql, redis, mysql,couchbase, couchbase/capella ]
     defaults:
       run:
         working-directory: ${{matrix.db}}

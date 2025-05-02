@@ -1,0 +1,23 @@
+{
+  "name": "@davidkhala/capella",
+  "version": "0.0.0",
+  "description": "Couchbase Capella rest sdk",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "dependencies": {
+    "@davidkhala/axios": "latest"
+  },
+  "devDependencies": {
+    "mocha": "latest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidkhala/node-databases.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module"
+}

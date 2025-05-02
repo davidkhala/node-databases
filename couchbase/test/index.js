@@ -45,7 +45,7 @@ describe('capella', function () {
         await cb.connect()
         await cb.disconnect()
     })
-    it('bucket manage', async () => {
+    it('not implemented functions', async () => {
         await cb.connect()
 
         const dba = new ClusterManager(cb)
@@ -54,18 +54,18 @@ describe('capella', function () {
         try {
             await dba.grant(username, 'cluster.buckets!create')
         } catch (err) {
-            console.error(err)
-            // '{"message":"Forbidden. User needs the following permissions","permissions":["cluster.admin.security!write"]}'
+            const {context: {response_body}} = err
+            assert.equal(response_body, '{"message":"Forbidden. User needs the following permissions","permissions":["cluster.admin.security!write"]}')
         }
 
         const newBucket = 'new'
         try {
             await dba.bucketCreate(newBucket)
-        } catch (e) {
-            console.error(e)
+        } catch (err) {
+            const {context: {response_body}} = err
+            assert.equal(response_body, '{"message":"Forbidden. User needs the following permissions","permissions":["cluster.buckets!create"]}')
         }
 
-        await dba.bucketDelete(newBucket)
         await cb.disconnect()
     })
     it('upsert', async () => {

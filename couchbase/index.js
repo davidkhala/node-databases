@@ -59,10 +59,14 @@ export class ClusterManager extends DBA {
             return true
         } catch (err) {
             const {context: {response_code, response_body}} = err
-            const {errors: {ramQuota}, summaries} = JSON.parse(response_body)
-            if (ramQuota === "RAM quota specified is too large to be provisioned into this cluster." && response_code === 400) {
+            const {errors, summaries} = JSON.parse(response_body)
+            if (errors
+                && errors.ramQuota === "RAM quota specified is too large to be provisioned into this cluster."
+                && response_code === 400
+            ) {
                 return false
             }
+
             throw err
         }
     }
