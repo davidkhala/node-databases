@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "mocha": "latest",
-    "@testcontainers/couchbase": "latest"
+    "@testcontainers/couchbase": "latest",
+    "@davidkhala/capella": "latest"
   },
   "type": "module"
 }

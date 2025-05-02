@@ -1,7 +1,7 @@
 import {CouchbaseContainer} from "@testcontainers/couchbase";
-import {TestcontainersController} from "@davidkhala/db/vendor/testcontainers.js";
+import {Controller} from "@davidkhala/db/vendor/testcontainers.js";
 
-export class CouchbaseController extends TestcontainersController {
+export class CouchbaseController extends Controller {
     constructor() {
         super();
         this.container = new CouchbaseContainer("couchbase/server");
@@ -11,7 +11,4 @@ export class CouchbaseController extends TestcontainersController {
         return this.handler.getMappedPort(11210)
     }
 
-    async getConnection() {
-
-    }
 }

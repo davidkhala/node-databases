@@ -1,4 +1,4 @@
-import {axiosPromise} from '@davidkhala/axios'
+import {axiosPromise} from '@davidkhala/axios/index.js'
 
 /**
  * API Base URL. See in https://docs.couchbase.com/cloud/management-api-reference/index.html
@@ -21,11 +21,17 @@ export class API {
     }
 
     async get(path, body) {
-        const url =  `${this.url}/${path}`
-        await axiosPromise({url, body, method: 'GET'}, this.options)
+        const url = `${this.url}${path}`
+        return axiosPromise({url, body, method: 'GET'}, this.options)
     }
+
     async post(path, body) {
-        const url =  `${this.url}/${path}`
-        await axiosPromise({url, body, method: 'POST'}, this.options)
+        const url = `${this.url}${path}`
+        return axiosPromise({url, body, method: 'POST'}, this.options)
+    }
+    async delete(path, body) {
+        const url = `${this.url}${path}`
+        return axiosPromise({url, body, method: 'DELETE'}, this.options)
     }
 }
+

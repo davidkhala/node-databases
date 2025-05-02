@@ -2,12 +2,12 @@
   "name": "@davidkhala/capella",
   "version": "0.0.0",
   "description": "Couchbase Capella rest sdk",
-  "main": "index.js",
   "scripts": {
     "test": "mocha test"
   },
   "dependencies": {
-    "@davidkhala/axios": "latest"
+    "@davidkhala/axios": "latest",
+    "@davidkhala/light": "latest"
   },
   "devDependencies": {
     "mocha": "latest"

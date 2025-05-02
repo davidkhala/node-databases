@@ -1,8 +1,8 @@
 import {MongoDBContainer} from "@testcontainers/mongodb";
 import MongoDB from "../mongo.js";
-import {TestcontainersController} from "@davidkhala/db/vendor/testcontainers.js";
+import {Controller} from "@davidkhala/db/vendor/testcontainers.js";
 
-export class MongoDBController extends TestcontainersController {
+export class MongoDBController extends Controller {
     constructor() {
         super();
         this.container = new MongoDBContainer("mongo:8.0.8");

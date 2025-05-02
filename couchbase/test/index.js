@@ -36,6 +36,7 @@ describe('testcontainers', function () {
 })
 describe('capella', function () {
     this.timeout(0)
+    // TODO prepare capella
     const scope = "inventory"
     const collection = "airline"
     const domain = 'cb.t-cvjm0osaoa0ge.cloud.couchbase.com'
