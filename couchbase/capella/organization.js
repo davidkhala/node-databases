@@ -7,7 +7,7 @@ export const pretty = (organization) => {
 
 export default class Organization {
     constructor(api_secret) {
-        this.api = new API('organizations', api_secret)
+        this.api = new API('', api_secret)
     }
 
 

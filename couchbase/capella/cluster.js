@@ -2,20 +2,85 @@ import {API} from "./http.js";
 import * as assert from "node:assert";
 import {sleep} from '@davidkhala/light/index.js'
 
-
 /**
  * @enum
  */
-export const status = {
-    stopped: 'turnedOff',
-    started: 'healthy',
-    starting: 'turningOn',
-    stopping: 'turningOff',
+export const Status = {
+    stopped: 'turnedOff', started: 'healthy', starting: 'turningOn', stopping: 'turningOff',
+}
+
+
+const waitUntilState = async (getterFunc, expected, interval = 10000) => {
+    while (true) {
+        const {currentState} = await getterFunc()
+        if (currentState !== expected) {
+            await sleep(interval)
+        } else {
+            break;
+        }
+    }
+}
+
+class AbstractOperator {
+    /**
+     * @abstract
+     */
+    async start() {
+    }
+
+    /**
+     * @abstract
+     */
+    async stop() {
+    }
+
+    async waitUntilState(expected) {
+        await waitUntilState(
+            async () => {
+                return this.get()
+            },
+            expected
+        )
+    }
+
+    async ensureStopped() {
+        const {currentState} = await this.get()
+        if (currentState === Status.started) {
+            await this.stop()
+        }
+        if ([Status.started, Status.stopping].includes(currentState)) {
+            await this.waitUntilState(Status.stopped)
+            return true
+        }
+        return currentState
+    }
+
+    async ensureStarted() {
+        const {currentState} = await this.get()
+        if (currentState === Status.stopped) {
+            await this.start()
+        }
+        if ([Status.stopped, Status.starting].includes(currentState)) {
+            await this.waitUntilState(Status.started)
+            return true
+        }
+        return currentState
+
+    }
+
+    /**
+     * @abstract
+     */
+    async get() {
+
+    }
 }
 
 export class Cluster {
     constructor(api_secret, organizationId, projectId) {
-        this.api = new API(`organizations/${organizationId}/projects/${projectId}/clusters`, api_secret)
+        this.api = new API(`/${organizationId}/projects/${projectId}/clusters`, api_secret)
+        this.organizationId = organizationId
+        this.projectId = projectId
     }
 
     async list() {
@@ -23,54 +88,92 @@ export class Cluster {
         return data
     }
 
-    async start(clusterId, turnOnLinkedAppService = false) {
-
-        assert.equal(await this.api.post(`/${clusterId}/activationState`, {
-            turnOnLinkedAppService
-        }), '')
-    }
-
-    async stop(clusterId) {
-        assert.equal(await this.api.delete(`/${clusterId}/activationState`), '')
-    }
-
-    async ensureStopped(clusterId) {
-        const {currentState} = await this.get(clusterId)
-        if (currentState === status.started) {
-            await this.stop(clusterId)
+    static Operator = class extends AbstractOperator {
+        /**
+         *
+         * @param {Cluster} cluster
+         * @param clusterId
+         */
+        constructor(cluster, clusterId) {
+            super();
+            this.api = cluster.api
+            this.organizationId = cluster.organizationId
+            this.projectId = cluster.projectId
+            this.clusterId = clusterId
         }
-        if ([status.started, status.stopping].includes(currentState)) {
-            await this.waitUntilState(clusterId, status.stopped)
-            return true
+
+        get domain() {
+            return this.data.connectionString
         }
-        return currentState
+
+        get appService() {
+            return this.data.appServiceId
+        }
+
+        get appServiceOperator() {
+            return new AppService.Operator(this.api.secret, this.organizationId, this.projectId, this.clusterId, this.appService)
+        }
+
+        async start(turnOnLinkedAppService = true) {
+            assert.equal(await this.api.post(`/${this.clusterId}/activationState`, {
+                turnOnLinkedAppService
+            }), '')
+        }
+
+        async ensureStarted() {
+            await super.ensureStarted();
+            await this.appServiceOperator.ensureStarted()
+        }
+
+        async ensureStopped() {
+            await this.appServiceOperator.ensureStopped()
+            await super.ensureStopped();
+        }
+
+        async stop() {
+            assert.equal(await this.api.delete(`/${this.clusterId}/activationState`), '')
+        }
+
+        async get() {
+            this.data = await this.api.get(`/${this.clusterId}`);
+            return this.data
+        }
+    }
+}
+
+
+export class AppService {
+    constructor(api_secret, organizationId) {
+        this.api = new API(`/${organizationId}/appservices`, api_secret)
     }
 
-    async ensureStarted(clusterId) {
-        const {currentState} = await this.get(clusterId)
-        if (currentState === status.stopped) {
-            await this.start(clusterId)
+    async list() {
+        const {data, cursor} = await this.api.get('')
+        return data
+    }
+
+    static Operator = class extends AbstractOperator {
+        constructor(api_secret, organizationId, projectId, clusterId, appServiceId) {
+            super();
+            this.api = new API(`/${organizationId}/projects/${projectId}/clusters/${clusterId}/appservices/${appServiceId}`, api_secret)
         }
-        if ([status.stopped, status.starting].includes(currentState)) {
-            await this.waitUntilState(clusterId, status.started)
-            return true
+
+        /**
+         * Feature `Turn On App Service` is not available for self-service trial. Thus, you might get error with code 422
+         */
+        async start() {
+            await this.api.post('/activationState')
         }
-        return currentState
+
+        async stop() {
+            await this.api.delete('/activationState')
+        }
+
+        async get() {
+            this.data = await this.api.get('')
+            return this.data
+        }
 
     }
 
-    async waitUntilState(clusterId, expected, interval = 10000) {
-        while (true) {
-            const {currentState} = await this.get(clusterId)
-            if (currentState !== expected) {
-                await sleep(interval)
-            } else {
-                break;
-            }
-        }
-    }
-
-    async get(clusterId) {
-        return await this.api.get(`/${clusterId}`);
-    }
 }

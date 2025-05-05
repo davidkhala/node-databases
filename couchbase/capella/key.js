@@ -2,7 +2,7 @@ import {API} from "./http.js";
 
 export class API_KEY {
     constructor(API_SECRET, organizationId) {
-        this.api = new API(`organizations/${organizationId}/apikeys`, API_SECRET)
+        this.api = new API(`/${organizationId}/apikeys`, API_SECRET)
     }
 
     async list() {

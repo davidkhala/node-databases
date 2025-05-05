@@ -34,12 +34,31 @@ describe('testcontainers', function () {
         await cb.disconnect()
     })
 })
+import Organization from '@davidkhala/capella/organization.js'
+import {Project} from '@davidkhala/capella/project.js'
+import {Cluster, Operator as ClusterOperator} from '@davidkhala/capella/cluster.js'
+
+const secret = process.env.CAPELLA_API_SECRET
 describe('capella', function () {
     this.timeout(0)
-    // TODO prepare capella
+
+
+    let org_id, project_id, cluster_id, domain, cluster
+    before(async () => {
+        const org = new Organization(secret)
+        org_id = (await org.list())[0].id
+        const project = new Project(secret, org_id)
+        project_id = (await project.list())[0].id
+        cluster = new Cluster(secret, org_id, project_id)
+        cluster_id = (await cluster.list())[0].id
+        const operator = new ClusterOperator(cluster, cluster_id)
+        await operator.ensureStarted()
+        domain = operator.domain
+
+    })
     const scope = "inventory"
     const collection = "airline"
-    const domain = 'cb.t-cvjm0osaoa0ge.cloud.couchbase.com'
+
     const password = process.env.CAPELLA_PASSWORD
     const cb = new CouchBase({domain, tls: true, username, password})
     it('connect', async () => {

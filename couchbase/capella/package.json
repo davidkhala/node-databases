@@ -1,6 +1,6 @@
 {
   "name": "@davidkhala/capella",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "description": "Couchbase Capella rest sdk",
   "scripts": {
     "test": "mocha test"
