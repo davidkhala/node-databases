@@ -2,8 +2,7 @@ import Organization from "../organization.js";
 import {API_KEY} from "../key.js";
 import {Project} from "../project.js";
 import {Cluster} from "../cluster.js";
-import {Sample, Name} from "../bucket.js";
-import {base64} from "@davidkhala/light/format.js";
+import {calculateId, Name, Sample} from "../bucket.js";
 import * as assert from "node:assert";
 
 const secret = process.env.CAPELLA_API_SECRET
@@ -68,6 +67,6 @@ describe('bucket', function () {
 describe('dependencies', function () {
     this.timeout(0)
     it('base64', async () => {
-        assert.equal(base64.encode('travel-sample'), 'dHJhdmVsLXNhbXBsZQ==')
+        assert.equal(calculateId('travel-sample'), 'dHJhdmVsLXNhbXBsZQ==')
     })
 })
