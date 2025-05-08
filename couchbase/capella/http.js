@@ -13,8 +13,11 @@ export class API {
                 bearer: api_secret
             }
         })
-        this.secret = api_secret
         this.group = group
+    }
+
+    get secret() {
+        return this.options.auth.bearer
     }
 
     set group(group) {

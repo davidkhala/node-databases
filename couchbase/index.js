@@ -1,4 +1,4 @@
-import couchbase, {BucketManager, UserManager} from 'couchbase';
+import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -18,8 +18,19 @@ export default class CouchBase extends DB {
             this.name = bucket
         }
         if (this.name) {
+            /**
+             * @type {Bucket}
+             */
             this.bucket = this.connection.bucket(this.name)
+            /**
+             *
+             * @type {Scope}
+             */
             this.scope = scope ? this.bucket.scope(scope) : this.bucket.defaultScope()
+            /**
+             *
+             * @type {Collection}
+             */
             this.collection = collection ? this.scope.collection(collection) : this.bucket.defaultCollection()
         }
     }
@@ -41,6 +52,12 @@ export default class CouchBase extends DB {
         delete this.scope
         delete this.bucket
     }
+
+    async query(statement, requestOptions = {}) {
+        const {rows,meta } = await this.scope.query(statement, requestOptions)
+        return rows
+    }
+
 }
 
 export class ClusterManager extends DBA {

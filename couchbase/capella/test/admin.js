@@ -33,8 +33,6 @@ describe('cluster', function () {
         await clusterOperator.ensureStopped()
         await clusterOperator.ensureStarted()
     })
-    it('', () => {
-    })
 
 })
 describe('bucket', function () {

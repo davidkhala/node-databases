@@ -3,6 +3,8 @@ import {CouchbaseController} from "../test-utils/testcontainers.js";
 import * as assert from "node:assert";
 
 const bucket = 'travel-sample'
+const scope = "inventory"
+const collection = "airline"
 const username = 'Administrator'
 describe('testcontainers', function () {
     this.timeout(0);
@@ -36,35 +38,35 @@ describe('testcontainers', function () {
 })
 import Organization from '@davidkhala/capella/organization.js'
 import {Project} from '@davidkhala/capella/project.js'
-import {Cluster, Operator as ClusterOperator} from '@davidkhala/capella/cluster.js'
+import {Cluster} from '@davidkhala/capella/cluster.js'
+import {Sample} from '@davidkhala/capella/bucket.js'
 
 const secret = process.env.CAPELLA_API_SECRET
+const password = process.env.CAPELLA_PASSWORD
 describe('capella', function () {
     this.timeout(0)
-
-
-    let org_id, project_id, cluster_id, domain, cluster
+    let organizationId, projectId, clusterId, domain, cluster, cb
     before(async () => {
         const org = new Organization(secret)
-        org_id = (await org.list())[0].id
-        const project = new Project(secret, org_id)
-        project_id = (await project.list())[0].id
-        cluster = new Cluster(secret, org_id, project_id)
-        cluster_id = (await cluster.list())[0].id
-        const operator = new ClusterOperator(cluster, cluster_id)
+        organizationId = (await org.list())[0].id
+        const project = new Project(secret, organizationId)
+        projectId = (await project.list())[0].id
+        cluster = new Cluster(secret, organizationId, projectId)
+        clusterId = (await cluster.list())[0].id
+        const operator = new Cluster.Operator(secret, organizationId, projectId, clusterId)
         await operator.ensureStarted()
         domain = operator.domain
-
+        const sample = new Sample(secret, organizationId, projectId, clusterId)
+        await sample.preset()
+        cb = new CouchBase({domain, tls: true, username, password})
     })
-    const scope = "inventory"
-    const collection = "airline"
 
-    const password = process.env.CAPELLA_PASSWORD
-    const cb = new CouchBase({domain, tls: true, username, password})
+
     it('connect', async () => {
         await cb.connect()
         await cb.disconnect()
     })
+
     it('not implemented functions', async () => {
         await cb.connect()
 
@@ -94,6 +96,15 @@ describe('capella', function () {
         const key = 'a'
         await coll.upsert(key, {"type": 'test'})
         await coll.remove(key)
+        await cb.disconnect()
+    })
+    it('query', async () => {
+        await cb.connect({bucket, scope})
+
+        const rows = await cb.query(`SELECT *
+                                     FROM ${collection}`)
+        console.debug(rows)
+
         await cb.disconnect()
     })
 })
