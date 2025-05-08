@@ -14,9 +14,8 @@ import {build} from './connection-string.js';
 
 export class Connectable {
 	/**
-	 * @abstract
 	 * @param {Error} e
-	 * @return {Promise<boolean>|boolean} By default, connect error will be ignored. A promise as return is also acceptable
+	 * @return {Promise<boolean>|boolean} By default (as `false`), connect error will be ignored. A promise as return is also acceptable
 	 * @private
 	 */
 	_throwConnectError(e) {
@@ -53,7 +52,6 @@ export class Connectable {
 	}
 
 	/**
-	 * @abstract
 	 * @private
 	 */
 	async _connect() {
@@ -62,12 +60,14 @@ export class Connectable {
 
 	/**
 	 * @abstract
-	 * @returns {Promise<void>}
 	 */
 	async disconnect() {
 	}
 }
 
+/**
+ * @abstract
+ */
 export default class DB extends Connectable {
 	/**
 	 *
@@ -119,7 +119,6 @@ export default class DB extends Connectable {
 	}
 
 	/**
-	 * @abstract
 	 * @param {string} template
 	 * @param {Object} [values]
 	 * @param {Object} [requestOptions]

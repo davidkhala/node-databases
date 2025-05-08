@@ -1,7 +1,7 @@
 import {API} from "./http.js";
 import {minus} from "@davidkhala/light/array.js";
 import {base64} from '@davidkhala/light/format.js'
-import {sleep} from "@davidkhala/light";
+import {sleep} from "@davidkhala/light/index.js";
 import * as assert from "node:assert";
 import {Cluster, Status} from "./cluster.js";
 
