@@ -1,31 +1,20 @@
-import Organization from "../organization.js";
 import {API_KEY} from "../key.js";
-import {Project} from "../project.js";
-import {Cluster} from "../cluster.js";
 import {calculateId, Name, Sample} from "../bucket.js";
 import * as assert from "node:assert";
+import {warmup} from "./util.js";
 
-const secret = process.env.CAPELLA_API_SECRET
-
-const org = new Organization(secret)
 describe('cluster', function () {
     this.timeout(0)
     let organizationId, projectId, clusterId
-    let clusterOperator
+    let clusterOperator, organization
     before(async () => {
-        organizationId = (await org.list())[0].id
-        const project = new Project(secret, organizationId)
-        projectId = (await project.list())[0].id
-        const cluster = new Cluster(secret, organizationId, projectId)
-        clusterId = (await cluster.list())[0].id
-        clusterOperator = new Cluster.Operator(secret, organizationId, projectId, clusterId)
-        console.debug(await clusterOperator.get())
+        ({organizationId, projectId, clusterId, cluster:clusterOperator, organization} = await warmup())
     })
 
     it('e2e', async () => {
-        console.debug(await org.get(organizationId))
+        console.debug(await organization.get(organizationId))
         // key
-        const key = new API_KEY(secret, organizationId)
+        const key = new API_KEY(organization.api.secret, organizationId)
         const key_id = (await key.list())[0].id
         console.debug(await key.get(key_id))
         // cluster
@@ -42,13 +31,8 @@ describe('bucket', function () {
      */
     let sample
     before(async () => {
-        organizationId = (await org.list())[0].id
-        const project = new Project(secret, organizationId)
-        projectId = (await project.list())[0].id
-        const cluster = new Cluster(secret, organizationId, projectId)
-        clusterId = (await cluster.list())[0].id
-        const clusterOperator = new Cluster.Operator(secret, organizationId, projectId, clusterId)
-        await clusterOperator.ensureStarted()
+        let secret
+        ({organizationId, projectId, clusterId, secret} = await warmup())
         sample = new Sample(secret, organizationId, projectId, clusterId)
     })
 

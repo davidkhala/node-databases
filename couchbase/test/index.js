@@ -1,6 +1,8 @@
 import CouchBase, {ClusterManager} from '../index.js'
 import {CouchbaseController} from "../test-utils/testcontainers.js";
 import * as assert from "node:assert";
+import {Sample} from '@davidkhala/capella/bucket.js'
+import {warmup} from "../capella/test/util.js";
 
 const bucket = 'travel-sample'
 const scope = "inventory"
@@ -36,26 +38,16 @@ describe('testcontainers', function () {
         await cb.disconnect()
     })
 })
-import Organization from '@davidkhala/capella/organization.js'
-import {Project} from '@davidkhala/capella/project.js'
-import {Cluster} from '@davidkhala/capella/cluster.js'
-import {Sample} from '@davidkhala/capella/bucket.js'
 
-const secret = process.env.CAPELLA_API_SECRET
+
 const password = process.env.CAPELLA_PASSWORD
 describe('capella', function () {
     this.timeout(0)
     let organizationId, projectId, clusterId, domain, cluster, cb
     before(async () => {
-        const org = new Organization(secret)
-        organizationId = (await org.list())[0].id
-        const project = new Project(secret, organizationId)
-        projectId = (await project.list())[0].id
-        cluster = new Cluster(secret, organizationId, projectId)
-        clusterId = (await cluster.list())[0].id
-        const operator = new Cluster.Operator(secret, organizationId, projectId, clusterId)
-        await operator.ensureStarted()
-        domain = operator.domain
+        let secret
+        ({organizationId, projectId, clusterId, secret, cluster} = await warmup())
+        domain = cluster.domain
         const sample = new Sample(secret, organizationId, projectId, clusterId)
         await sample.preset()
         cb = new CouchBase({domain, tls: true, username, password})
@@ -101,10 +93,23 @@ describe('capella', function () {
     it('query', async () => {
         await cb.connect({bucket, scope})
 
-        const rows = await cb.query(`SELECT *
-                                     FROM ${collection}`)
-        console.debug(rows)
+        const r1 = await cb.query(`SELECT *
+                                   FROM ${collection}`)
+        console.debug(r1)
+        await assert.rejects(cb.query(`SELECT *
+                                       FROM \`${bucket}\`.${scope}.$collection`, {collection})
+            , /parsing failure/)
 
         await cb.disconnect()
     })
+    it('query with template', async () => {
+        await cb.connect()
+        const airline = 'TXW'
+        const {rows} = await cb.query(`SELECT *
+                                     FROM \`${bucket}\`.${scope}.${collection}
+                                     WHERE callsign = $airline`, {airline})
+        assert.equal(rows[0].country, 'United States')
+        await cb.disconnect()
+    })
+
 })

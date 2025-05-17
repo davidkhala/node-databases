@@ -1,4 +1,4 @@
-import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection} from 'couchbase';
+import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -9,6 +9,9 @@ export default class CouchBase extends DB {
 
     async connect({scope, collection, bucket} = {}) {
         const {username, password} = this;
+        /**
+         * @type {Cluster}
+         */
         this.connection = await couchbase.connect(this.connectionString, {
             username,
             password,
@@ -53,9 +56,19 @@ export default class CouchBase extends DB {
         delete this.bucket
     }
 
-    async query(statement, requestOptions = {}) {
-        const {rows,meta } = await this.scope.query(statement, requestOptions)
-        return rows
+    async query(statement, values = {}, requestOptions = {}) {
+
+        const principal = this.scope || this.connection
+
+        const {rows} = await principal.query(statement, Object.assign({
+            parameters: values
+        }, requestOptions))
+        const collection = Object.keys(rows[0])[0]
+        return {
+            rows: rows.map(row => row[collection]),
+            collection
+        }
+
     }
 
 }

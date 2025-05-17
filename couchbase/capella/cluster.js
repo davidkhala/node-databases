@@ -1,5 +1,4 @@
 import {API} from "./http.js";
-import * as assert from "node:assert";
 import {sleep} from '@davidkhala/light/index.js'
 
 /**
