@@ -2,36 +2,38 @@ import {API_KEY} from "../key.js";
 import {calculateId, Name, Sample} from "../bucket.js";
 import * as assert from "node:assert";
 import {warmup} from "./util.js";
+import {Cluster} from '../cluster.js'
 
 describe('cluster', function () {
     this.timeout(0)
-    let organizationId, projectId, clusterId
+    let organizationId, projectId, clusterId, secret
     let clusterOperator, organization
     before(async () => {
-        ({organizationId, projectId, clusterId, cluster:clusterOperator, organization} = await warmup())
+        ({organizationId, projectId, clusterId, cluster: clusterOperator, organization, secret} = await warmup())
     })
 
-    it('e2e', async () => {
+    it('admin', async () => {
         console.debug(await organization.get(organizationId))
-        // key
-        const key = new API_KEY(organization.api.secret, organizationId)
-        const key_id = (await key.list())[0].id
-        console.debug(await key.get(key_id))
         // cluster
         await clusterOperator.ensureStopped()
         await clusterOperator.ensureStarted()
+    })
+    it('key', async () => {
+        // key
+        const key = new API_KEY(secret, organizationId)
+        const key_id = (await key.list())[0].id
+        console.debug(await key.get(key_id))
     })
 
 })
 describe('bucket', function () {
     this.timeout(0)
-    let organizationId, projectId, clusterId
+    let organizationId, projectId, clusterId, secret
     /**
      * @type Sample
      */
     let sample
     before(async () => {
-        let secret
         ({organizationId, projectId, clusterId, secret} = await warmup())
         sample = new Sample(secret, organizationId, projectId, clusterId)
     })
@@ -45,6 +47,18 @@ describe('bucket', function () {
     it('load and get', async () => {
         await sample.preset()
         console.debug(await sample.get(Name.beer))
+    })
+    it('index', async ()=>{
+
+        const index = new Cluster.Index(secret, organizationId, projectId, clusterId)
+        try {
+        //     TODO
+        const indexList = await index.list('travel-sample')
+        console.debug(indexList)
+        }catch (err){
+            console.error(err)
+        }
+
     })
 
 })

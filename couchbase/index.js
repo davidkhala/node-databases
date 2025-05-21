@@ -1,4 +1,4 @@
-import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster} from 'couchbase';
+import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster, SearchQuery} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -54,6 +54,15 @@ export default class CouchBase extends DB {
         delete this.collection
         delete this.scope
         delete this.bucket
+    }
+
+    /**
+     *
+     * @param {string} indexName
+     * @param {SearchQuery} query
+     */
+    async search(indexName, query) {
+        return await this.connection.searchQuery(indexName, query)
     }
 
     async query(statement, values = {}, requestOptions = {}) {
