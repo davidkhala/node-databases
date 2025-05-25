@@ -3,7 +3,6 @@ import {Sample} from "@davidkhala/capella/bucket.js";
 import CouchBase, {ClusterManager} from "../index.js";
 import {admin as username} from "../const.js";
 import assert from "node:assert";
-import {SearchQuery} from "couchbase";
 
 const bucket = 'travel-sample'
 const scope = "inventory"
@@ -49,19 +48,26 @@ describe('ddl', function () {
             const {context: {response_body}} = err
             assert.equal(response_body, '{"message":"Forbidden. User needs the following permissions","permissions":["cluster.buckets!create"]}')
         }
-        try {
-            await cb.search(`def_primary`, SearchQuery.match('Los'))
-        } catch (err) {
-            const {context: {http_response_body}} = err
-            // err: index not found
-            assert.match(http_response_body, /\{"error":"rest_auth: preparePerms, err: index not found",/)
-        }
-
     })
-    it('index does exist', async () => {
-        const indexName = 'def_city'
+    it('list index in bucket', async () => {
+        const indexName = 'def_inventory_airline_primary'
         const indexes = await dba.indexList(bucket)
         assert.ok(indexes.some(({name}) => name === indexName))
+    })
+    it('list index in scope', async () => {
+        await cb.disconnect()
+
+        await cb.connect({bucket, scope})
+        dba = cb.dba
+        try {
+            const indexes = await dba.indexList()
+            console.debug(indexes)
+        } catch (err) {
+            console.error(err)
+            const {context: {response_body}} = err
+            assert.equal(response_body, '{"status":"ok","indexDefs":null}\n')
+        }
+
 
     })
 

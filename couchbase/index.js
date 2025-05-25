@@ -1,4 +1,13 @@
-import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster, SearchQuery, QueryIndexManager} from 'couchbase';
+import couchbase, {
+    BucketManager,
+    UserManager,
+    Bucket,
+    Scope,
+    Collection,
+    Cluster,
+    ScopeSearchIndexManager,
+    QueryIndexManager
+} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -46,7 +55,7 @@ export default class CouchBase extends DB {
     }
 
     get dba() {
-        if(!this.connection) {
+        if (!this.connection) {
             throw new Error('Please establish connection in advance');
         }
         return new ClusterManager(this);
@@ -57,15 +66,6 @@ export default class CouchBase extends DB {
         delete this.collection
         delete this.scope
         delete this.bucket
-    }
-
-    /**
-     * @deprecated
-     * @param {string} indexName
-     * @param {SearchQuery} query
-     */
-    async search(indexName, query) {
-        return await this.connection.searchQuery(indexName, query)
     }
 
     async query(statement, values = {}, requestOptions = {}) {
@@ -91,7 +91,11 @@ export class ClusterManager extends DBA {
         this.bucket = new BucketManager(this.connection)
         this.users = new UserManager(this.connection)
         this.index = new QueryIndexManager(this.connection)
+        if (db.scope) {
+            this.scopedIndex = new ScopeSearchIndexManager(this.connection, db.bucket._name, db.scope._name)
+        }
     }
+
 
     async bucketCreate(name, memory = 256, options = {}) {
         try {
@@ -125,8 +129,16 @@ export class ClusterManager extends DBA {
         }
         return buckets
     }
-    async indexList(bucket){
-        return await this.index.getAllIndexes(bucket)
+
+    async indexList(bucketName) {
+        if (this.scopedIndex && !bucketName) {
+            return await this.scopedIndex.getAllIndexes()
+        }
+        return await this.index.getAllIndexes(bucketName)
+    }
+
+    async getIndex(indexName) {
+        return await this.scopedIndex.getIndex(indexName)
     }
 
     async grant(username, ...roles) {
