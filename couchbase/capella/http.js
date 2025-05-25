@@ -21,9 +21,9 @@ export class API {
         this.url = `${BaseURL}${group}`
     }
 
-    async get(path, body) {
+    async get(path, params) {
         const url = `${this.url}${path}`
-        return axiosPromise({url, body, method: 'GET'}, this.options)
+        return axiosPromise({url, method: 'GET', params}, this.options)
     }
 
     async post(path, body) {

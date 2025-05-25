@@ -96,14 +96,26 @@ export class Cluster {
     }
 
     static Index = class {
-        constructor(api_secret, organizationId, projectId, clusterId) {
+        constructor(api_secret, organizationId, projectId, clusterId, bucket, {scope, collection} = {}) {
             this.api = new API(`/${organizationId}/projects/${projectId}/clusters/${clusterId}/queryService/indexes`, api_secret)
+            this.bucket = bucket
+            this.scope = scope
+            this.collection = collection
         }
 
-        async list(bucket, scope, collection) {
-            // TODO 403
+        async list() {
+            const {bucket, scope, collection} = this
             const {definitions} = await this.api.get('', {bucket, scope, collection})
-            return definitions
+
+            return definitions.reduce((acc, {definition, indexName}) => {
+                acc[indexName] = definition
+                return acc
+            }, {})
+        }
+
+        async get(indexName) {
+            const {bucket, scope, collection} = this
+            return await this.api.get(`/${indexName}`, {bucket, scope, collection})
         }
     }
     static Operator = class extends AbstractOperator {

@@ -48,16 +48,15 @@ describe('bucket', function () {
         await sample.preset()
         console.debug(await sample.get(Name.beer))
     })
-    it('index', async ()=>{
-
-        const index = new Cluster.Index(secret, organizationId, projectId, clusterId)
-        try {
-        //     TODO
-        const indexList = await index.list('travel-sample')
+    it('index', async () => {
+        const bucket = 'travel-sample'
+        const index = new Cluster.Index(secret, organizationId, projectId, clusterId, bucket)
+        const indexList = await index.list()
         console.debug(indexList)
-        }catch (err){
-            console.error(err)
-        }
+        const one = await index.get('def_city')
+        assert.equal(one.collection, '_default')
+        assert.equal(one.scope, '_default')
+        assert.equal(one.isPrimary, false)
 
     })
 

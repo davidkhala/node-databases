@@ -1,4 +1,4 @@
-import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster, SearchQuery} from 'couchbase';
+import couchbase, {BucketManager, UserManager, Bucket, Scope, Collection, Cluster, SearchQuery, QueryIndexManager} from 'couchbase';
 import DB, {DBA} from '@davidkhala/db/index.js'
 
 export default class CouchBase extends DB {
@@ -46,6 +46,9 @@ export default class CouchBase extends DB {
     }
 
     get dba() {
+        if(!this.connection) {
+            throw new Error('Please establish connection in advance');
+        }
         return new ClusterManager(this);
     }
 
@@ -57,7 +60,7 @@ export default class CouchBase extends DB {
     }
 
     /**
-     *
+     * @deprecated
      * @param {string} indexName
      * @param {SearchQuery} query
      */
@@ -87,6 +90,7 @@ export class ClusterManager extends DBA {
         super(db);
         this.bucket = new BucketManager(this.connection)
         this.users = new UserManager(this.connection)
+        this.index = new QueryIndexManager(this.connection)
     }
 
     async bucketCreate(name, memory = 256, options = {}) {
@@ -120,6 +124,9 @@ export class ClusterManager extends DBA {
             return buckets.map(bucket => bucket.name)
         }
         return buckets
+    }
+    async indexList(bucket){
+        return await this.index.getAllIndexes(bucket)
     }
 
     async grant(username, ...roles) {
