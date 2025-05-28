@@ -12,7 +12,6 @@ export class MongoDBController extends Controller {
         return this.handler.getMappedPort(27017)
     }
 
-
     async getConnection(name) {
         const mongoConnect = new MongoDB({}, this.connectionString);
         await mongoConnect.connect(name, {directConnection: true});

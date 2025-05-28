@@ -6,7 +6,7 @@ export class Controller {
         /**
          @type GenericContainer
          */
-        this.container = undefined //  ;
+        this.container = undefined
     }
 
     async start() {
@@ -18,7 +18,8 @@ export class Controller {
 
     get port() {
     }
-    get portMap(){
+
+    get portMap() {
         return this.handler.startedTestContainer.boundPorts.ports
     }
 
