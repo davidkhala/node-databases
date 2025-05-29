@@ -95,7 +95,7 @@ export class Cluster {
         return data
     }
 
-    static Index = class {
+    static QueryIndex = class {
         constructor(api_secret, organizationId, projectId, clusterId, bucket, {scope, collection} = {}) {
             this.api = new API(`/${organizationId}/projects/${projectId}/clusters/${clusterId}/queryService/indexes`, api_secret)
             this.bucket = bucket

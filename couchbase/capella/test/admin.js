@@ -48,9 +48,9 @@ describe('bucket', function () {
         await sample.preset()
         console.debug(await sample.get(Name.beer))
     })
-    it('index', async () => {
+    it('query index', async () => {
         const bucket = 'travel-sample'
-        const index = new Cluster.Index(secret, organizationId, projectId, clusterId, bucket)
+        const index = new Cluster.QueryIndex(secret, organizationId, projectId, clusterId, bucket)
         const indexList = await index.list()
         console.debug(indexList)
         const one = await index.get('def_city')

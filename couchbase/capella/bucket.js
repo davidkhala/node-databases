@@ -9,11 +9,13 @@ import {Cluster, Status} from "./cluster.js";
  * @enum
  */
 export const Name = {
-    travel: 'travel-sample', game: 'gamesim-sample', beer: 'beer-sample'
+    travel: 'travel-sample',
+    game: 'gamesim-sample',
+    beer: 'beer-sample',
+    color: 'color-vector-sample' // newly introduced, found in paid account
 }
-export const calculateId = (name) => {
-    return base64.encode(name)
-}
+export const calculateId = (name) => base64.encode(name)
+
 
 export class Sample {
     constructor(api_secret, organizationId, projectId, clusterId) {
@@ -23,7 +25,7 @@ export class Sample {
         this.clusterId = clusterId
     }
 
-    static names = [Name.travel, Name.game, Name.beer]
+    static names = Object.values(Name)
 
     /**
      *

@@ -3,10 +3,11 @@ import {Sample} from "@davidkhala/capella/bucket.js";
 import CouchBase, {ClusterManager} from "../index.js";
 import {admin as username} from "../const.js";
 import assert from "node:assert";
+import {Search} from '../scope.js'
+import {SearchQuery} from "couchbase";
 
 const bucket = 'travel-sample'
-const scope = "inventory"
-const collection = "airline"
+
 
 const password = process.env.CAPELLA_PASSWORD
 describe('ddl', function () {
@@ -51,23 +52,17 @@ describe('ddl', function () {
     })
     it('list index in bucket', async () => {
         const indexName = 'def_inventory_airline_primary'
-        const indexes = await dba.indexList(bucket)
+        const indexes = await dba.queryIndexes(bucket)
         assert.ok(indexes.some(({name}) => name === indexName))
     })
-    it('list index in scope', async () => {
+    it('list search index in scope', async () => {
+
         await cb.disconnect()
-
-        await cb.connect({bucket, scope})
+        await cb.connect({bucket, scope: '_default'})
         dba = cb.dba
-        try {
-            const indexes = await dba.indexList()
-            console.debug(indexes)
-        } catch (err) {
-            console.error(err)
-            const {context: {response_body}} = err
-            assert.equal(response_body, '{"status":"ok","indexDefs":null}\n')
-        }
 
+        const indexes = await dba.searchIndexes()
+        assert.ok(indexes.some(({name}) => name === 'travel_default'))
 
     })
 
@@ -75,7 +70,8 @@ describe('ddl', function () {
 })
 describe('dml', function () {
     this.timeout(0)
-
+    const scope = "inventory"
+    const collection = "airline"
     let cb, domain
     /**
      * @type ClusterManager
@@ -122,9 +118,10 @@ describe('dml', function () {
         assert.equal(rows[0].country, 'United States')
 
     })
-    it('index', async () => {
-        // TODO def_city
-
-
+    it('search city', async () => {
+        const indexName = 'travel-inventory-airline'
+        const search = new Search(cb.scope)
+        const r = await search.query(indexName, SearchQuery.match('UK'))
+        console.debug(r)
     })
 })

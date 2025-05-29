@@ -90,9 +90,12 @@ export class ClusterManager extends DBA {
         super(db);
         this.bucket = new BucketManager(this.connection)
         this.users = new UserManager(this.connection)
-        this.index = new QueryIndexManager(this.connection)
+        this.query = new QueryIndexManager(this.connection)
+        if (db.bucket) {
+            this.bucketName = db.bucket._name
+        }
         if (db.scope) {
-            this.scopedIndex = new ScopeSearchIndexManager(this.connection, db.bucket._name, db.scope._name)
+            this.search = new ScopeSearchIndexManager(this.connection, db.bucket._name, db.scope._name)
         }
     }
 
@@ -130,15 +133,19 @@ export class ClusterManager extends DBA {
         return buckets
     }
 
-    async indexList(bucketName) {
-        if (this.scopedIndex && !bucketName) {
-            return await this.scopedIndex.getAllIndexes()
-        }
-        return await this.index.getAllIndexes(bucketName)
+    async searchIndexes() {
+        return await this.search.getAllIndexes()
     }
 
-    async getIndex(indexName) {
-        return await this.scopedIndex.getIndex(indexName)
+    async queryIndexes(bucketName) {
+        if (!bucketName) {
+            bucketName = this.bucketName
+        }
+        return await this.query.getAllIndexes(bucketName)
+    }
+
+    async searchIndex(indexName) {
+        return await this.search.getIndex(indexName)
     }
 
     async grant(username, ...roles) {
