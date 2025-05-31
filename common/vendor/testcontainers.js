@@ -1,36 +1,18 @@
 // import {StartedTestContainer, GenericContainer} from "testcontainers"
+import {Controller as C} from '@davidkhala/light/vendor/testcontainers.js'
 
-export class Controller {
-
-    constructor() {
-        /**
-         @type GenericContainer
-         */
-        this.container = undefined
-    }
-
-    async start() {
-        /**
-         * @type StartedTestContainer
-         */
-        this.handler = await this.container.start();
-    }
-
-    get port() {
-    }
-
-    get portMap() {
-        return this.handler.startedTestContainer.boundPorts.ports
-    }
+/**
+ * @abstract
+ */
+export class Controller extends C {
 
     get connectionString() {
         return this.handler.getConnectionString()
     }
 
-    async stop() {
-        return await this.handler.stop()
-    }
-
+    /**
+     * @abstract
+     */
     async getConnection() {
     }
 }
