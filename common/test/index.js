@@ -34,8 +34,20 @@ describe('connection string', () => {
 
 	});
 	it('parse', () => {
-		const connectionString = 'mysql://avnadmin:password@mysql-davidkhala.d.aivencloud.com:22013/defaultdb?ssl-mode=REQUIRED';
-		parse(connectionString);
+		let connectionString = 'mysql://avnadmin:password@mysql-davidkhala.d.aivencloud.com:22013/defaultdb?ssl-mode=REQUIRED';
+		let parsed= parse(connectionString);
+		console.debug(parsed)
+		let {domain, port, dialect, username, password, name} = parsed;
+		assert.equal(domain, 'mysql-davidkhala.d.aivencloud.com');
+		assert.equal(port, 22013);
+		assert.equal(dialect, 'mysql');
+		assert.equal(username, 'avnadmin');
+		assert.equal(password, 'password');
+		assert.equal(name, 'defaultdb');
+		// 2
+		connectionString = 'mysql+mysqlconnector://avnadmin:password@mysql-davidkhala.d.aivencloud.com:22013/defaultdb?ssl-mode=REQUIRED';
+		const {driver}= parse(connectionString);
+		assert.equal(driver, 'mysqlconnector')
 	});
 });
 describe('retry connect', () => {
