@@ -1,0 +1,20 @@
+{
+  "name": "@davidkhala/prisma",
+  "version": "0.0.0",
+  "dependencies": {
+    "prisma": "latest",
+    "@davidkhala/db": "latest"
+  },
+  "devDependencies": {
+    "@davidkhala/logger": "latest",
+    "mocha": "latest"
+  },
+  "scripts": {
+    "test": "mocha test"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
+  "type": "module"
+}
